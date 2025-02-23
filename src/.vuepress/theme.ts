@@ -25,10 +25,12 @@ export default hopeTheme({
       BiliBili: "https://space.bilibili.com/13808984",
       Steam: "https://steamcommunity.com/id/a-cheng/",
       //Zhihu: "https://example.com",
+      douban: "https://www.douban.com/people/133155707/",
       bettergi: {
         icon: "https://img.alicdn.com/imgextra/i2/2042484851/O1CN01LQfLIG1lhoEZwz1Gt_!!2042484851.png",
         link: "https://bettergi.com/",
       },
+      
     },
   },
 
