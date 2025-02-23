@@ -1,49 +1,51 @@
 import { hopeTheme } from "vuepress-theme-hope";
 
 import { enNavbar, zhNavbar } from "./navbar/index.js";
-import { enSidebar, zhSidebar } from "./sidebar/index.js";
+import { enSidebar, zhSidebarConfig  } from "./sidebar/index.js";
 
 
 export default hopeTheme({
-  hostname: "https://mister-hope.github.io",
+  hostname: "https://github.com/shilic/shilic.github.io", 
 
   author: {
     name: "阿城同学",
-    url: "https://mister-hope.com",
+    url: " https://shilic.github.io",
   },
 
-  logo: "https://theme-hope-assets.vuejs.press/logo.svg",
+  logo: "https://raw.githubusercontent.com/shilic/MarkDownImageRepository/main/img/logo1.png", // https://theme-hope-assets.vuejs.press/logo.svg
 
-  repo: "vuepress-theme-hope/vuepress-theme-hope",
+  repo: "shilic/shilic.github.io",
 
   docsDir: "src",
 
   blog: {
-    name:"阿城的博客",
+    name:"阿城",
     medias: {
+      GitHub: "https://github.com/shilic",
       BiliBili: "https://space.bilibili.com/13808984",
-      Zhihu: "https://example.com",
-      VuePressThemeHope: {
-        icon: "https://theme-hope-assets.vuejs.press/logo.svg",
-        link: "https://theme-hope.vuejs.press",
+      Steam: "https://steamcommunity.com/id/a-cheng/",
+      //Zhihu: "https://example.com",
+      bettergi: {
+        icon: "https://img.alicdn.com/imgextra/i2/2042484851/O1CN01LQfLIG1lhoEZwz1Gt_!!2042484851.png",
+        link: "https://bettergi.com/",
       },
     },
   },
 
   locales: {
-    "/": {
+    "/en/": {
       // navbar
       navbar: enNavbar,
 
       // sidebar
       sidebar: enSidebar,
 
-      footer: "Default footer",
+      footer: "..",
 
       displayFooter: true,
 
       blog: {
-        description: "A FrontEnd programmer",
+        description: "A Andriod programmer",
         intro: "/intro.html",
       },
 
@@ -55,20 +57,20 @@ export default hopeTheme({
     /**
      * Chinese locale config
      */
-    "/zh/": {
+    "/": {
       // navbar
       navbar: zhNavbar,
 
       // sidebar
-      sidebar: zhSidebar,
+      sidebar: zhSidebarConfig ,
 
       footer: "默认页脚",
 
       displayFooter: true,
 
       blog: {
-        description: "一个前端开发者",
-        intro: "/zh/intro.html",
+        description: "文艺青年、客户端开发、开源项目贡献者",
+        intro: "/intro.html",
       },
 
       // page meta
@@ -81,10 +83,6 @@ export default hopeTheme({
   encrypt: {
     config: {
       "/demo/encrypt.html": {
-        hint: "Password: 1234",
-        password: "1234",
-      },
-      "/zh/demo/encrypt.html": {
         hint: "Password: 1234",
         password: "1234",
       },

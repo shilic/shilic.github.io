@@ -2,47 +2,29 @@
 home: true
 layout: BlogHome
 icon: house
-title: Blog Home
-heroImage: https://theme-hope-assets.vuejs.press/logo.svg
-heroText: The name of your blog
-tagline: You can put your slogan here
+title: 博客主页
+heroImage: https://raw.githubusercontent.com/shilic/MarkDownImageRepository/main/img/logo1.png
+heroText: 阿城
 heroFullScreen: true
+tagline: 胶片放映的是电影，而那些被悄悄剪下来的部分，才是生活。
+
+#bgImage: https://file.mo7.cc/api/public/bz
+#bgImage: https://raw.githubusercontent.com/shilic/MarkDownImageRepository/main/img/infinity-2095098-.jpg
+bgImage: https://global.bing.com/th?id=OHR.ReopeningNotreDame_ZH-CN6512133762_1920x1080.jpg
+#bgImage: https://global.bing.com/th?id=OHR.NapoliPizza_ZH-CN4698906448_1920x1080.jpg
 projects:
   - icon: folder-open
-    name: project name
-    desc: project detailed description
-    link: https://your.project.link
+    name: Can快速解析框架
+    desc: 用于车机安卓应用与CAN协议之间的解耦，并快速解析车身数据
+    link: https://github.com/shilic/QuickCanResolver
 
-  - icon: link
-    name: link name
-    desc: link detailed description
-    link: https://link.address
+  - icon: folder-open
+    name: 原琴脚本
+    desc: 用于自动弹奏原神里的风物之琴
+    link: https://github.com/shilic/YuanQin
 
-  - icon: book
-    name: book name
-    desc: Detailed description of the book
-    link: https://link.to.your.book
+# icon 可选值  folder-open link book newspaper user-group 或图片链接
 
-  - icon: newspaper
-    name: article name
-    desc: Detailed description of the article
-    link: https://link.to.your.article
-
-  - icon: user-group
-    name: friend name
-    desc: Detailed description of friend
-    link: https://link.to.your.friend
-
-  - icon: https://theme-hope-assets.vuejs.press/logo.svg
-    name: custom item
-    desc: Detailed description of this custom item
-    link: https://link.to.your.friend
-
-footer: customize your footer text
+# 自定义你的页脚文字
+footer: .
 ---
-
-This is a blog home page demo.
-
-To use this layout, you should set both `layout: BlogHome` and `home: true` in the page front matter.
-
-For related configuration docs, please see [blog homepage](https://theme-hope.vuejs.press/guide/blog/home.html).
