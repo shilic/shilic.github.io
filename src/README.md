@@ -3,14 +3,15 @@ home: true
 layout: BlogHome
 icon: house
 title: 博客主页
-heroImage: https://raw.githubusercontent.com/shilic/MarkDownImageRepository/main/img/logo1.png
+#heroImage: https://raw.githubusercontent.com/shilic/MarkDownImageRepository/main/img/logo1.png
+heroImage: https://cdn.jsdelivr.net/gh/shilic/picx-images-hosting@master/logo/logo1.1ovkg40dfb.webp
 heroText: 阿城
 heroFullScreen: true
 tagline: 胶片放映的是电影，而那些被悄悄剪下来的部分，才是生活。
 
 #bgImage: https://file.mo7.cc/api/public/bz
 #bgImage: https://global.bing.com/th?id=OHR.ReopeningNotreDame_ZH-CN6512133762_1920x1080.jpg
-bgImage: https://github.com/shilic/picx-images-hosting/raw/master/background/th.sz30nexqv.webp
+bgImage: https://cdn.jsdelivr.net/gh/shilic/picx-images-hosting@master/background/th.sz30nexqv.webp
 projects:
   - icon: folder-open
     name: Can快速解析框架

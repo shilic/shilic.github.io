@@ -71,7 +71,7 @@ export default hopeTheme({
       displayFooter: true,
 
       blog: {
-        description: "文艺青年、客户端开发、开源项目贡献者",
+        description: "文艺青年、安卓客户端开发、开源项目贡献者",
         intro: "/intro.html",
       },
 
