@@ -9,9 +9,8 @@ heroFullScreen: true
 tagline: 胶片放映的是电影，而那些被悄悄剪下来的部分，才是生活。
 
 #bgImage: https://file.mo7.cc/api/public/bz
-#bgImage: https://raw.githubusercontent.com/shilic/MarkDownImageRepository/main/img/infinity-2095098-.jpg
-bgImage: https://global.bing.com/th?id=OHR.ReopeningNotreDame_ZH-CN6512133762_1920x1080.jpg
-#bgImage: https://global.bing.com/th?id=OHR.NapoliPizza_ZH-CN4698906448_1920x1080.jpg
+#bgImage: https://global.bing.com/th?id=OHR.ReopeningNotreDame_ZH-CN6512133762_1920x1080.jpg
+bgImage: https://github.com/shilic/picx-images-hosting/raw/master/background/th.sz30nexqv.webp
 projects:
   - icon: folder-open
     name: Can快速解析框架
