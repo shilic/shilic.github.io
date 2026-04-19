@@ -8,7 +8,7 @@ export default hopeTheme({
   hostname: "https://github.com/shilic/shilic.github.io", 
 
   author: {
-    name: "阿城同学",
+    name: "诚",
     url: " https://shilic.github.io",
   },
 
@@ -19,7 +19,8 @@ export default hopeTheme({
   docsDir: "src",
 
   blog: {
-    name:"阿城",
+    name:"诚",
+    // 相关链接
     medias: {
       GitHub: "https://github.com/shilic",
       BiliBili: "https://space.bilibili.com/13808984",
@@ -71,7 +72,7 @@ export default hopeTheme({
       displayFooter: true,
 
       blog: {
-        description: "文艺青年、安卓客户端开发、开源项目贡献者",
+        description: "车载大屏APP开发、上位机开发、开源项目贡献者",
         intro: "/intro.html",
       },
 
