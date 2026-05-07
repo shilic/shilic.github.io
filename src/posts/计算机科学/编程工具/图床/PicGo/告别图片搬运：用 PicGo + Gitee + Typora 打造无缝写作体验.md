@@ -28,7 +28,7 @@ copyright: 无版权
 
 如果你经常用 Markdown 写作，一定遇到过这样的困扰：在本地写得图文并茂的文章，一到要发布时就“面目全非”——图片全部变成裂图。这不是 Markdown 的错，而是图片存储方式出了问题。
 
-![裂图示例](https://gitee.com/shi-li-cheng/image-bed/raw/master/image/20260419134644574.png)
+![裂图示例](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/20260419134644574.png)
 
 **Markdown 的图片本质是链接引用**。当你使用本地图片路径时，这个文档就绑死在了你的电脑上。发给别人？不行。换个设备打开？不行。传到博客平台？更不行。
 
@@ -68,7 +68,7 @@ copyright: 无版权
 
 访问 [gitee.com](https://gitee.com/)，用手机号或邮箱注册。如果已有 GitHub 账号，可直接导入。
 
-![image-20260419134918986](https://gitee.com/shi-li-cheng/image-bed/raw/master/image/image-20260419134918986.png)
+![image-20260419134918986](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260419134918986-1778164089525-3.png)
 
 #### **2. 新建仓库**
 
@@ -79,9 +79,9 @@ copyright: 无版权
 - **重要设置**： 开源选择“公开”（私有仓库外网无法访问） 初始化仓库：勾选“使用 Readme 文件初始化” 分支模型：选择“单分支模型”
 - 点击“创建”
 
-![image-20260419135059013](https://gitee.com/shi-li-cheng/image-bed/raw/master/image/image-20260419135059013.png)
+![image-20260419135059013](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260419135059013-1778164093639-6.png)
 
-![image-20260419135123540](https://gitee.com/shi-li-cheng/image-bed/raw/master/image/image-20260419135123540.png)
+![image-20260419135123540](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260419135123540-1778164095796-9.png)
 
 #### **3. 获取访问令牌（Token）**
 
@@ -93,7 +93,7 @@ copyright: 无版权
 - 输入密码确认
 - **立即复制生成的令牌**（关闭后无法再次查看）
 
-![image-20260419135345637](https://gitee.com/shi-li-cheng/image-bed/raw/master/image/image-20260419135345637.png)
+![image-20260419135345637](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260419135345637-1778164098607-12.png)
 
 ### 3.2 第二步：配置上传神器 PicGo
 
@@ -111,7 +111,7 @@ copyright: 无版权
 - 点击安装
 - 如提示需安装 Node.js，按链接下载安装后重启 PicGo
 
-![image-20260419135552992](https://gitee.com/shi-li-cheng/image-bed/raw/master/image/image-20260419135552992.png)
+![image-20260419135552992](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260419135552992-1778164101842-15.png)
 
 #### **3. 配置图床参数**
 
@@ -125,7 +125,7 @@ copyright: 无版权
 | path       | 图片存储路径       | `blog-images`（可选） |
 | customPath | 提交消息           | 默认即可              |
 
-![image-20260419135756067](https://gitee.com/shi-li-cheng/image-bed/raw/master/image/image-20260419135756067.png)
+![image-20260419135756067](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260419135756067-1778164105532-18.png)
 
 #### **4. 设为默认并优化设置**
 
@@ -138,7 +138,7 @@ copyright: 无版权
 - 上传成功会提示并自动复制链接
 - 到 Gitee 仓库查看是否已出现图片文件
 
-![image-20260419140026836](https://gitee.com/shi-li-cheng/image-bed/raw/master/image/image-20260419140026836.png)
+![image-20260419140026836](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260419140026836-1778164108921-21.png)
 
 ### 3.3 第三步：连接 Typora 实现自动化
 
@@ -146,7 +146,7 @@ copyright: 无版权
 
 从 [typora.io](https://typoraio.cn/)下载安装，新版本已收费，可下载历史免费版本或支持正版。
 
-![image-20260419140014935](https://gitee.com/shi-li-cheng/image-bed/raw/master/image/image-20260419140014935.png)
+![image-20260419140014935](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260419140014935-1778164112043-24.png)
 
 #### **2. 配置图片上传**
 
@@ -156,7 +156,7 @@ copyright: 无版权
 - 上传服务：选择“PicGo (app)”
 - PicGo 路径：浏览选择 PicGo 安装位置 Windows 默认：`C:\Program Files\PicGo\PicGo.exe` 或通过任务栏 PicGo 图标右键 → 打开配置文件查看路径
 
-![image-20260419140351489](https://gitee.com/shi-li-cheng/image-bed/raw/master/image/image-20260419140351489.png)
+![image-20260419140351489](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260419140351489-1778164115044-27.png)
 
 #### **3. 验证配置**
 
@@ -174,7 +174,7 @@ copyright: 无版权
 
 图片都会**自动上传到 Gitee**，链接自动替换为图床链接。你只需要专注写作，其他的一切自动完成。
 
-![image-20260419140823557](https://gitee.com/shi-li-cheng/image-bed/raw/master/image/image-20260419140823557.png)
+![image-20260419140823557](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260419140823557-1778164118243-30.png)
 
 ## 四、进阶技巧与注意事项
 
