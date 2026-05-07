@@ -1,5 +1,5 @@
 ---
-title: 告别图片搬运：用 PicGo + Gitee + Typora 打造无缝写作体验
+title:  没有废话，一分钟教会你使用Claude Code [Claude Code入门]
 cover: /assets/image-20260419140026836.png
 icon: file
 author: 诚
