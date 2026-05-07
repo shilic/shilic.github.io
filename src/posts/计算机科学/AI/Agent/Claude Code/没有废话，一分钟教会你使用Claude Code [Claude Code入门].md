@@ -3,7 +3,7 @@ title:  没有废话，一分钟教会你使用Claude Code [Claude Code入门]
 cover: /assets/image-20260419140026836.png
 icon: file
 author: 诚
-date: 2026-04-19
+date: 2026-05-08
 category:
   - Claude Code
   - Agent
