@@ -73,7 +73,7 @@ copyright: 无版权
 <artifactId>your-artifact</artifactId>
 <version>1.0.0</version>
 <packaging>jar</packaging>
-<!--项目依赖 省略 ->
+
 <dependencies>
 </dependencies>
 

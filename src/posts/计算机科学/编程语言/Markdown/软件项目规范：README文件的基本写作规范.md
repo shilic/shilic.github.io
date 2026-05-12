@@ -2,7 +2,7 @@
 title: README文件的基本写作规范
 icon: fa6-brands:markdown
 author: 诚
-date: 2022-04-27
+date: 2024-04-27
 category:
   - Markdown
   - 软件规范
