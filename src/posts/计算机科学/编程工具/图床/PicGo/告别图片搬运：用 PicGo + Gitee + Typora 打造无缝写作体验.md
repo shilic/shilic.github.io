@@ -28,7 +28,9 @@ copyright: 无版权
 
 如果你经常用 Markdown 写作，一定遇到过这样的困扰：在本地写得图文并茂的文章，一到要发布时就“面目全非”——图片全部变成裂图。这不是 Markdown 的错，而是图片存储方式出了问题。
 
-![裂图示例](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/20260419134644574.png)
+
+
+![20260419134644574](./assets/20260419134644574.png)
 
 **Markdown 的图片本质是链接引用**。当你使用本地图片路径时，这个文档就绑死在了你的电脑上。发给别人？不行。换个设备打开？不行。传到博客平台？更不行。
 
@@ -68,7 +70,7 @@ copyright: 无版权
 
 访问 [gitee.com](https://gitee.com/)，用手机号或邮箱注册。如果已有 GitHub 账号，可直接导入。
 
-![image-20260419134918986](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260419134918986-1778164089525-3.png)
+![image-20260419134918986](./assets/image-20260419134918986.png)
 
 #### **2. 新建仓库**
 
@@ -79,9 +81,11 @@ copyright: 无版权
 - **重要设置**： 开源选择“公开”（私有仓库外网无法访问） 初始化仓库：勾选“使用 Readme 文件初始化” 分支模型：选择“单分支模型”
 - 点击“创建”
 
-![image-20260419135059013](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260419135059013-1778164093639-6.png)
+![image-20260419135059013](./assets/image-20260419135059013.png)
 
-![image-20260419135123540](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260419135123540-1778164095796-9.png)
+![image-20260419135123540](./assets/image-20260419135123540.png)
+
+
 
 #### **3. 获取访问令牌（Token）**
 
