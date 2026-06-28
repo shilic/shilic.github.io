@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "src/posts/计算机科学/AI/Agent/Claude Code/没有废话，一分钟教会你使用Claude Code [Claude Code入门].md",
+                "file": "src/posts/计算机科学/构建工具/maven/告别手动导包与混乱工程：用Maven构建现代Java项目的艺术.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "没有废话，一分钟教会你使用Claude Code [Claude Code入门]"
+              "title": "告别手动导包与混乱工程：用Maven构建现代Java项目的艺术"
             }
           }
         ]
@@ -89,39 +89,6 @@
         "type": "tabs",
         "children": [
           {
-            "id": "eea7939cf01cb0a3",
-            "type": "leaf",
-            "state": {
-              "type": "backlink",
-              "state": {
-                "file": "chapter_Language/chapter_Jetpack/第1节、JetPack LifeCycle生命周期.md",
-                "collapseAll": false,
-                "extraContext": false,
-                "sortOrder": "alphabetical",
-                "showSearch": false,
-                "searchQuery": "",
-                "backlinkCollapsed": false,
-                "unlinkedCollapsed": true
-              },
-              "icon": "links-coming-in",
-              "title": "第1节、JetPack LifeCycle生命周期 的反向链接列表"
-            }
-          },
-          {
-            "id": "5823c299b2fd79e3",
-            "type": "leaf",
-            "state": {
-              "type": "outgoing-link",
-              "state": {
-                "file": "chapter_Language/chapter_Jetpack/第1节、JetPack LifeCycle生命周期.md",
-                "linksCollapsed": false,
-                "unlinkedCollapsed": true
-              },
-              "icon": "links-going-out",
-              "title": "第1节、JetPack LifeCycle生命周期 的出链列表"
-            }
-          },
-          {
             "id": "40925d4ac7fd8c4c",
             "type": "leaf",
             "state": {
@@ -142,13 +109,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "src/posts/计算机科学/AI/Agent/Claude Code/没有废话，一分钟教会你使用Claude Code [Claude Code入门].md",
+                "file": "src/posts/计算机科学/构建工具/maven/告别手动导包与混乱工程：用Maven构建现代Java项目的艺术.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "没有废话，一分钟教会你使用Claude Code [Claude Code入门] 的大纲"
+              "title": "告别手动导包与混乱工程：用Maven构建现代Java项目的艺术 的大纲"
             }
           },
           {
@@ -162,7 +129,7 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -182,6 +149,7 @@
   },
   "active": "0683fa7b153b6c30",
   "lastOpenFiles": [
+    "src/posts/计算机科学/AI/Agent/Claude Code/没有废话，一分钟教会你使用Claude Code [Claude Code入门].md",
     "src/README.md",
     "src/intro.md",
     "src/posts/计算机科学/构建工具/maven/告别手动导包与混乱工程：用Maven构建现代Java项目的艺术.md",

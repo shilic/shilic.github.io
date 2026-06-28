@@ -19,7 +19,7 @@ tag:
 sticky: false
 star: false
 footer:
-copyright: 无版权
+copyright: 诚
 ---
 
 # 将`WinForm`应用打包为独立`EXE`的完整指南
