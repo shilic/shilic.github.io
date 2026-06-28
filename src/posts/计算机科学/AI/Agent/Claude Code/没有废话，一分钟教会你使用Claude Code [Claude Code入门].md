@@ -30,7 +30,11 @@ copyright: 无版权
 
 访问`nodejs`官方网站：[https://nodejs.org/zh-cn/download](https://nodejs.org/zh-cn/download), 选择对应操作系统的安装包进行下载，windows推荐直接下载msi格式的安装包。
 
-![image-20260507231817085](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260507231817085.png)
+
+
+![image-20260507231817085](./assets/image-20260507231817085.png)
+
+
 
 验证`nodejs`的安装，打开命令提示符，输入`node -v`然后回车，如果有版本号就是安装成功了。
 
@@ -71,11 +75,15 @@ C:\Users\SLC>
 
 这时先不要着急启动`Claude Code`，因为我们还没有配置API。我们访问 DeepSeek 开放平台：[https://platform.deepseek.com/](https://platform.deepseek.com/)。
 
-![image-20260507233027855](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260507233027855.png)
+![image-20260507233027855](./assets/image-20260507233027855.png)
+
+
 
 登陆之后，我们先重置10块。然后手动创建一个API Key。如下图所示：
 
-![image-20260507235325408](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260507235325408.png)
+![image-20260507235325408](./assets/image-20260507235325408.png)
+
+
 
 这个APIKey之后会消失，你先复制到其他地方。
 
@@ -146,11 +154,13 @@ C:\Users\SLC>
 
 找一个目录作为Claude Code的工作目录，在文件管理器地址栏敲下`cmd`然后回车，系统会在当前目录打开命令提示符
 
-![image-20260508002833447](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260508002833447.png)
+![image-20260508002833447](./assets/image-20260508002833447.png)
 
 敲下`claude`启动，出现以下画面，就是配置好了，可以愉快地开始使用了。
 
-![image-20260508002956392](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260508002956392.png)
+
+
+![image-20260508002956392](./assets/image-20260508002956392.png)
 
 ## 六、使用可视化界面来提升使用体验
 
@@ -158,17 +168,19 @@ C:\Users\SLC>
 
 这里我使用的是`Vs Code`的Claude Code插件，在`Vs Code`中搜索并安装该插件，如下图所示。
 
-![image-20260508003322053](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260508003322053.png)
+![image-20260508003322053](./assets/image-20260508003322053.png)
 
 安装插件之后，你就可以使用可视化的界面来使用Claude Code了。刚才我们已经配置好了Claude Code，所以我们这里不需要其他的额外配置。如下图所示，我们直接点击左侧插件图标，再点击新会话按钮。
 
-![image-20260508003701915](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260508003701915.png)
+![image-20260508003701915](./assets/image-20260508003701915.png)
 
-![image-20260508003826217](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260508003826217.png)
+![image-20260508003826217](./assets/image-20260508003826217.png)
+
+
 
 这个时候，写你的提示词即可，你可以让他给你做任何事情，帮你改代码，写PPT，或者直接上传文件给他让他分析excel表里的数据。
 
-![image-20260508004007854](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260508004007854.png)
+![image-20260508004007854](./assets/image-20260508004007854.png)
 
 
 

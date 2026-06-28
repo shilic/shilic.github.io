@@ -1,6 +1,6 @@
 ---
 title: 告别图片搬运：用 PicGo + Gitee + Typora 打造无缝写作体验
-cover: /assets/image-20260419140026836.png
+cover: /assets/20260419134644574.png
 icon: file
 author: 诚
 date: 2026-04-19
@@ -97,7 +97,11 @@ copyright: 无版权
 - 输入密码确认
 - **立即复制生成的令牌**（关闭后无法再次查看）
 
-![image-20260419135345637](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260419135345637-1778164098607-12.png)
+
+
+![image-20260419135345637](./assets/image-20260419135345637.png)
+
+
 
 ### 3.2 第二步：配置上传神器 PicGo
 
@@ -115,7 +119,11 @@ copyright: 无版权
 - 点击安装
 - 如提示需安装 Node.js，按链接下载安装后重启 PicGo
 
-![image-20260419135552992](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260419135552992-1778164101842-15.png)
+
+
+![image-20260419135552992](./assets/image-20260419135552992.png)
+
+
 
 #### **3. 配置图床参数**
 
@@ -129,7 +137,11 @@ copyright: 无版权
 | path       | 图片存储路径       | `blog-images`（可选） |
 | customPath | 提交消息           | 默认即可              |
 
-![image-20260419135756067](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260419135756067-1778164105532-18.png)
+
+
+![image-20260419135756067](./assets/image-20260419135756067.png)
+
+
 
 #### **4. 设为默认并优化设置**
 
@@ -142,7 +154,15 @@ copyright: 无版权
 - 上传成功会提示并自动复制链接
 - 到 Gitee 仓库查看是否已出现图片文件
 
-![image-20260419140026836](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260419140026836-1778164108921-21.png)
+
+
+![image-20260419140026836](./assets/image-20260419140026836.png)
+
+
+
+![image-20260419140059388](./assets/image-20260419140059388.png)
+
+
 
 ### 3.3 第三步：连接 Typora 实现自动化
 
@@ -150,7 +170,11 @@ copyright: 无版权
 
 从 [typora.io](https://typoraio.cn/)下载安装，新版本已收费，可下载历史免费版本或支持正版。
 
-![image-20260419140014935](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260419140014935-1778164112043-24.png)
+
+
+![image-20260419140014935](./assets/image-20260419140014935.png)
+
+
 
 #### **2. 配置图片上传**
 
@@ -160,7 +184,11 @@ copyright: 无版权
 - 上传服务：选择“PicGo (app)”
 - PicGo 路径：浏览选择 PicGo 安装位置 Windows 默认：`C:\Program Files\PicGo\PicGo.exe` 或通过任务栏 PicGo 图标右键 → 打开配置文件查看路径
 
-![image-20260419140351489](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260419140351489-1778164115044-27.png)
+
+
+![image-20260419140351489](./assets/image-20260419140351489.png)
+
+
 
 #### **3. 验证配置**
 
@@ -176,9 +204,11 @@ copyright: 无版权
 - 拖入本地图片到 Typora
 - 复制网络图片粘贴到 Typora
 
-图片都会**自动上传到 Gitee**，链接自动替换为图床链接。你只需要专注写作，其他的一切自动完成。
+图片都会**自动上传到 Gitee**，链接自动替换为图床链接。你只需要专注写作，其他的一切自动完成。也可以对着图片右键，将图片上传。
 
-![image-20260419140823557](https://raw.githubusercontent.com/shilic/picx-images-hosting/master/img/image-20260419140823557-1778164118243-30.png)
+![image-20260419140823557](./assets/image-20260419140823557.png)
+
+
 
 ## 四、进阶技巧与注意事项
 
