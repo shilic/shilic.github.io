@@ -17,7 +17,7 @@ tag:
 sticky: false
 star: false
 footer: 
-copyright: 诚
+copyright: CC BY-SA 4.0
 ---
 
 # 告别手动导包与混乱工程：用`Maven`构建现代`Java`项目的艺术

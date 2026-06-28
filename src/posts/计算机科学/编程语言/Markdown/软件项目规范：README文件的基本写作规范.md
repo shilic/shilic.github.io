@@ -13,7 +13,7 @@ tag:
 sticky: false
 star: false
 footer:
-copyright: 诚
+copyright: CC BY-SA 4.0
 ---
 
 # README文件的基本写作规范

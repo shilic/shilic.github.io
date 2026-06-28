@@ -17,7 +17,7 @@ star: false
 # 你可以自定义页脚
 footer: 
 # 你可以自定义版权信息
-copyright: 诚
+copyright: CC BY-SA 4.0
 ---
 
 # 没有废话，一分钟教会你使用Claude Code [Claude Code入门]

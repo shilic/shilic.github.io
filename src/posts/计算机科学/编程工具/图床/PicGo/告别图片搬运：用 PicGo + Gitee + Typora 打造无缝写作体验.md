@@ -19,7 +19,7 @@ star: false
 # 你可以自定义页脚
 footer: 
 # 你可以自定义版权信息
-copyright: 诚
+copyright: CC BY-SA 4.0
 ---
 
 # 告别图片搬运：用 PicGo + Gitee + Typora 打造无缝写作体验

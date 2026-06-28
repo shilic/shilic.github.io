@@ -18,7 +18,7 @@ tag:
 sticky: false
 star: false
 footer:
-copyright: 诚
+copyright: CC BY-SA 4.0
 ---
 
 # 告别命令行启动：用`exe4j`将`Java`项目打包为`EXE`可执行文件
