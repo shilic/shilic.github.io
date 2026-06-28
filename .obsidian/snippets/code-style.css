@@ -1,0 +1,473 @@
+/* ================= 核心主题变量 ================= */
+.theme-light {
+  /* 基础色系 */
+  --bg-primary: #eeeeed;
+  --bg-secondary: #d3cec9;
+  --text-primary: #252424;
+  --border-color: #E0E0E0;
+  
+  /* 代码块 */
+  --code-bg: #F8F8F8;
+  --code-border: #D4D4D4;
+  
+  /* 标题色 */
+  --h1-color: rgb(231, 71, 111);
+  --h2-color: rgb(203, 33, 209);
+	--h3-color: rgba(113, 40, 231, 0.925);
+	--h4-color: rgb(30, 98, 223);
+	--h5-color: rgb(47, 196, 216);
+	--h6-color: rgb(5, 191, 129);
+}
+
+.theme-dark {
+  /* IDEA Darcula 风格 */
+  --bg-primary: rgb(53, 52, 52);
+  --bg-secondary: #414447;
+  --text-primary: #D8D8D8;
+  --border-color: #3C3F41;
+  
+  /* 代码块 */
+  --code-bg: #313335;
+  --code-border: #45494D;
+  
+  /* 标题色 */
+  --h1-color: rgb(231, 77, 71);
+  --h2-color: rgb(209, 121, 62);
+	--h3-color: rgba(221, 197, 62, 0.925);
+	--h4-color: rgb(116, 230, 81);
+	--h5-color: rgb(63, 204, 169);
+	--h6-color: rgb(40, 101, 192);
+}
+
+/* ================= 标题系统 ================= */
+
+/*-- display H1-h6 in gutter--*/
+
+body:not(.alt-heading-off) h1:before,
+body:not(.alt-heading-off) .HyperMD-header-1:before {
+	content: "H1 ";
+	font-size: 15px;
+	margin-left: -13px;
+	margin-right: 1px;
+	color: var(--h1-color);
+}
+
+body:not(.alt-heading-off) h2:before,
+body:not(.alt-heading-off) .HyperMD-header-2:before {
+	content: "H2 ";
+	font-size: 15px;
+	margin-left: -13px;
+	margin-right: 1px;
+	color: var(--h2-color);
+}
+
+body:not(.alt-heading-off) h3:not(.svelte-1vwr9dd):before,
+body:not(.alt-heading-off) .HyperMD-header-3:before {
+	content: "H3 ";
+	font-size: 15px;
+	margin-left: -13px;
+	margin-right: 1px;
+	color: var(--h3-color);
+}
+
+body:not(.alt-heading-off) h4:before,
+body:not(.alt-heading-off) .HyperMD-header-4:before {
+	content: "H4 ";
+	font-size: 15px;
+	margin-left: -13px;
+	margin-right: 1px;
+	color: var(--h4-color);
+}
+
+body:not(.alt-heading-off) h5:before,
+body:not(.alt-heading-off) .HyperMD-header-5:before {
+	content: "H5 ";
+	font-size: 15px;
+	margin-left: -13px;
+	margin-right: 1px;
+	color: var(--h5-color);
+}
+
+body:not(.alt-heading-off) h6:before,
+body:not(.alt-heading-off) .HyperMD-header-6:before {
+	content: "H6 ";
+	font-size: 15px;
+	margin-left: -13px;
+	margin-right: 1px;
+	color: var(--h6-color);
+}
+
+
+
+
+
+/* ======================================================= 主题变量定义 ======================================== */
+.theme-light {
+  --code-bg: #f8f9fa;
+  --code-border: #dee2e6;
+  --code-text: #495057;
+  --code-tag-bg: #e9ecef;
+  --code-tag-text: #2b2d42;
+  
+  /* 语法高亮 */
+  --string-color: #035f1d;
+  --number-color: #0a427e;
+  --keyword-color: #d66910;
+  --function-color: rgb(184, 102, 3);
+  --comment-color: #868e96;
+  --class-color: #5c6a7a;
+  --operator-color: #6c757d;
+  --variable-color: #4a5568;
+  --boolean-color: #a35719;
+  --meta-color: #858203;
+  --type-color: #8a4a28;
+  --property-color: #2e7d5e;
+}
+
+.theme-dark {
+  --code-bg: #2d2d2d;
+  --code-border: #404755;
+  --code-text: #d8dee9;
+  --code-tag-bg: #3b4252;
+  --code-tag-text: #8c99b2;
+  
+  /* 语法高亮 */
+  --string-color: #5e7750;
+  --number-color: #5e8aac;
+  --keyword-color: #d17930;
+  --function-color: #FFC66D;
+  --comment-color: #808080;
+  --class-color: #A9B7C6;
+  --operator-color: #eee9e9;
+  --variable-color: #b8c5d4;
+  --boolean-color: #d17930;
+  --meta-color: #BBB529;
+  --type-color: #d17930;
+  --property-color: #30d193;
+}
+
+/* ================= 通用容器样式 ================= */
+.markdown-preview-view pre code,
+.cm-s-obsidian pre.HyperMD-codeblock {
+  background: var(--code-bg) !important;
+  border: 2px solid var(--code-border) !important;
+  border-radius: 25px !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15) !important;
+  margin: 1.2em 0 !important;
+  padding: 1.5em !important;
+  color: var(--code-text) !important;
+  font-size: 16px !important;
+  line-height: 1.4 !important;
+  transition: all 0.3s ease !important;
+}
+/* ================= 编辑器画布背景 ================= */
+.markdown-preview-view,
+.cm-s-obsidian {
+  background-color: var(--bg-primary) !important;
+}
+/* ================= 代码标题栏 ================= */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  display: block;
+  position: absolute;
+  top: 0.3em;
+  left: 1.5em;
+  padding: 0.15em 1em !important;
+  background: var(--code-tag-bg) !important;
+  color: var(--code-tag-text) !important;
+  border-radius: 6px !important;
+  font-size: 0.9em !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+}
+
+/* ======================================================= 语法高亮系统 ================================================== */
+/* 字符串 */
+.cm-string, span.token.string { color: var(--string-color) !important; }
+
+/* 数字 */
+.cm-number, span.token.number { color: var(--number-color) !important; }
+
+/* 关键字 */
+.cm-keyword, span.token.keyword { color: var(--keyword-color) !important; }
+
+/* 函数名 */
+.cm-def, span.token.function { color: var(--function-color) !important; }
+
+/* 注释 */
+.cm-comment, span.token.comment {
+  color: var(--comment-color) !important;
+  font-style: italic !important;
+}
+
+/* 类名 */
+.cm-class-name, span.token.class-name {
+  color: var(--class-color) !important;
+  font-style: italic !important;
+}
+
+/* 操作符 */
+.cm-operator, span.token.operator { color: var(--operator-color) !important; }
+
+/* 变量名 */
+.cm-variable, span.token.variable { color: var(--variable-color) !important; }
+
+/* 布尔值 */
+.cm-boolean, span.token.boolean { color: var(--boolean-color) !important; }
+
+/* 元数据 */
+.cm-meta, span.token.meta { color: var(--meta-color) !important; }
+
+/* 类型 */
+.cm-type, span.token.type { color: var(--type-color) !important; }
+
+/* 属性 */
+.cm-attribute, span.token.property { color: var(--property-color) !important; }
+
+/* ================= 交互增强 ================= */
+/* 鼠标悬停效果 */
+/*  
+.markdown-preview-view pre code:hover,
+.cm-s-obsidian pre.HyperMD-codeblock:hover {
+  transform: scale(1.005);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2) !important;
+} */
+
+/* 选中高亮 */
+pre code::selection {
+  background: var(--code-tag-bg) !important;
+  color: var(--code-tag-text) !important;
+}
+
+/* ================= 响应式优化 ================= */
+@media (max-width: 768px) {
+  pre code {
+    border-radius: 15px !important;
+    padding: 1em !important;
+    font-size: 13px !important;
+  }
+  
+  pre code[class*="language-"]::before {
+    font-size: 0.8em !important;
+    left: 1em !important;
+  }
+}
+
+
+
+
+
+/**********************************   行内代码块  行内代码高级美化方案（复制到 CSS 片段）   ****************************************/
+/* 行内代码块 (反引号包裹) */
+.theme-light {
+  --inline-code-bg: #f3f6fc; /* 白天模式背景 */
+  --inline-code-text: #2d3748; /* 文字颜色 */
+  --inline-code-border: #c3dafe; /* 边框颜色 */
+  --code-dot-color: #4f46e5; /* 圆点颜色 */
+}
+
+.theme-dark {
+  --inline-code-bg: rgba(38, 45, 58, 0.6); /* 暗夜模式背景 */
+  --inline-code-text: #e2e8f0; 
+  --inline-code-border: rgba(76, 85, 102, 0.8);
+  --code-dot-color: #818cf8;
+}
+
+/**************** 通用样式 ****************/
+/* 预览模式行内代码 */
+.markdown-preview-view code:not(pre code) {
+  background: var(--inline-code-bg) ;
+  color: var(--inline-code-text) ;
+  padding: 0.22em 0.5em !important;
+  border-radius: 0.375em !important;
+  border: 1px solid var(--inline-code-border) !important;
+  font-size: 0.9em !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* 编辑模式行内代码 */
+.cm-s-obsidian .cm-inline-code {
+  background: var(--inline-code-bg) ;
+  color: var(--inline-code-text) ;
+  border: 1px solid var(--inline-code-border) !important;
+  border-radius: 0.375em !important;
+}
+
+/*********************************** 主题专属效果 *********************/
+/* 白天模式特效 */
+.theme-light {
+  /* 添加轻微外发光 */
+  .markdown-preview-view code:not(pre code) {
+    box-shadow: 0 1px 2px rgba(99, 102, 241, 0.1) !important;
+  }
+  
+  /* 圆点颜色增强 */
+  .markdown-preview-view code:not(pre code)::before {
+    opacity: 0.9;
+  }
+}
+
+/* 暗夜模式特效 */
+.theme-dark {
+  /* 荧光效果 */
+  .markdown-preview-view code:not(pre code) {
+    text-shadow: 0 0 6px rgba(129, 140, 248, 0.15) !important;
+  }
+  
+  /* 动态光晕 */
+  .cm-inline-code:hover {
+    box-shadow: 0 0 8px rgba(129, 140, 248, 0.2) !important;
+  }
+}
+
+/**************** 装饰元素 ****************/
+/* 圆点前缀 */
+.markdown-preview-view code:not(pre code)::before {
+  content: "•";
+  color: var(--code-dot-color) !important;
+  margin-right: 0.4em !important;
+  font-size: 1.2em !important;
+  vertical-align: middle;
+}
+
+/* 悬浮动效 */
+.markdown-preview-view code:not(pre code):hover,
+.cm-s-obsidian .cm-inline-code:hover {
+  transform: translateY(-1px);
+  transition: all 0.25s ease;
+}
+
+
+/******************************      以下是适配明/暗双主题的 Obsidian 表格美化方案，与之前代码块风格保持设计语言统一：      ******************************/
+/* ================= 表格变量系统 ================= */
+.theme-light {
+  --table-bg: #ffffff;
+  --table-border: #e9ecef;
+  --table-header-bg: #f8f9fa;
+  --table-header-text: #2d3748;
+  --table-row-alt: #f8f9fa;
+  --table-hover: rgba(3, 48, 114, 0.322);
+  --table-code-bg: var(--inline-code-bg);
+}
+
+.theme-dark {
+  --table-bg: #2d2d2d;
+  --table-border: #404755;
+  --table-header-bg: #3b4252;
+  --table-header-text: #d6dff0;
+  --table-row-alt: rgb(46, 50, 61);
+  --table-hover: rgba(100, 148, 237, 0.438);
+  --table-code-bg: rgba(78, 78, 78, 0.4);
+}
+
+/* ================= 基础表格结构 ================= */
+.markdown-preview-view table {
+  background: var(--table-bg) !important;
+  border: 2px solid var(--table-border) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1) !important;
+  overflow: visible !important;       /* 禁用溢出隐藏 */
+  margin: 1.5em 0;
+  width: auto !important;
+  white-space: pre-wrap !important;  /* 允许智能换行 */
+}
+
+
+
+/* ================= 表格元素样式 ================= */
+/* 表头 */
+.markdown-preview-view th {
+  background: var(--table-header-bg) !important;
+  color: var(--table-header-text) !important;
+  font-weight: 600 !important;
+  border-bottom: 2px solid var(--table-border) !important;
+  padding: 1em 1.2em !important;
+}
+
+/* 表格单元格 */
+.markdown-preview-view td {
+  padding: 0.8em 1.2em !important;
+  border: none !important;
+  border-bottom: 1px solid var(--table-border) !important;
+}
+
+/* 斑马纹效果 */
+.markdown-preview-view tr:nth-child(even) {
+  background: var(--table-row-alt) !important;
+}
+
+/* 悬停效果 */
+.markdown-preview-view tr:hover {
+  background: var(--table-hover) !important;
+  transition: background 0.2s ease;
+}
+
+/* 表格内代码块 */
+.markdown-preview-view table code {
+  background: var(--table-code-bg) !important;
+  padding: 0.2em 0.4em !important;
+  border-radius: 4px !important;
+}
+
+/* ================= 移动端优化 ================= */
+@media (max-width: 768px) {
+  .markdown-preview-view table {
+    border-radius: 8px !important;
+    font-size: 0.9em;
+  }
+  
+  .markdown-preview-view th,
+  .markdown-preview-view td {
+    padding: 0.6em 1em !important;
+  }
+}
+
+
+/* ================================== 滚动进度条 scrollbar ================================ */
+body {
+  --scrollbar-width: 6px; /* 进度条宽度 */
+  --scrollbar-color: #4CAF50; /* 默认颜色 */
+}
+
+/* 容器定位 */
+.vertical-scroll-indicator {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 60vh;
+  width: var(--scrollbar-width);
+  background: rgba(200,200,200,0.1);
+  border-radius: 10px;
+  z-index: 999;
+}
+
+/* 进度条主体 */
+.vertical-scroll-indicator::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--scroll-percent, 0%);
+  background: var(--scrollbar-color);
+  border-radius: inherit;
+  transition: height 0.2s ease-out;
+}
+
+/* 明暗模式适配 */
+.theme-light {
+  --scrollbar-color: #2196F3; /* 亮色模式蓝色 */
+}
+
+.theme-dark {
+  --scrollbar-color: #FF9800; /* 暗色模式橙色 */
+}
+
+/* 悬停动效 */
+.vertical-scroll-indicator:hover {
+  width: 10px;
+  background: rgba(200,200,200,0.2);
+  transition: all 0.3s ease;
+}
