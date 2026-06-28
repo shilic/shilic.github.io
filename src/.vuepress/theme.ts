@@ -12,7 +12,8 @@ export default hopeTheme({
     url: " https://shilic.github.io",
   },
 
-  logo: "https://raw.githubusercontent.com/shilic/MarkDownImageRepository/main/img/logo1.png", // https://theme-hope-assets.vuejs.press/logo.svg
+  logo: "https://raw.githubusercontent.com/shilic/MarkDownImageRepository/main/img/logo1.png", 
+  // https://theme-hope-assets.vuejs.press/logo.svg
 
   repo: "shilic/shilic.github.io",
 
