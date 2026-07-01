@@ -322,6 +322,7 @@ copyright: CC BY-SA 4.0
 | `TargetPlatform` | 目标平台 | `x64` 或 `x86`，建议`x86`以增加兼容性 |
 
 > [!NOTE]
+> 
 > 特别提醒！！`RemovePreviousVersions` 为 `True` 时，**必须每次发布递增 `Version`，且 `ProductCode` 和 `UpgradeCode` 保持自动生成即可**。Version 不变则不会覆盖安装。
 
 ![ScreenShot_2026-06-27_170231_038](./assets/ScreenShot_2026-06-27_170231_038.png)
