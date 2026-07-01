@@ -10,7 +10,7 @@ category:
 tag:
   - Kotlin
   - 弃用标记
-  - @Deprecated
+  - Deprecated
   - API兼容
   - 代码演进
 sticky: false
