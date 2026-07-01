@@ -1,5 +1,5 @@
 ---
-title: `Kotlin`的设计哲学之：弃用标记
+title: Kotlin的设计哲学之：弃用标记
 cover: /assets/kotlin-deprecated-cover.png
 icon: file
 author: 诚
