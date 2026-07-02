@@ -1,6 +1,37 @@
+---
+title: details语法
+icon: fa6-brands:markdown
+author: 诚
+date: 2024-04-27
+category:
+  - Markdown
+tag:
+  - Markdown
+  - details
+sticky: false
+star: false
+footer:
+copyright: CC BY-SA 4.0
+---
+
 # details语法
 
 在 Markdown 中实现点击隐藏和显示的效果，通常需要借助 HTML 的 `<details>` 和 `<summary>` 标签，因为原生 Markdown 并不支持这种交互功能。以下是具体实现方式：
+
+``` html
+<details open >
+  <summary >点击查看答案</summary>
+这里是隐藏的内容 
+</details>
+```
+
+以及，悬停显示:
+``` html
+<span style="color: black; background: black; transition: 0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='black'">
+  悬停显示这段文字
+</span>
+
+```
 
 <details open >
   <summary >点击查看答案</summary>

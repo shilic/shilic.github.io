@@ -14,7 +14,7 @@ tag:
   - API兼容
   - 代码演进
 sticky: false
-star: false
+star: true
 footer:
 copyright: CC BY-SA 4.0
 ---
