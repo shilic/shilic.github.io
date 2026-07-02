@@ -2,7 +2,7 @@
 title:  CAN协议车载通信中间件smart-dbc集成手册
 icon: fa6-solid:car
 author: 诚
-date: 2025-07-02
+date: 2026-07-02
 category:
   - Kotlin
   - 车载通信
