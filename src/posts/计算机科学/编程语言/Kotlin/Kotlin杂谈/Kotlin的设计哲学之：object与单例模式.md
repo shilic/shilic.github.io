@@ -22,6 +22,10 @@ copyright: CC BY-SA 4.0
 
 # `Kotlin`的设计哲学之：`object`与单例模式
 
+> `JetBrains` 的工程师们，是我见过最优雅、最具有工程师精神的一批工程师。
+
+我这句话先放撂在这里，看谁来反驳。
+
 ## 一、引言
 
 先看两段代码。用 `Java` 写一个线程安全的单例：
@@ -276,7 +280,7 @@ AppConfig.printInfo()  // 用法也一模一样
 
 **4.3 对比总结**
 
-| | Java | JavaScript | Kotlin |
+| | `Java` | `JavaScript` | `Kotlin` |
 |------|------|------------|--------|
 | 原生支持 | 无，靠模式 | 对象字面量即单例 | **语言级关键字** |
 | 线程安全 | 需手动保证 | N/A（单线程） | JVM 类加载保证 |
@@ -318,23 +322,38 @@ object DataManager
 这个问题值得专门写一节。既然 `object` 的主要用途之一是单例，为什么不干脆叫 `singleton`？多直观。
 
 答案藏在 `object` 这个关键字的全部用途里：
+1. **顶层 object**——纯单例，最常见的用法。适合无状态工具类（日志、配置、工厂方法集合）。特点是饿汉式、线程安全、全局唯一。
 
 ```kotlin
-// 1. 顶层具名对象 — 就是单例
+// 1. 顶层 object——纯单例
 object AppConfig { }
+```
 
+2. **companion object**——注意它不是全局单例，而是依附于外部类的一个独立实例。它替代的是 `Java` 的 `static` 成员，用来存放工厂方法、静态常量。每个外部类有自己的伴生对象，互不干扰。
+
+
+```kotlin
 // 2. 伴生对象 — 替代 Java 的 static
 class MyFragment {
     companion object {
         fun newInstance() = MyFragment()
     }
 }
+```
 
+3. **匿名 object**——每次求值都会创建新实例，和单例完全无关。生命周期限定在使用位置，用完即弃。但它的存在恰恰证明了为什么关键字必须是 `object` 而不能是 `singleton`——因为 `singleton` 根本无法描述这种行为。
+
+
+```kotlin
 // 3. 匿名内部类 — 实现接口的一次性实例
 button.setOnClickListener(object : View.OnClickListener {
     override fun onClick(v: View?) { }
 })
+```
 
+4. **对象表达式** — 表达式中的临时实例 (类似于`JS`直接创建一个对象)
+
+```kotlin
 // 4. 对象表达式 — 表达式中的临时实例
 val point = object {
     var x = 0
@@ -346,67 +365,9 @@ val point = object {
 
 如果叫 `singleton`，前两个能凑合，后两个就完全说不过去了——匿名内部类每次调用都会创建新实例，根本不符合"单例"的语义。这会导致语言需要两个关键字：`singleton` 用于单例，`object` 用于匿名对象。而 `Kotlin` 的设计哲学是**一个概念对应一个关键字**。
 
-`object` 与 `class` 形成完美的互补关系：
+> **`object` 不服务于单例模式。`object` 服务于"对象是一等公民"这个更大的理念。单例只是这条路上顺带被解决的问题。**
 
-| | `class` | `object` |
-|------|---------|----------|
-| 语义 | 声明一个**类型**，可以创建多个实例 | 声明一个**实例**，独一无二的实体 |
-| 构造 | 可以有多个构造器 | 没有构造器（它本身就是） |
-| 继承 | 可以被继承 | 不能继承（但可继承接口） |
-
-`Java` 里，你用一个 `class` 然后通过各种技巧（私有构造、`volatile`、`synchronized`）来确保只得到一个实例。`Kotlin` 说：**不要这种拐弯抹角——你直接说"我要一个对象"就行了。**
-
-`object` 不服务于单例模式。`object` 服务于"对象是一等公民"这个更大的理念。单例只是这条路上顺带被解决的问题。
-
-## 七、object 的多种形态与适用场景
-
-**7.1 顶层 object**
-
-```kotlin
-object Logger {
-    fun log(msg: String) = println("[LOG] $msg")
-}
-```
-
-纯单例。适合无状态工具类：日志、配置、工厂方法集合。
-
-**7.2 companion object**
-
-```kotlin
-class User private constructor(val name: String) {
-    companion object {
-        fun create(name: String) = User(name)
-    }
-}
-User.create("Alice")  // 像 Java 静态方法一样调用
-```
-
-注意它不是全局单例——`companion object` 依附于外部类，每个外部类有自己的伴生对象实例。它替代的是 `Java` 的 `static` 成员，而不是做全局状态管理。
-
-**7.3 匿名 object**
-
-```kotlin
-// 每次创建新实例，不是单例
-val listener = object : ClickListener {
-    override fun onClick() = println("clicked")
-}
-```
-
-生命周期限定在使用位置，用完即弃。和单例完全无关。
-
-**7.4 何时不该用 object**
-
-| 场景 | 原因 |
-|------|------|
-| 需要懒加载 | `object` 是饿汉式，用 `by lazy` 或手动懒汉 |
-| 构造时需要传参 | `object` 没有构造器参数 |
-| 需要继承类 | `object` 只能实现接口，不能继承类 |
-| 单元测试需要 mock | `final` 类 mock 困难 |
-| 实例需要被销毁重建 | `object` 生命周期跟随 JVM |
-
-`object` 不是万能锤。它解决的是"全局唯一的无状态工具实例"这个特定问题。
-
-## 八、与依赖注入框架的协作
+## 七、与依赖注入框架的协作
 
 `object` 和 DI 框架不是互斥关系，而是分工关系。
 
@@ -438,27 +399,27 @@ class UserService(private val db: Database, private val cache: Cache) {
 - **有状态的服务 / 需要依赖注入的业务逻辑** → `DI` 容器管理
 - **过渡情况**：如果暂时不用 DI，`object` 里用 `lateinit var` 手动 setter 注入，但这是权宜之计，不建议作为长期方案。
 
-## 九、争议与陷阱
+## 八、争议与陷阱
 
-**9.1 序列化破坏单例**
+**8.1 序列化破坏单例**
 
 反序列化不走类加载器，会创建新实例。解决：在 `object` 中实现 `readResolve()`。
 
-**9.2 测试困难**
+**8.2 测试困难**
 
 `object` 是 `final` 的，Mockito 默认不能 mock `final` 类。解决：开启 Mockito 的 `mock-maker-inline` 支持，或者——这也是为什么不建议在需要 mock 的服务上使用 `object`。
 
-**9.3 内存泄漏**
+**8.3 内存泄漏**
 
-饿汉式——即使永远不调用，`object` 的初始化代码块也会在首次访问外部类时触发，之后实例永远驻留。如果你有大量不常用的工具 object，内存占用是需要考量的。
+饿汉式——即使永远不调用，`object` 的初始化代码块也会在首次访问外部类时触发，之后实例永远驻留，`object` 生命周期跟随 JVM。如果你有大量不常用的工具 object，内存占用是需要考量的。
 
-**9.4 不能传参构造**
+**8.4 不能传参构造**
 
 ```kotlin
 object DatabaseClient(val url: String)  // ❌ 编译错误
 ```
 
-这是 `object` 最大的硬限制——没有构造器参数。绕过去的方式：
+**这是 `object` 最大的硬限制——没有构造器参数。**绕过去的方式：
 
 ```kotlin
 object DatabaseClient {
@@ -472,7 +433,7 @@ object DatabaseClient {
 
 > `Kotlin` 选择了最简单、最安全的默认方案，把灵活性 trade-off 留给开发者。这不是缺陷——这是设计取舍。`by lazy` 可以模拟懒加载，`init()` 方法可以模拟传参，但核心承诺不变：**默认就是对的。**
 
-## 十、结论
+## 九、结论
 
 回到最初的那个对比——`Java` 十几行 vs `Kotlin` 一行。真正重要的不是行数。
 
