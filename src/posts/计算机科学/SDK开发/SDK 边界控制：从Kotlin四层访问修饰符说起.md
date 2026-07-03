@@ -225,7 +225,7 @@ class TSMasterCan : CanDeviceBase() {
 上面的例子是自己的代码，我们再看一个每天都在用的第三方 SDK——Android Framework。每个 Android 开发者都写过 `onCreate(savedInstanceState)`，这就是一个非常标准的**模版方法模式**，但翻源码看它的声明：
 
 ```java
-// android/app/Activity.java —— AOSP 真实源码
+// android/app/Activity.java —— AOSP （伪代码）
 public class Activity extends ContextThemeWrapper {
 
     // 系统在启动 Activity 时调用 performCreate()（framework 内部方法）
@@ -240,7 +240,7 @@ public class Activity extends ContextThemeWrapper {
     @MainThread
     @CallSuper
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        // 默认空实现，等你覆写
+        /* 省略 */
     }
 }
 ```
