@@ -626,7 +626,7 @@ class MainActivity : ComponentActivity() {
 
 在设备端，我们连接好模拟电源，CAN卡，车载大屏，以及USB的调试端口。如下图所示，界面成功按照`ZCANPRO` 中的报文进行了显示，验证无误。
 
-![车载大屏展示数据](./assets/image-20260702152537180.png)
+![车载大屏展示数据](./assets/image-20260702152537180.webp)
 
 ### 通过车载大屏按键发送报文, `ZCANPRO` 模拟接收
 
