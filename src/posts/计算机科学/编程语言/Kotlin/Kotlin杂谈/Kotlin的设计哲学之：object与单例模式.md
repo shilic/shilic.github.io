@@ -1,5 +1,5 @@
 ---
-title: `Kotlin`的设计哲学之：`object`与单例模式
+title: Kotlin的设计哲学之：object与单例模式
 cover: /assets/kotlin-object-cover.png
 icon: file
 author: 诚
