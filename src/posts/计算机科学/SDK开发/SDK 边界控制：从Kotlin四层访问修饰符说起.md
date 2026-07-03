@@ -35,6 +35,8 @@ copyright: CC BY-SA 4.0
 
 ## 二、`public`——默认开放，不是拍脑袋定的
 
+### **2.1 为什么默认是 `public`**
+
 `Kotlin` 里，什么都不写就是 `public`：
 
 ```kotlin
@@ -53,16 +55,16 @@ public fun calculate() { }
 
 这个"默认公共"的选择，不是 `JetBrains` 的工程师坐在会议室里拍脑袋决定的。他们在设计 `Kotlin` 早期阶段，对大量 `Java` 开源项目做了统计分析，发现 `public` 是使用频率最高的修饰符——绝大多数类和方法，本身的意图就是被外部调用的。如果默认是封闭的，开发者需要给每个 API 手动加修饰符，代码会非常啰嗦。社区讨论中，社区成员也普遍倾向于"默认公共"，`JetBrains` 接受了这个建议。
 
-**最极致的证明：接口方法必须是 `public`。**
+### **2.2 最极致的证明：接口方法必须是 `public`**
 
 `Kotlin` 规定，接口（`interface`）中定义的成员，默认并且**必须**是 `public`——你不能把它们标记为 `private` 或 `protected`：
 
 ```kotlin
 interface DataSource {
     fun load(id: Int): Data          // 默认 public，不能改成别的
-    fun save(data: Data): Boolean     // 同上
-    // private fun helper() { }       // ❌ 编译错误：接口成员不能 private
-    // protected fun hook() { }       // ❌ 编译错误：接口成员不能 protected
+    fun save(data: Data): Boolean    // 同上
+    // private fun helper() { }      // ❌ 编译错误：接口成员不能 private
+    // protected fun hook() { }      // ❌ 编译错误：接口成员不能 protected
 }
 ```
 
@@ -127,7 +129,9 @@ public class Regex internal constructor(
 
 `protected` 的语义很窄：只在**本类和子类**中可见，外部任何人都不行。
 
-看起来很简单，如果没有应用场景，我估计你想破头也不知道什么时候该用`protected`。 `protected` 有一个其他三个修饰符都做不到的精确用途：**模板方法模式** 。设计一个算法的骨架，将某些步骤留给子类实现，同时保证这些步骤**只有子类能调用，外部绕不过模板方法直接调**。
+看起来很简单，但是如果没有应用场景，我估计你想破头也不知道什么时候该用`protected`。`protected` 有一个其他三个修饰符都做不到的精确用途：**模板方法模式**——设计一个算法的骨架，将某些步骤留给子类实现，同时保证这些步骤**只有子类能调用，外部绕不过模板方法直接调**。
+
+### **4.1 上位机开发中的实战案例**
 
 ```kotlin
 // 以上位机开发为例，我们定义一个CAN卡基类
@@ -216,9 +220,42 @@ class TSMasterCan : CanDeviceBase() {
 
 **三种修饰符都做不到，只有 `protected`。** 这就是它唯一且不可替代的用途。
 
-> 另一个经典例子是 Android SDK 的 `Activity.onCreate()`——它是 `protected`，系统框架通过模板方法调用它，App 的 `Activity` 子类覆写它，但 App 里的其他类不应该、也不能直接调 `activity.onCreate()`。
+### **4.2 真实源码验证：Android `Activity.onCreate()`**
 
-**总结：`protected` 不要滥用。它的最常见场景就是"模板方法模式中留给子类的扩展点"。如果你没有在用模板方法、没有在写可继承的基类，就不要碰 `protected`——它不该出现在业务代码的随便一个 `open fun` 上。**
+上面的例子是自己的代码，我们再看一个每天都在用的第三方 SDK——Android Framework。每个 Android 开发者都写过 `onCreate(savedInstanceState)`，这就是一个非常标准的**模版方法模式**，但翻源码看它的声明：
+
+```java
+// android/app/Activity.java —— AOSP 真实源码
+public class Activity extends ContextThemeWrapper {
+
+    // 系统在启动 Activity 时调用 performCreate()（framework 内部方法）
+    // performCreate() 调用 onCreate() —— 模板方法模式的骨架在 framework 里
+    final void performCreate(Bundle icicle) {
+        // ... 内部初始化逻辑 ...
+        onCreate(icicle);              // 交给子类
+        // ... 后续生命周期分发 ...
+    }
+
+    // 这是你覆写的那个方法 —— 注意修饰符
+    @MainThread
+    @CallSuper
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        // 默认空实现，等你覆写
+    }
+}
+```
+
+`onCreate()` 是 `protected` 的——不是 `public`，不是包级可见，就是 `protected`。为什么？
+
+- 系统框架通过 `performCreate()`（内部方法，`App` 层不可见）在正确的时机调用它——这是模板方法的骨架。
+- 你的 `MainActivity : Activity()` 覆写它，初始化你自己的 UI——这是模板方法的扩展点。
+- App 里的其他类**不能**直接调 `activity.onCreate(bundle)`——编译报错。因为生命周期必须由系统驱动，随意调用会破坏状态机。
+
+这和上一节 CAN 卡的例子结构一模一样：**骨架在基类（framework），钩子在子类（你的 App），`protected` 精确地只允许子类碰这个钩子。** 十几亿台 Android 设备每天都在跑这套模板方法，`protected` 的语义被验证了无数次。
+
+> [!WARNING]
+>
+> **总结：`protected` 不要滥用。它的最常见场景就是"模板方法模式中留给子类的扩展点"。如果你没有在用模板方法、没有在写可继承的基类，就不要碰 `protected`——它不该出现在业务代码的随便一个 `open fun` 上。**
 
 ## 五、`internal`——`Kotlin` 送给 SDK 开发者最好的礼物
 
@@ -226,7 +263,7 @@ class TSMasterCan : CanDeviceBase() {
 
 `internal` 到底解决了什么问题？不用凭空举例，直接看 `Kotlin` 标准库的源码。你每天都在用的 `emptyList()`，背后藏着一个教科书级的 `internal` 用法。
 
-**5.1 从 `emptyList()` 看 internal**
+### **5.1 从 `emptyList()` 看 internal**
 
 ```kotlin
 // 你每天写的是这样的代码：
@@ -273,7 +310,7 @@ public fun <T> emptyList(): List<T> = EmptyList
 
 不止 `EmptyList`——翻翻 `Kotlin `标准库，`_Assertions`、`Unsafe` 工具类、`builders` 包、`AbstractMutableList` 的各种实现细节……大量 `internal`。整个 `kotlin-stdlib` 本身就是一堂用 `internal` 精确控制模块边界的教学课。
 
-**5.2 `internal `的本质：用模块边界替代物理位置**
+### **5.2 `internal `的本质：用模块边界替代物理位置**
 
 上面的例子已经说明了一切。再对比一下 `Java` 的困境：`Java` 想实现类似的效果，只能靠 `package-private`——所有内部类必须塞进同一个包。
 
@@ -285,7 +322,7 @@ public fun <T> emptyList(): List<T> = EmptyList
 
 `internal` 把可见性从"你放在哪个包"提升为"你和谁一起编译"。**代码组织不再受访问控制的限制——你可以按功能自由安排目录结构，编译器用模块边界来保证封装。**
 
-**5.3 一条实用的 SDK 铁律**
+### **5.3 一条实用的 SDK 铁律**
 
 如果你写了一个 `public` 的 API，你承诺长期兼容。如果一个 API 还没稳定、实现细节你还想随时改——**先用 `internal`。** 等接口稳定、经过验证、确实需要公开了，再提升为 `public`。
 
