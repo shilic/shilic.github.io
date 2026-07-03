@@ -1,5 +1,5 @@
 ---
-title: SDK 边界控制：从 `Kotlin` 四层访问修饰符说起
+title: SDK 边界控制：从Kotlin四层访问修饰符说起
 cover: /assets/kotlin-visibility-cover.png
 icon: file
 author: 诚
