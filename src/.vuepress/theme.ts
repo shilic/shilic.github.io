@@ -6,7 +6,8 @@ import { enSidebar, zhSidebarConfig  } from "./sidebar/index.js";
 
 
 export default hopeTheme({
-  hostname: "https://github.com/shilic/shilic.github.io", 
+  // hostname: "https://github.com/shilic/shilic.github.io", 
+  hostname: "https://shilic.github.io", 
 
   // 
   author: {
