@@ -227,11 +227,11 @@ export default hopeTheme({
 		});
 	 */
 
-	// 集成搜索系统
+	// 集成搜索系统; 需要执行 pnpm add -D @vuepress/plugin-docsearch
 	docsearch: {
 	  appId: "3K23AXWAHB",
 	  apiKey: "e6e85b70f7c53e58347f295bc66ebb2f",
-	  indexName: "shilic-blog",
+	  indexName: "诚的网络博客",
 	},
 
     components: {
