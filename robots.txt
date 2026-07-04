@@ -1,4 +1,4 @@
 User-agent:*
 Disallow:
 
-Sitemap: https://github.com/shilic/shilic.github.io/sitemap.xml
+Sitemap: https://shilic.github.io/sitemap.xml
