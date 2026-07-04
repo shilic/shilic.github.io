@@ -25,9 +25,9 @@ jobs:
 
       - name: 设置 pnpm
         uses: pnpm/action-setup@v6
-        with:
+        #with:
           # 设置我的pnpm版本
-          version: 11.9.0 
+          #version: 11.9.0 
 
 
       - name: 设置 Node.js
@@ -44,10 +44,8 @@ jobs:
         # 设置国内镜像，增加下载速度
       - name: 安装依赖
         run: |
-          corepack enable
           pnpm config set registry https://registry.npmmirror.com
-          pnpm clean --lockfile
-          pnpm install --no-frozen-lockfile
+          pnpm install --frozen-lockfile
 
       
       - name: 构建文档
