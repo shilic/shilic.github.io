@@ -1,6 +1,7 @@
 ---
 home: true
-layout: BlogHome
+# layout: BlogHome
+layout: Blog
 icon: house
 title: Blog Home
 heroImage: https://raw.githubusercontent.com/shilic/MarkDownImageRepository/main/img/logo1.png
