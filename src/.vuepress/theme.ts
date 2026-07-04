@@ -202,6 +202,7 @@ export default hopeTheme({
     // Install @waline/client before enabling it
     // Note: This is for testing ONLY!
     // You MUST generate and use your own comment service in production.
+	// 集成评论系统
     comment: {
       provider: "Giscus",
 	  // 使用在 Giscus 上生成的 script 配置标签来配置评论系统
@@ -213,6 +214,25 @@ export default hopeTheme({
 	  // waline才需要配置下边
       //serverURL: "https://waline-comment.vuejs.press",
     },
+
+	/*import docsearch from '@docsearch/js';
+		import '@docsearch/css';
+
+		docsearch({
+			container: '#docsearch',
+			appId: '3K23AXWAHB',
+			indexName: '诚的网络博客',
+			apiKey: 'e6e85b70f7c53e58347f295bc66ebb2f',
+			askAi: 'YOUR_ALGOLIA_ASSISTANT_ID', // TODO: Replace with your Algolia Assistant ID
+		});
+	 */
+
+	// 集成搜索系统
+	docsearch: {
+	  appId: "3K23AXWAHB",
+	  apiKey: "e6e85b70f7c53e58347f295bc66ebb2f",
+	  indexName: "诚的网络博客",
+	},
 
     components: {
 	  // Badge: 多彩的徽章组件; VPCard: 一个卡片组件; PDF: 嵌入 PDF 查看器;  BiliBili: 嵌入 BiliBili 视频

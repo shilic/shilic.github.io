@@ -1,9 +1,16 @@
 import { defineUserConfig } from "vuepress";
-import { copyrightPlugin } from '@vuepress/plugin-copyright'
 
 import theme from "./theme.js";
 
 export default defineUserConfig({
+  head: [
+	// 将 Algolia 提供的这行代码转换成数组格式放入 head 中, 通过验证 
+	// 您需要核实详细信息,以确保您或您的组织拥有所抓取的数据,并且不会在未经授权的情况下抓取网站。
+	// 格式：[标签名, { 属性键值对 }, 可选的内部HTML]
+	["meta", { name: "algolia-site-verification", content: "1E846E9A9DF73C22" }]
+  ],
+
+
   base: "/",
 
   locales: {
@@ -24,14 +31,6 @@ export default defineUserConfig({
 
   // 添加插件
   plugins: [
-	// 版权插件 // ❌ 这样会冲突
-    // copyrightPlugin({
-    //   // options
-	//   author: "诚",
-	//   triggerLength: 50,
-	//   license: "CC BY-SA 4.0",
-	//   global: true,
-    // }),
   ],
 
   // Enable it with pwa
