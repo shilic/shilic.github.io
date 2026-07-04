@@ -42,10 +42,12 @@ jobs:
        # run: pnpm install --frozen-lockfile
 
         # 设置国内镜像，增加下载速度
+		# pnpm approve-builds是 pnpm 10.1.0​ 引入的命令，用来在"安装时是否允许依赖跑 build 脚本（postinstall/preinstall 等）"这件事上做审批。pnpm 10+ 默认会拦截这些脚本，防止供应链攻击
       - name: 安装依赖
         run: |
           pnpm config set registry https://registry.npmmirror.com
           pnpm clean --lockfile
+          pnpm approve-builds esbuild
           pnpm install
 
       
