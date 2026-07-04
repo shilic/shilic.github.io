@@ -45,7 +45,8 @@ jobs:
       - name: 安装依赖
         run: |
           pnpm config set registry https://registry.npmmirror.com
-          pnpm install --frozen-lockfile
+          pnpm clean --lockfile
+          pnpm install
 
       
       - name: 构建文档
