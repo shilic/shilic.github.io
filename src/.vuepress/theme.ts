@@ -204,6 +204,13 @@ export default hopeTheme({
     // You MUST generate and use your own comment service in production.
     comment: {
       provider: "Giscus",
+	  // 使用在 Giscus 上生成的 script 配置标签来配置评论系统
+	  repo: "shilic/shilic.github.io",
+	  repoId: "R_kgDON-LAUw",
+	  category: "Announcements",
+	  categoryId: "DIC_kwDON-LAU84DAeQs",
+
+	  // waline才需要配置下边
       //serverURL: "https://waline-comment.vuejs.press",
     },
 
