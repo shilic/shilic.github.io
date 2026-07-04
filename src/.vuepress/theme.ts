@@ -1,4 +1,5 @@
 import { hopeTheme } from "vuepress-theme-hope";
+import { commentPlugin } from '@vuepress/plugin-comment'
 
 import { enNavbar, zhNavbar } from "./navbar/index.js";
 import { enSidebar, zhSidebarConfig  } from "./sidebar/index.js";
@@ -201,13 +202,14 @@ export default hopeTheme({
     // Install @waline/client before enabling it
     // Note: This is for testing ONLY!
     // You MUST generate and use your own comment service in production.
-    // comment: {
-    //   provider: "Waline",
-    //   serverURL: "https://waline-comment.vuejs.press",
-    // },
+    comment: {
+      provider: "Giscus",
+      //serverURL: "https://waline-comment.vuejs.press",
+    },
 
     components: {
-      components: ["Badge", "VPCard"],
+	  // Badge: 多彩的徽章组件; VPCard: 一个卡片组件; PDF: 嵌入 PDF 查看器;  BiliBili: 嵌入 BiliBili 视频
+      components: ["Badge", "VPCard", "PDF", "BiliBili"],
     },
 
     icon: {
