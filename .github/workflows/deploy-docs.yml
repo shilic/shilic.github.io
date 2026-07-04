@@ -47,7 +47,7 @@ jobs:
         run: |
           pnpm config set registry https://registry.npmmirror.com
           pnpm clean --lockfile
-          pnpm approve-builds esbuild
+          pnpm approve-builds --all
           pnpm install
 
       
