@@ -1,5 +1,5 @@
 import { hopeTheme } from "vuepress-theme-hope";
-import { commentPlugin } from '@vuepress/plugin-comment'
+//import { commentPlugin } from '@vuepress/plugin-comment'
 
 import { enNavbar, zhNavbar } from "./navbar/index.js";
 import { enSidebar, zhSidebarConfig  } from "./sidebar/index.js";
