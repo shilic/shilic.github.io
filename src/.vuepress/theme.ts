@@ -7,6 +7,7 @@ import { enSidebar, zhSidebarConfig  } from "./sidebar/index.js";
 
 export default hopeTheme({
   // hostname: "https://github.com/shilic/shilic.github.io", 
+  // 需要修改 为正确的 hostname 才可以让 ALGOLIA 接入搜索系统
   hostname: "https://shilic.github.io", 
 
   // 
