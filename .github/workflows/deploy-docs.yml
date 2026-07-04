@@ -71,6 +71,6 @@ jobs:
         with:
           # 部署到 gh-pages 分支
           branch: gh-pages
-		  # 必须是正斜杠 /
+          # 必须是正斜杠 /
           folder: src/.vuepress/dist
           token: ${{ secrets.GITHUB_TOKEN }}  # GitHub自动提供
