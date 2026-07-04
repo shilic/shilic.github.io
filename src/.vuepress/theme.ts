@@ -7,21 +7,30 @@ import { enSidebar, zhSidebarConfig  } from "./sidebar/index.js";
 export default hopeTheme({
   hostname: "https://github.com/shilic/shilic.github.io", 
 
+  // 
   author: {
     name: "诚",
     url: " https://shilic.github.io",
   },
 
+  // logo
   logo: "https://raw.githubusercontent.com/shilic/MarkDownImageRepository/main/img/logo1.png", 
   // https://theme-hope-assets.vuejs.press/logo.svg
 
+  // 仓库地址
   repo: "shilic/shilic.github.io",
 
+  // 文档的主目录
   docsDir: "src",
 
   blog: {
+	// 姓名
     name:"诚",
-    // 相关链接
+
+	// 头像默认是  logo
+	// avatar:"https://raw.githubusercontent.com/shilic/MarkDownImageRepository/main/img/logo1.png",
+ 	//description: "心诚则灵",
+    // 相关链接 & 社交媒体
     medias: {
       GitHub: "https://github.com/shilic",
       BiliBili: "https://space.bilibili.com/13808984",
@@ -36,7 +45,9 @@ export default hopeTheme({
     },
   },
 
+  // 右边的个人信息栏目，也就是一些个人简洁
   locales: {
+	// 英文的
     "/en/": {
       // navbar
       navbar: enNavbar,
@@ -49,7 +60,7 @@ export default hopeTheme({
       displayFooter: true,
 
       blog: {
-        description: "A Andriod programmer",
+        description: "A programmer",
         intro: "/intro.html",
       },
 
@@ -73,6 +84,8 @@ export default hopeTheme({
       displayFooter: true,
 
       blog: {
+		// 头像默认是  logo
+		// avatar:"https://raw.githubusercontent.com/shilic/MarkDownImageRepository/main/img/logo1.png",
         description: "车载大屏APP开发、上位机开发、开源项目贡献者",
         intro: "/intro.html",
       },
@@ -98,6 +111,8 @@ export default hopeTheme({
 
   // These features are enabled for demo, only preserve features you need here
   markdown: {
+	// 启用警告语法
+	alert: true,
     align: true,
     attrs: true,
     codeTabs: true,
@@ -126,11 +141,15 @@ export default hopeTheme({
     ],
     sub: true,
     sup: true,
+	// 选项卡语法
     tabs: true,
     tasklist: true,
     vPre: true,
 
-    // uncomment these if you need TeX support
+	/* ------------------------- 以下markdown扩展语法都需要你先安装相关组件之后才能使用 ----------------------- */
+
+	// preview: true,
+    // uncomment these if you need TeX support。 数学公式的支持
     // math: {
     //   // install katex before enabling it
     //   type: "katex",
@@ -138,7 +157,7 @@ export default hopeTheme({
     //   type: "mathjax",
     // },
 
-    // install chart.js before enabling it
+    // install chart.js before enabling it 
     // chartjs: true,
 
     // install echarts before enabling it
@@ -147,8 +166,8 @@ export default hopeTheme({
     // install flowchart.ts before enabling it
     // flowchart: true,
 
-    // install mermaid before enabling it
-    // mermaid: true,
+    // install mermaid before enabling it 。使用 mermaid 语法前，需要先 执行 pnpm add -D mermaid 进行安装
+    mermaid: true,
 
     // playground: {
     //   presets: ["ts", "vue"],
@@ -167,7 +186,17 @@ export default hopeTheme({
   },
 
   plugins: {
+	// 启用博客功能，可以设置 Frontmatter  侧边栏和分页等
     blog: true,
+	
+	// 版权插件
+	copyright: {
+      // options
+	  author: " 诚 ",
+	  triggerLength: 50,
+	  license: "CC BY-SA 4.0",
+	  global: true,
+    },
 
     // Install @waline/client before enabling it
     // Note: This is for testing ONLY!
