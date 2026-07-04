@@ -1,6 +1,7 @@
 ---
 home: true
-layout: BlogHome
+# layout: BlogHome 被弃用了
+layout: Blog
 icon: house
 title: 博客主页
 heroImage: https://cdn.jsdelivr.net/gh/shilic/picx-images-hosting@master/logo/logo1.1ovkg40dfb.webp

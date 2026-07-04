@@ -1,3 +1,4 @@
+# 非常智障，我受不了，makefile强制使用tab键缩进， yml强制使用4个空格缩进；写错就报错，还查不出来；使用缩进规范代码格式的语言能不能滚出去啊
 
 name: 部署文档
 
@@ -23,24 +24,29 @@ jobs:
           # submodules: true
 
       - name: 设置 pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
+        with:
+          # 设置我的pnpm版本
+          version: 11.9.0 
 
 
       - name: 设置 Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           # 选择要使用的 node 版本
-          node-version: 20 # 改用长期支持版本
+          node-version: 24
           # 缓存 pnpm 依赖
           cache: pnpm
 
-      # - name: 安装依赖
-      #   run: |
-      #     corepack enable
-      #     pnpm install --frozen-lockfile
+      #- name: 安装依赖
+       # run: pnpm install --frozen-lockfile
 
+        # 设置国内镜像，增加下载速度
       - name: 安装依赖
-        run: pnpm install --frozen-lockfile
+        run: |
+          corepack enable
+          pnpm config set registry https://registry.npmmirror.com        
+          pnpm ci
 
       
       - name: 构建文档
@@ -65,10 +71,12 @@ jobs:
       #     # @see https://docs.github.com/cn/actions/reference/authentication-in-a-workflow#about-the-github_token-secret
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # 尝试使用新的部署方式
       - name: 部署到 GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           # 部署到 gh-pages 分支
           branch: gh-pages
+          # 必须是正斜杠 /
           folder: src/.vuepress/dist
           token: ${{ secrets.GITHUB_TOKEN }}  # GitHub自动提供
