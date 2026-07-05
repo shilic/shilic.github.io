@@ -1,3 +1,7 @@
+# 这个是核心配置, 构建的时候，提示我这个包太新了，昨天才更新的，问我要不要考虑一下再拉进来构建。为什么？为的是防止供应链攻击，但是如果你基于构建，那不得不加这个配置 
+# allowBuilds:
+#   '@parcel/watcher': true
+#   esbuild: true
 allowBuilds:
   '@parcel/watcher': true
   esbuild: true
