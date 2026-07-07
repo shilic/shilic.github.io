@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "831be45153df88a6",
+        "id": "ab2f8187d6c42565",
         "type": "tabs",
         "children": [
           {
-            "id": "ffcb01c5e2dcf97c",
+            "id": "59fa8695c52d1172",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "src/posts/计算机科学/编程语言/Kotlin/Kotlin杂谈/Kotlin的设计哲学之：弃用标记.md",
-                "mode": "preview",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "Kotlin的设计哲学之：弃用标记"
+              "title": "新标签页"
             }
           }
         ]
@@ -197,11 +193,11 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "ffcb01c5e2dcf97c",
+  "active": "59fa8695c52d1172",
   "lastOpenFiles": [
+    "src/posts/计算机科学/编程语言/Kotlin/Kotlin杂谈/Kotlin的设计哲学之：弃用标记.md",
     "src/posts/计算机科学/项目/CAN协议车载通信中间件SmartDbc集成手册.md",
     "src/posts/计算机科学/编程语言/Kotlin/Kotlin杂谈/Kotlin的设计哲学之：object与单例模式.md",
-    "src/posts/计算机科学/编程语言/Kotlin/Kotlin杂谈/Kotlin的设计哲学之：弃用标记.md",
     "src/posts/计算机科学/编程语言/Kotlin/Kotlin杂谈/assets/image-20260701145924631.png",
     "src/posts/计算机科学/构建工具/maven/告别手动导包与混乱工程：用Maven构建现代Java项目的艺术.md",
     "src/posts/计算机科学/AI/Agent/Claude Code/没有废话，一分钟教会你使用Claude Code [Claude Code入门].md",
