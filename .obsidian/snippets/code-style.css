@@ -101,10 +101,10 @@ body:not(.alt-heading-off) .HyperMD-header-6:before {
 
 
 
-/* ======================================================= 主题变量定义 ======================================== */
+/* ================== 代码块主题变量定义=============== */
 .theme-light {
-  --code-bg: #f8f9fa;
-  --code-border: #dee2e6;
+  /* --code-bg: #f8f9fa;
+  --code-border: #dee2e6; */
   --code-text: #495057;
   --code-tag-bg: #e9ecef;
   --code-tag-text: #2b2d42;
@@ -125,8 +125,8 @@ body:not(.alt-heading-off) .HyperMD-header-6:before {
 }
 
 .theme-dark {
-  --code-bg: #2d2d2d;
-  --code-border: #404755;
+  /* --code-bg: #2d2d2d;
+  --code-border: #404755; */
   --code-text: #d8dee9;
   --code-tag-bg: #3b4252;
   --code-tag-text: #8c99b2;
@@ -147,18 +147,67 @@ body:not(.alt-heading-off) .HyperMD-header-6:before {
 }
 
 /* ================= 通用容器样式 ================= */
-.markdown-preview-view pre code,
-.cm-s-obsidian pre.HyperMD-codeblock {
+/* 预览模式 - 代码块外层容器（border-radius 加在 pre 上，不是 code 上） */
+.markdown-preview-view pre {
+  position: relative;
   background: var(--code-bg) !important;
   border: 2px solid var(--code-border) !important;
   border-radius: 25px !important;
   box-shadow: 0 4px 16px rgba(0,0,0,0.15) !important;
   margin: 1.2em 0 !important;
   padding: 1.5em !important;
+  transition: all 0.3s ease !important;
+}
+
+/* 预览模式 - 内部 code 元素只保留文字样式，清除从 pre 继承的多余样式 */
+.markdown-preview-view pre code {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
   color: var(--code-text) !important;
   font-size: 16px !important;
   line-height: 1.4 !important;
-  transition: all 0.3s ease !important;
+}
+
+/* 编辑模式 - 每行代码基础样式（不设 border-radius，避免每行都出现圆角边框） */
+.cm-s-obsidian pre.HyperMD-codeblock {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  font-size: 16px !important;
+  line-height: 1.4 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 0 1.5em !important;
+}
+
+/* 编辑模式 - 代码块首行：上圆角 + 上边距 + 左右上边框 */
+.cm-s-obsidian pre.HyperMD-codeblock-begin {
+  border-radius: 25px 25px 0 0 !important;
+  margin-top: 1.2em !important;
+  padding-top: 1.5em !important;
+  border: 2px solid var(--code-border) !important;
+  border-bottom: none !important;
+}
+
+/* 编辑模式 - 代码块中间行：只有左右边框，无圆角 */
+.cm-s-obsidian pre.HyperMD-codeblock:not(.HyperMD-codeblock-begin):not(.HyperMD-codeblock-end) {
+  border-left: 2px solid var(--code-border) !important;
+  border-right: 2px solid var(--code-border) !important;
+  border-radius: 0 !important;
+}
+
+/* 编辑模式 - 代码块末行：下圆角 + 下边距 + 左右下边框 + 阴影 */
+.cm-s-obsidian pre.HyperMD-codeblock-end {
+  border-radius: 0 0 25px 25px !important;
+  margin-bottom: 1.2em !important;
+  padding-bottom: 1.5em !important;
+  border: 2px solid var(--code-border) !important;
+  border-top: none !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15) !important;
 }
 /* ================= 编辑器画布背景 ================= */
 .markdown-preview-view,
@@ -226,13 +275,16 @@ pre code[class*="language-"]::before {
 .cm-attribute, span.token.property { color: var(--property-color) !important; }
 
 /* ================= 交互增强 ================= */
-/* 鼠标悬停效果 */
-/*  
-.markdown-preview-view pre code:hover,
-.cm-s-obsidian pre.HyperMD-codeblock:hover {
+/* 鼠标悬停效果 - 预览模式 */
+.markdown-preview-view pre:hover {
   transform: scale(1.005);
   box-shadow: 0 6px 20px rgba(0,0,0,0.2) !important;
-} */
+}
+
+/* 鼠标悬停效果 - 编辑模式（轻微高亮，不缩放每行） */
+.cm-s-obsidian pre.HyperMD-codeblock:hover {
+  filter: brightness(0.97);
+}
 
 /* 选中高亮 */
 pre code::selection {
@@ -242,12 +294,15 @@ pre code::selection {
 
 /* ================= 响应式优化 ================= */
 @media (max-width: 768px) {
-  pre code {
+  .markdown-preview-view pre {
     border-radius: 15px !important;
     padding: 1em !important;
+  }
+
+  .markdown-preview-view pre code {
     font-size: 13px !important;
   }
-  
+
   pre code[class*="language-"]::before {
     font-size: 0.8em !important;
     left: 1em !important;
@@ -339,7 +394,7 @@ pre code::selection {
 }
 
 
-/******************************      以下是适配明/暗双主题的 Obsidian 表格美化方案，与之前代码块风格保持设计语言统一：      ******************************/
+/*********      以下是适配明/暗双主题的 Obsidian 表格美化方案，与之前代码块风格保持设计语言统一：   ***********/
 /* ================= 表格变量系统 ================= */
 .theme-light {
   --table-bg: #ffffff;
@@ -421,53 +476,4 @@ pre code::selection {
   .markdown-preview-view td {
     padding: 0.6em 1em !important;
   }
-}
-
-
-/* ================================== 滚动进度条 scrollbar ================================ */
-body {
-  --scrollbar-width: 6px; /* 进度条宽度 */
-  --scrollbar-color: #4CAF50; /* 默认颜色 */
-}
-
-/* 容器定位 */
-.vertical-scroll-indicator {
-  position: fixed;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 60vh;
-  width: var(--scrollbar-width);
-  background: rgba(200,200,200,0.1);
-  border-radius: 10px;
-  z-index: 999;
-}
-
-/* 进度条主体 */
-.vertical-scroll-indicator::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: var(--scroll-percent, 0%);
-  background: var(--scrollbar-color);
-  border-radius: inherit;
-  transition: height 0.2s ease-out;
-}
-
-/* 明暗模式适配 */
-.theme-light {
-  --scrollbar-color: #2196F3; /* 亮色模式蓝色 */
-}
-
-.theme-dark {
-  --scrollbar-color: #FF9800; /* 暗色模式橙色 */
-}
-
-/* 悬停动效 */
-.vertical-scroll-indicator:hover {
-  width: 10px;
-  background: rgba(200,200,200,0.2);
-  transition: all 0.3s ease;
 }

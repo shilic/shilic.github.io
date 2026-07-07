@@ -1,4 +1,7 @@
 {
-  "cssTheme": "Wikipedia",
-  "theme": "moonstone"
+  "cssTheme": "Obuntu",
+  "theme": "obsidian",
+  "enabledCssSnippets": [
+    "code-style"
+  ]
 }
