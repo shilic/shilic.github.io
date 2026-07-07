@@ -3,5 +3,8 @@
   "theme": "obsidian",
   "enabledCssSnippets": [
     "code-style"
-  ]
+  ],
+  "interfaceFontFamily": "Maple Mono NF CN",
+  "textFontFamily": "Maple Mono NF CN",
+  "monospaceFontFamily": "Maple Mono NF CN"
 }

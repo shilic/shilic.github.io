@@ -352,11 +352,17 @@ pre code::selection {
 /*********************************** 主题专属效果 *********************/
 /* 白天模式特效 */
 .theme-light {
-  /* 添加轻微外发光 */
+  /* 基础外发光 */
   .markdown-preview-view code:not(pre code) {
-    box-shadow: 0 1px 2px rgba(99, 102, 241, 0.1) !important;
+    box-shadow: 0 0 8px rgba(99, 102, 241, 0.2),
+                0 2px 4px rgba(99, 102, 241, 0.12) !important;
   }
-  
+
+  /* 编辑模式基础光晕 */
+  .cm-inline-code {
+    box-shadow: 0 0 6px rgba(99, 102, 241, 0.15) !important;
+  }
+
   /* 圆点颜色增强 */
   .markdown-preview-view code:not(pre code)::before {
     opacity: 0.9;
@@ -365,14 +371,26 @@ pre code::selection {
 
 /* 暗夜模式特效 */
 .theme-dark {
-  /* 荧光效果 */
+  /* 荧光效果 - 预览模式 */
   .markdown-preview-view code:not(pre code) {
-    text-shadow: 0 0 6px rgba(129, 140, 248, 0.15) !important;
+    text-shadow: 0 0 8px rgba(129, 140, 248, 0.35),
+                 0 0 16px rgba(129, 140, 248, 0.15) !important;
+    box-shadow: 0 0 10px rgba(129, 140, 248, 0.25),
+                inset 0 0 6px rgba(129, 140, 248, 0.08) !important;
   }
-  
-  /* 动态光晕 */
+
+  /* 荧光效果 - 编辑模式 */
+  .cm-inline-code {
+    text-shadow: 0 0 6px rgba(129, 140, 248, 0.25) !important;
+    box-shadow: 0 0 6px rgba(129, 140, 248, 0.18) !important;
+  }
+
+  /* 动态光晕 - 编辑模式悬停 */
   .cm-inline-code:hover {
-    box-shadow: 0 0 8px rgba(129, 140, 248, 0.2) !important;
+    box-shadow: 0 0 14px rgba(129, 140, 248, 0.4),
+                0 0 24px rgba(129, 140, 248, 0.15) !important;
+    text-shadow: 0 0 10px rgba(129, 140, 248, 0.5),
+                 0 0 20px rgba(129, 140, 248, 0.2) !important;
   }
 }
 
@@ -386,11 +404,32 @@ pre code::selection {
   vertical-align: middle;
 }
 
-/* 悬浮动效 */
-.markdown-preview-view code:not(pre code):hover,
+/* 悬浮动效 - 预览模式 */
+.markdown-preview-view code:not(pre code) {
+  transition: all 0.25s ease;
+}
+
+.markdown-preview-view code:not(pre code):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 14px rgba(99, 102, 241, 0.35),
+              0 4px 8px rgba(99, 102, 241, 0.2) !important;
+}
+
+.theme-dark .markdown-preview-view code:not(pre code):hover {
+  text-shadow: 0 0 12px rgba(129, 140, 248, 0.55),
+               0 0 24px rgba(129, 140, 248, 0.25) !important;
+  box-shadow: 0 0 16px rgba(129, 140, 248, 0.4),
+              0 0 28px rgba(129, 140, 248, 0.2),
+              inset 0 0 8px rgba(129, 140, 248, 0.12) !important;
+}
+
+/* 悬浮动效 - 编辑模式 */
+.cm-s-obsidian .cm-inline-code {
+  transition: all 0.25s ease;
+}
+
 .cm-s-obsidian .cm-inline-code:hover {
   transform: translateY(-1px);
-  transition: all 0.25s ease;
 }
 
 
