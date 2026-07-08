@@ -40,3 +40,7 @@ desktop.ini
 # ===== 日志 =====
 *.log
 logs/
+
+# ===== Obsidian 个人状态 =====
+.obsidian/plugins/remember-cursor-position/cursor-positions.json
+.obsidian/workspace.json

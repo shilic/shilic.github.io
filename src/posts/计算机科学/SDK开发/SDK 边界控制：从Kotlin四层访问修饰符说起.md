@@ -19,13 +19,11 @@ star: false
 footer:
 copyright: CC BY-SA 4.0
 ---
-
 # SDK 边界控制：从 `Kotlin` 四层访问修饰符说起
 
 ## 一、SDK 开发的本质是控制边界
 
 > [!IMPORTANT]
->
 > **高内聚低耦合，对扩展开放对修改关闭。**
 
 上边这句话，是对一个SDK最好的评价。一个好的系统是各模块可以随意更换，模块功能不会受到影响；并且允许用户自定义行为，而不破坏内部逻辑。
@@ -129,7 +127,6 @@ public class Regex internal constructor(
 `protected` 的语义很窄：只在**本类和子类**中可见，外部任何人都不行。
 
 > [!NOTE]
->
 > 面试官问你几个访问修饰符什么区别？
 >
 > 你说`public`表示所有人都可以访问, `protected`表示自身和子类可访问, `private`表示仅自身访问。
@@ -263,7 +260,6 @@ public class Activity extends ContextThemeWrapper {
 这和上一节 CAN 卡的例子结构一模一样：**骨架在基类（framework），钩子在子类（你的 App），`protected` 精确地只允许子类碰这个钩子。** 十几亿台 Android 设备每天都在跑这套模板方法，`protected` 的语义被验证了无数次。
 
 > [!WARNING]
->
 > **总结：`protected` 不要滥用。它的最常见场景就是"模板方法模式中留给子类的扩展点"。如果你没有在用模板方法、没有在写可继承的基类，就不要碰 `protected`——它不该出现在业务代码的随便一个 `open fun` 上。**
 
 ## 五、`internal`——`Kotlin` 送给 SDK 开发者最好的礼物
@@ -312,9 +308,7 @@ public fun <T> emptyList(): List<T> = EmptyList
 这个设计有三层精妙：
 
 1. **封装实现细节。** 你拿到的是 `List<T>` 类型，你永远不知道底层是 `EmptyList` 这个 `object`。`JetBrains` 将来把 `EmptyList` 换成其他实现、甚至删掉重写，你一行代码都不用改。
-
 2. **模块内共享，模块外隐藏。** 标准库内部有很多地方需要"空列表"——`listOf()` 传零个参数时返回 `EmptyList`，`emptySet()` 也可能复用 `EmptyIterator`。它们都在 `kotlin-stdlib` 同一个模块里，`internal` 让它们可以自由共享，同时外部完全看不到。
-
 3. **如果它们是 `public` 的，会怎样？** 一定会有人写 `val list = EmptyList`。然后某天 stdlib 更新了 `EmptyList` 的签名，这些代码全部炸。但因为 `EmptyList` 是 `internal`，`JetBrains` 保住了修改内部实现的自由——这正是 SDK 开发者最需要的东西。
 
 不止 `EmptyList`——翻翻 `Kotlin `标准库，`_Assertions`、`Unsafe` 工具类、`builders` 包、`AbstractMutableList` 的各种实现细节……大量 `internal`。整个 `kotlin-stdlib` 本身就是一堂用 `internal` 精确控制模块边界的教学课。
@@ -341,12 +335,13 @@ public fun <T> emptyList(): List<T> = EmptyList
 
 回到最初的问题：SDK 开发怎么控制边界？`Kotlin` 的四层修饰符给出了四个答案：
 
-| 边界 | 修饰符 | SDK 中的含义 |
-|------|--------|------------|
-| 最外圈 | `public` | API 契约——我承诺长期支持，用户可直接使用。 |
-| 模块圈 | `internal` | 团队内部共享——外部不要碰。 |
+
+| 边界   | 修饰符      | SDK 中的含义                                                       |
+| -------- | ------------- | -------------------------------------------------------------------- |
+| 最外圈 | `public`    | API 契约——我承诺长期支持，用户可直接使用。                       |
+| 模块圈 | `internal`  | 团队内部共享——外部不要碰。                                       |
 | 继承圈 | `protected` | 模板方法的扩展点——只有子类能用。唯一的合法场景就是作为继承钩子。 |
-| 最里圈 | `private` | 实现细节——隔离内部，降低心智负担。改了不影响任何人。 |
+| 最里圈 | `private`   | 实现细节——隔离内部，降低心智负担。改了不影响任何人。             |
 
 当你面对一个新写的类或函数，不确定该用什么修饰符时，走一遍这个决策树：
 
