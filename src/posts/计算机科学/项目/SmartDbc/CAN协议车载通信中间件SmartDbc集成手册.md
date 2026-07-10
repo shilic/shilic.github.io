@@ -103,6 +103,13 @@ copyright: Apache-2.0
 `smart-dbc` 发布在 **GitHub Packages**中，需先在 `build.gradle.kts` 中添加仓库：
 
 ```kotlin
+import java.util.Properties
+
+// 从 GRADLE_USER_HOME 读取凭证（复用同一份），也就是从 ~/.gradle/gradle.properties 读取配置
+val globalProps = Properties().apply {
+    gradle.gradleUserHomeDir.resolve("gradle.properties").takeIf { it.exists() }?.reader()?.use { load(it) }
+}
+
 repositories {
     mavenCentral()
     maven {
@@ -112,8 +119,8 @@ repositories {
         url = uri("https://maven.pkg.github.com/shilic/*")
         // 访问令牌
         credentials {
-            username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_ACTOR")
-            password = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
+            username = globalProps.getProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR") ?: ""
+            password = globalProps.getProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN") ?: ""
         }
     }
 }
@@ -126,7 +133,7 @@ repositories {
 ```kotlin
 dependencies {
     // 本框架 smart-dbc  
-    implementation("io.github.shilic:smart-dbc:1.0.9")
+    implementation("io.github.shilic:smart-dbc:1.0.10")
     // 本框架的传递依赖 smart-grid 
     implementation("io.github.shilic:smart-grid:1.0.1")
     // 本框架的传递依赖 numeric-converter 
@@ -136,7 +143,7 @@ dependencies {
 
 ### 克隆源码
 
-如果你需要深度定制，可以克隆源码，自行修改。。
+如果你需要深度定制，可以克隆源码，自行修改。
 
 ```bash
 git clone https://github.com/shilic/smart-dbc.git
@@ -664,7 +671,7 @@ class MainActivity : ComponentActivity() {
 
 ### V1.0.9 (2026.7.2)
 
-- 适配了Excel协议转换为DBC文件的功能
+- 新增：适配了Excel协议转换为DBC文件的功能
 
 ### v1.0.7 (2026-6-25)
 
@@ -676,7 +683,6 @@ class MainActivity : ComponentActivity() {
 - 新增：完整的 DBC 文件解析与生成
 - 新增：CAN 报文编解码（Intel / Motorola 字节序）
 - 新增：注解驱动的数据模型绑定框架
-- 新增：Excel 表格导入 DBC 协议
 - 新增：自定义 DBC 属性支持
 - 新增：CAN FD 帧支持
 - 首次正式发布
@@ -709,10 +715,11 @@ A: 请确认 DBC 中信号的字节序定义是否正确（Motorola 为 `0`，In
 
 ---
 
-## 作者
+## 作者及项目地址
 
 - **诚（shilic）** — [https://github.com/shilic](https://github.com/shilic)
 - 邮箱：985478238@qq.com
+- 项目地址：[https://github.com/shilic/smart-dbc](https://github.com/shilic/smart-dbc)
 
 ---
 
