@@ -115,12 +115,33 @@ fun incrementAndGet(): Int {
 
 #### `val` 是默认，`var` 是你主动选的
 
-```kotlin
-val name = "张三"       // 不可变 — 不需要理由
-var count = 0           // 可变 — 你需要一个理由
+Java 和 C# 不是不能写不可变——`final` 和 `readonly` 在语法上都可以修饰局部变量：
+
+```java
+// Java — final 可以修饰局部变量，语法上完全合法
+final int x = 1;
+final String name = "张三";
 ```
 
-用 `val` 不需要理由，用 `var` 需要理由。这不是规范建议——如果你声明了 `var` 但从未对它重新赋值，IDEA 会直接给你一个黄色警告："`var` 从未被修改，可以改为 `val`。" IDEA 在替你的每一行代码做副作用审计。
+语法合法，但你在实际项目里见过几次？Java 社区的风格指南不要求局部变量加 `final`，IDE 不提示，`Code review` 不查。结果就是：标 `final`，全靠自觉。
+
+`Kotlin` 把这件事从"可以做"上升到了"默认做"。**关键不是能力差异，是成本。** `Java` 的 `final` 能做，但它是一个**额外负担**——`final int x = 1` 比 `int x = 1` 多敲 6 个字符加一个空格。每次声明一个局部变量都要多打字，程序员本能地跳过它。`Kotlin` 的 `val` 只有三个字母，和 `var` 一样短——选择不可变没有额外成本。`JetBrains` 把 `final` 浓缩成了 `val`，把一种"需要你主动加的防御性标注"简化成了"写变量声明时的默认按键"。你不需要刻意记得"这个变量要不要加 final"——你的手指已经替你做了选择。只有当确实需要可变时，你才多想想，改成 `var`。
+
+`val` 的覆盖范围不限于字段，而是从类属性一路贯穿到函数参数、局部变量、Lambda 参数——所有位置统一：
+
+```kotlin
+// val 无处不在 — 从类属性到局部变量，一致性贯穿到底
+class User(val name: String)              // 类属性
+fun greet(name: String) {                 // 函数参数 — 默认 val
+    val greeting = "Hello, $name"         // 局部变量
+    val chars = name.map { c ->           // Lambda 参数 c 也是 val
+        val upper = c.uppercaseChar()     // Lambda 内的局部变量
+        upper
+    }
+}
+```
+
+用 `val` 不需要理由，用 `var` 需要理由。这不是规范建议——IDEA 会直接给你黄色警告："`var` 从未被修改，可以改为 `val`。" IDEA 在替你的每一行代码做副作用审计：这个变量你真的改了它吗？没改过？那就应该是个 `val`。
 
 #### 属性强制显式初始化
 
