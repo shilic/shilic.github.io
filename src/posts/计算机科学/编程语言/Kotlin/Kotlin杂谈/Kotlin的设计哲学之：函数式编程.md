@@ -1,5 +1,5 @@
 ---
-title: `Kotlin`的设计哲学之：函数式编程
+title: Kotlin的设计哲学之：函数式编程
 cover: /assets/kotlin-fp-cover.png
 icon: file
 author: 诚
