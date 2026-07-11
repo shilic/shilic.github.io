@@ -14,7 +14,7 @@ tag:
   - 高阶函数
   - 声明式
 sticky: false
-star: false
+star: true
 footer:
 copyright: CC BY-SA 4.0
 ---
