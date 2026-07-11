@@ -717,7 +717,7 @@ A: 请确认 DBC 中信号的字节序定义是否正确（Motorola 为 `0`，In
 
 ## 作者及项目地址
 
-- **诚（shilic）** — [https://github.com/shilic](https://github.com/shilic)
+- **诚（`shilic`）**： [https://github.com/shilic](https://github.com/shilic)
 - 邮箱：985478238@qq.com
 - 项目地址：[https://github.com/shilic/smart-dbc](https://github.com/shilic/smart-dbc)
 
