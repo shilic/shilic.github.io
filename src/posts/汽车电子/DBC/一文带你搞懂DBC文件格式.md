@@ -191,7 +191,7 @@ SG_ signal_name multiplexer : start_bit|signal_size@byte_order value_type (facto
 | `@byte_order` | 字节序。**`0`** = Motorola（大端），**`1`** = Intel（小端） |
 | `value_type` | 符号类型。**`+`** = 无符号数，**`-`** = 有符号数 |
 | `(factor,offset)` | 线性转换参数。**物理值 = 原始值 × factor + offset** |
-| `[min|max]` | 物理值范围，double 类型 |
+| `[min\|max]` | 物理值范围，double 类型 |
 | `"unit"` | 物理单位字符串，无单位填 `""` |
 | `receiver` | 接收节点名。多个接收者以逗号分隔。无指定接收者填 `Vector__XXX` |
 
