@@ -425,11 +425,15 @@ DBC 文件的事情，说复杂也复杂——十几个 Tag、上百条信号、
 - **纯 JVM、无平台依赖**：可嵌入 Android 车机、桌面工具链、CI 流水线
 
 ```kotlin
-// 一行代码加载，一行代码获取信号
-val dbc = Dbc.read("example.dbc")
-val speedSignals = dbc.messages
-    .flatMap { it.signals }
-    .filter { it.name.contains("speed", ignoreCase = true) }
+// 一行代码加载
+val dbc = DbcFileReader({ File("example.dbc").inputStream() }).read()
+// 一行代码获取信号
+dbc[0x18ABAB01, "msg1_sig1"]?.also {
+    println("物理值 = ${it.currentPhyValue}")
+    println("文本值 = ${it.currentTextValue}")
+}
+// 你可以在这里对DBC对象做一些编辑
+// 例如添加信号，添加报文，添加自定义属性等等。你可以在此基础之上编写界面，来完成DBC文件的编辑。
 ```
 
 [GitHub: github.com/shilic/smart-dbc](https://github.com/shilic/smart-dbc)　|　欢迎 Star ⭐
