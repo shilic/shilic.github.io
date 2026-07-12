@@ -209,20 +209,35 @@ SG_ signal_name multiplexer : start_bit|signal_size@byte_order value_type (facto
 
 DBC 里的 `@0`（Motorola / 大端）和 `@1`（Intel / 小端）决定了一个跨字节信号在 CAN 报文数据域中的字节排列方式：
 
-- **Motorola（大端）**：高字节存低位地址，符合人类书写习惯。例如 `0x1234` 在内存中为  `{ 0x34, 0x12 }`。汽车行业中更为常见（网络协议传统）。
-- **Intel（小端）**：低字节存低位地址。例如 `0x1234` 在内存中为 `{ 0x12, 0x34 }`。多数现代 PC 架构（x86）采用此格式。
+- **Motorola（大端）**：高字节存低位地址，符合人类书写习惯。例如 `0x1234` 在内存中为 `{ 0x12, 0x34 }`(数值的高位`0x12`在内存结构的低位)。汽车行业中更为常见（网络协议传统）。
+- **Intel（小端）**：低字节存低位地址。例如 `0x1234` 在内存中为 `{ 0x34, 0x12 }`(数值的低位`0x34`在内存结构的低位)。多数现代 PC 架构（x86）采用此格式。
 
 > 关键记忆点：`start_bit` 的含义在两种格式下不同——Intel 格式下是信号 LSB 的位置，Motorola 格式下是信号 MSB 的位置。同一个信号用不同格式，`start_bit` 的值可能完全不同。
 
 ##### 多路复用信号（Multiplexor）
 
-当一条报文在不同工况下承载不同的信号布局时，使用多路复用机制。一个报文最多有一个**多路选择器信号**（标记 `M`），其余信号通过 `mN` 标记来声明"当多路选择器的值 == N 时，我启用"。
+CAN 报文一帧最多 8 字节。如果一条报文需要承载的信号种类超过 64 bit 能容纳的量，怎么办？**多路复用**就是答案——同一段 bit 区域，在不同模式下承载不同信号。
 
-示例：
+一个报文最多有一个**多路选择器信号**（标记 `M`），它就像一个开关：当它的值等于 N 时，所有标记 `mN` 的信号才生效。
 
-<pre style="background:#282c34;color:#abb2bf;padding:1em 1.5em;border-radius:6px;overflow-x:auto;font-size:0.9em;line-height:1.7;font-family:'JetBrains Mono','Fira Code','Cascadia Code',Consolas,monospace;"><span style="color:#c678dd">BO_</span> <span style="color:#d19a66">2434937668</span> New_Group_Message_12: <span style="color:#d19a66">8</span> Vector__XXX<br> <span style="color:#56b6c2">SG_</span> msg2_sig3 <span style="color:#e5c07b">m2</span> : <span style="color:#d19a66">16</span>|<span style="color:#d19a66">8</span>@<span style="color:#d19a66">1</span>+ (<span style="color:#d19a66">1</span>,<span style="color:#d19a66">0</span>) [<span style="color:#d19a66">0</span>|<span style="color:#d19a66">255</span>] <span style="color:#98c379">""</span> Vector__XXX<br> <span style="color:#56b6c2">SG_</span> msg1_sig1 <span style="color:#e5c07b">M</span> : <span style="color:#d19a66">0</span>|<span style="color:#d19a66">8</span>@<span style="color:#d19a66">1</span>+ (<span style="color:#d19a66">1</span>,<span style="color:#d19a66">0</span>) [<span style="color:#d19a66">0</span>|<span style="color:#d19a66">255</span>] <span style="color:#98c379">""</span> Vector__XXX<br> <span style="color:#56b6c2">SG_</span> msg1_sig2 <span style="color:#e5c07b">m1</span> : <span style="color:#d19a66">8</span>|<span style="color:#d19a66">8</span>@<span style="color:#d19a66">1</span>+ (<span style="color:#d19a66">1</span>,<span style="color:#d19a66">0</span>) [<span style="color:#d19a66">0</span>|<span style="color:#d19a66">255</span>] <span style="color:#98c379">""</span> Vector__XXX</pre>
+看这个例子，注意那些**位置冲突**的信号：
 
-这里 `msg1_sig1`（`M`）是多路选择器。当 `msg1_sig1 == 1` 时，`msg1_sig2`（`m1`）所在的数据位置才生效；当 `msg1_sig1 == 2` 时，`msg2_sig3`（`m2`）生效。
+<pre style="background:#282c34;color:#abb2bf;padding:1em 1.5em;border-radius:6px;overflow-x:auto;font-size:0.9em;line-height:1.7;font-family:'JetBrains Mono','Fira Code','Cascadia Code',Consolas,monospace;"><span style="color:#c678dd">BO_</span> <span style="color:#d19a66">2434937668</span> New_Group_Message_12: <span style="color:#d19a66">8</span> Vector__XXX<br> <span style="color:#56b6c2">SG_</span> msg1_sig1 <span style="color:#e5c07b">M</span> : <span style="color:#d19a66">0</span>|<span style="color:#d19a66">8</span>@<span style="color:#d19a66">1</span>+ (<span style="color:#d19a66">1</span>,<span style="color:#d19a66">0</span>) [<span style="color:#d19a66">0</span>|<span style="color:#d19a66">255</span>] <span style="color:#98c379">""</span> Vector__XXX<br> <span style="color:#56b6c2">SG_</span> msg1_sig2 <span style="color:#e5c07b">m1</span> : <span style="color:#d19a66">8</span>|<span style="color:#d19a66">8</span>@<span style="color:#d19a66">1</span>+ (<span style="color:#d19a66">1</span>,<span style="color:#d19a66">0</span>) [<span style="color:#d19a66">0</span>|<span style="color:#d19a66">255</span>] <span style="color:#98c379">""</span> Vector__XXX<br> <span style="color:#56b6c2">SG_</span> msg1_sig3 <span style="color:#e5c07b">m1</span> : <span style="color:#d19a66">16</span>|<span style="color:#d19a66">8</span>@<span style="color:#d19a66">1</span>+ (<span style="color:#d19a66">1</span>,<span style="color:#d19a66">0</span>) [<span style="color:#d19a66">0</span>|<span style="color:#d19a66">255</span>] <span style="color:#98c379">""</span> Vector__XXX<br> <span style="color:#56b6c2">SG_</span> msg2_sig2 <span style="color:#e5c07b">m2</span> : <span style="color:#d19a66">8</span>|<span style="color:#d19a66">8</span>@<span style="color:#d19a66">1</span>+ (<span style="color:#d19a66">1</span>,<span style="color:#d19a66">0</span>) [<span style="color:#d19a66">0</span>|<span style="color:#d19a66">255</span>] <span style="color:#98c379">""</span> Vector__XXX<br> <span style="color:#56b6c2">SG_</span> msg2_sig3 <span style="color:#e5c07b">m2</span> : <span style="color:#d19a66">16</span>|<span style="color:#d19a66">8</span>@<span style="color:#d19a66">1</span>+ (<span style="color:#d19a66">1</span>,<span style="color:#d19a66">0</span>) [<span style="color:#d19a66">0</span>|<span style="color:#d19a66">255</span>] <span style="color:#98c379">""</span> Vector__XXX</pre>
+
+关键来了——看起始位：
+
+| | bit 8–15 | bit 16–23 |
+|---|---|---|
+| **M == 1** | `msg1_sig2`（`m1`）| `msg1_sig3`（`m1`）|
+| **M == 2** | `msg2_sig2`（`m2`）| `msg2_sig3`（`m2`）|
+
+`msg1_sig2` 和 `msg2_sig2` **完全重叠**在 bit 8–15 上，`msg1_sig3` 和 `msg2_sig3` **完全重叠**在 bit 16–23 上。如果没有多路复用，这会在布局阶段就直接报错——两个信号不能占据同一段 bit 区域。但通过 `m1` / `m2` 标记，DBC 允许它们在**不同时刻**使用同一段位置。
+
+`msg1_sig1`（`M`）是多路选择器，站在 bit 0–7。当它为 1 时，中控屏发的是布局 1（msg1 系列），整车的空调处于模式 1 才需要解析这些字段；当它为 2 时，报文里同一段字节区域承载的是布局 2（msg2 系列）的完全不同的数据。**同一段 bit 空间，承载了两套完全不同的信号语义。**
+
+> 一个报文最多只有一个 `M` 信号。`mN` 中的 N 必须是该报文内 `M` 信号的合法取值。
+
+另外：整车厂实际上不常使用该方式来定义协议，少数情况才使用。
 
 ### message_transmitters: 报文传输节点
 
@@ -235,6 +250,24 @@ BO_TX_BU_ message_id : transmitter1 transmitter2 ... ;
 这个标签用于指定一条报文可以由哪些节点发送。当一条报文有多个可能的发送者（例如不同配置的同一车型）时，用 `BO_TX_BU_` 列出所有候选。**实际项目中不常用**——大多数 DBC 直接在 `BO_` 行尾部指定发送者就够了。
 
 如果 `NS_` 列表中声明了 `BO_TX_BU_` 但文件里没有用到，不会报错。
+
+### VECTOR__INDEPENDENT_SIG_MSG：孤儿信号的收容所
+
+在用 CANdb++ 编辑 DBC 时，你可能会先创建一个信号，但还没想好把它放在哪条报文里。工具不会因为这个信号没归属就报错——而是把它丢进一条特殊的**"孤儿报文"**：
+
+<pre style="background:#282c34;color:#abb2bf;padding:1em 1.5em;border-radius:6px;overflow-x:auto;font-size:0.9em;line-height:1.7;font-family:'JetBrains Mono','Fira Code','Cascadia Code',Consolas,monospace;"><span style="color:#c678dd">BO_</span> <span style="color:#d19a66">3221225472</span> VECTOR__INDEPENDENT_SIG_MSG: <span style="color:#d19a66">0</span> Vector__XXX<br> <span style="color:#56b6c2">SG_</span> New_Signal_110 : <span style="color:#d19a66">0</span>|<span style="color:#d19a66">8</span>@<span style="color:#d19a66">1</span>- (<span style="color:#d19a66">1</span>,<span style="color:#d19a66">0</span>) [<span style="color:#d19a66">0</span>|<span style="color:#d19a66">0</span>] <span style="color:#98c379">""</span> Vector__XXX</pre>
+
+这条报文有三个固定特征：
+
+| 特征 | 值 | 说明 |
+|---|---|---|
+| **报文 ID** | `3221225472`（`0xC0000000`） | 固定 ID，扩展帧范围，Vector 保留 |
+| **报文名称** | `VECTOR__INDEPENDENT_SIG_MSG` | 固定名称，不可修改 |
+| **DLC** | `0` | 不占实际总线带宽，纯占位报文 |
+
+它的作用就是当"**暂存区**"——你在工具里创建了一个新信号但还没分配报文，或者把一个信号从报文中删掉了但信号定义还留着，这些无家可归的信号就会挂在这条报文下面。`DLC = 0` 意味着它不会真正出现在 CAN 总线上，只是一个逻辑容器。
+
+> **实践建议**：当你完成 DBC 设计后，检查这条报文下的信号——如果还有信号挂着，要么把它们分配到正确的报文中，要么确认不再需要后删掉。不要带着孤儿信号发布 DBC。
 
 ### comments: 注释
 
@@ -268,8 +301,8 @@ BA_DEF_ object_type "attribute_name" value_type [min max] ;
 |---|---|
 | `object_type` | 属性作用于：`BU_`（节点）、`BO_`（报文）、`SG_`（信号）或空格（全局/项目级） |
 | `"attribute_name"` | 属性名称，C 语言变量格式 |
-| `value_type` | 值类型。`INT`、`HEX`、`FLOAT`、`STRING`、`ENUM` 五选一 |
-| `min max` | 对 INT/HEX/FLOAT 是范围；对 ENUM 是枚举值列表（双引号+逗号分隔）；对 STRING 为空 |
+| `value_type` | 值类型。`INT`、`HEX`、`FLOAT`、`STRING`、`ENUM` 五选一。**`INT` 和 `HEX` 在文件中没有区别，都存成十进制数**——`HEX` 只是一个语义提示，告诉工具"这个值建议按十六进制显示" |
+| `min max` | 对 INT/HEX/FLOAT 是范围（十进制整数）；对 ENUM 是枚举项列表（双引号+逗号分隔），**实际值按声明顺序从 0 开始分配**——第一个是 0，第二个是 1，以此类推；对 STRING 为空 |
 
 示例：
 
@@ -277,10 +310,10 @@ BA_DEF_ object_type "attribute_name" value_type [min max] ;
 
 解读：
 
-- 第 1 行：定义了作用于信号的属性 `GenSigStartValue`，整型，范围 0–65535
-- 第 2 行：定义了作用于报文的属性 `GenMsgSendType`，枚举型，可选值为 Cyclic/Event/IfActive/CE/CA
-- 第 3 行：定义了作用于节点的属性 `NmStationAddress`，十六进制，范围 0–255
-- 第 4 行：定义了全局属性 `BusType`，字符串类型（`object_type` 为空格）
+- 第 1 行：`GenSigStartValue`，`INT` 类型，范围 0–65535
+- 第 2 行：`GenMsgSendType`，`ENUM` 类型，五个可选项按声明顺序分配实际值——`"Cyclic"=0`、`"Event"=1`、`"IfActive"=2`、`"CE"=3`、`"CA"=4`。后续 `BA_` 里写 `1` 就代表 Event
+- 第 3 行：`NmStationAddress`，`HEX` 类型，范围 0–255。**文件中存的还是十进制数**，区别只在于 CANdb++ 等工具会把它显示为十六进制（`10` → `0x0A`）
+- 第 4 行：`BusType`，`STRING` 类型（`object_type` 为空格），作用于全局
 
 ### attribute_defaults: 自定义属性的默认值
 
@@ -290,11 +323,26 @@ BA_DEF_ object_type "attribute_name" value_type [min max] ;
 BA_DEF_DEF_ "attribute_name" default_value ;
 ```
 
-为 `BA_DEF_` 定义的每个属性设定一个默认值。当某个对象没有通过 `BA_` 显式设置值时，就使用这里的默认值。
+逐字段解释：
+
+| 字段 | 说明 |
+|---|---|
+| `BA_DEF_DEF_` | 关键字，声明自定义属性的默认值 |
+| `"attribute_name"` | 属性名称，必须与 `BA_DEF_` 中定义的一致 |
+| `default_value` | 默认值。**类型必须和 `BA_DEF_` 定义的 `value_type` 匹配**：`INT` / `HEX` 填十进制整数，`FLOAT` 填浮点数，`STRING` 填双引号字符串，**`ENUM` 填枚举项的文本描述**（如 `"Cyclic"`），而不是其顺序号 |
+
+当某个对象没有通过 `BA_` 显式设置值时，使用这里的默认值。
 
 示例：
 
 <pre style="background:#282c34;color:#abb2bf;padding:1em 1.5em;border-radius:6px;overflow-x:auto;font-size:0.9em;line-height:1.7;font-family:'JetBrains Mono','Fira Code','Cascadia Code',Consolas,monospace;"><span style="color:#c678dd">BA_DEF_DEF_</span>  <span style="color:#98c379">"GenSigStartValue"</span> <span style="color:#d19a66">0</span>;<br><span style="color:#c678dd">BA_DEF_DEF_</span>  <span style="color:#98c379">"GenMsgSendType"</span> <span style="color:#98c379">"Cyclic"</span>;<br><span style="color:#c678dd">BA_DEF_DEF_</span>  <span style="color:#98c379">"GenMsgCycleTime"</span> <span style="color:#d19a66">200</span>;<br><span style="color:#c678dd">BA_DEF_DEF_</span>  <span style="color:#98c379">"BusType"</span> <span style="color:#98c379">"CAN"</span>;</pre>
+
+解读：
+
+- 第 1 行：`GenSigStartValue` 是 `INT`，默认值 `0`（十进制整数）
+- 第 2 行：`GenMsgSendType` 是 `ENUM`，默认值是**枚举项的文本描述** `"Cyclic"`——不是顺序号 0。这和 `BA_` 里的写法不同，注意区分
+- 第 3 行：`GenMsgCycleTime` 是 `INT`，默认周期 200ms
+- 第 4 行：`BusType` 是 `STRING`，默认 `"CAN"`
 
 > `BA_DEF_DEF_` 不指定对象类型——同一个属性名在整个 DBC 文件中只有一个默认值，所有类型的对象共享。
 
@@ -306,17 +354,29 @@ BA_DEF_DEF_ "attribute_name" default_value ;
 BA_ "attribute_name" object_type object_id attribute_value ;
 ```
 
-针对某个具体对象（节点 / 报文 / 信号）设置属性值。`object_id` 根据对象类型不同——报文和信号用十进制报文 ID 定位，节点用节点名定位。
+逐字段解释：
+
+| 字段 | 说明 |
+|---|---|
+| `BA_` | 关键字，为某个具体对象设置属性值 |
+| `"attribute_name"` | 属性名称，必须与 `BA_DEF_` 中定义的一致 |
+| `object_type` | 对象类型：`BU_`（节点）、`BO_`（报文）、`SG_`（信号） |
+| `object_id` | 定位目标。节点填名字，报文/信号填**十进制报文 ID**（信号还需要在 `attribute_value` 前插入信号名） |
+| `attribute_value` | 属性值。和 `BA_DEF_DEF_` 不同的是：**`ENUM` 类型这里填的是顺序号（整数），不是文本描述**。INT/HEX 填十进制数，STRING 填双引号字符串 |
 
 示例：
 
 <pre style="background:#282c34;color:#abb2bf;padding:1em 1.5em;border-radius:6px;overflow-x:auto;font-size:0.9em;line-height:1.7;font-family:'JetBrains Mono','Fira Code','Cascadia Code',Consolas,monospace;"><span style="color:#c678dd">BA_</span> <span style="color:#98c379">"GenMsgCycleTime"</span> <span style="color:#c678dd">BO_</span> <span style="color:#d19a66">2560107544</span> <span style="color:#d19a66">500</span>;<br><span style="color:#c678dd">BA_</span> <span style="color:#98c379">"GenMsgSendType"</span> <span style="color:#c678dd">BO_</span> <span style="color:#d19a66">2560107544</span> <span style="color:#d19a66">1</span>;<br><span style="color:#c678dd">BA_</span> <span style="color:#98c379">"NmStationAddress"</span> <span style="color:#c678dd">BU_</span> CCS <span style="color:#d19a66">10</span>;</pre>
 
+> [!IMPORTANT]
+>
+> **`ENUM` 类型的写入规则**：`BA_DEF_DEF_` 写默认值时用文本（`"Cyclic"`），`BA_` 写具体值时用顺序号（`1` 代表 Event）。同一个属性，两种标签，值的写法不一样——这是最容易写错的地方。
+
 解读：
 
-- 第 1 行：报文 `2560107544` 的 `GenMsgCycleTime` 设为 500（ms），覆盖了默认值 200
-- 第 2 行：同一个报文的 `GenMsgSendType` 设为 1（对应枚举中的第二个值，一般工具中 "0=Cyclic, 1=Event"）
-- 第 3 行：节点 `CCS` 的 `NmStationAddress` 设为 0x0A
+- 第 1 行：报文 `2560107544` 的 `GenMsgCycleTime` 设为 500（`ms`），覆盖了默认值 200
+- 第 2 行：`GenMsgSendType` 设为 `1`。上节 `BA_DEF_` 声明了 `ENUM "Cyclic","Event","IfActive","CE","CA"`，按顺序 0=Cyclic, 1=Event，所以这里 1 表示该报文为事件型发送
+- 第 3 行：节点 `CCS` 的 `NmStationAddress` 设为 `10`。`HEX` 类型在文件中存的是十进制 `10`，工具按十六进制显示为 `0x0A`
 
 > 三层递进关系总结：`BA_DEF_` 说"有这样一种属性，它长什么样"；`BA_DEF_DEF_` 说"如果没人特别说明，它的默认值是这个"；`BA_` 说"对于这个具体对象，它的值是这个"。
 
@@ -340,3 +400,36 @@ VAL_ message_id signal_name value1 "description1" value2 "description2" ... ;
 - 第 2 行：制冷等级 `CCSToCabin1_ColdGearReq`，0 到 4 对应五个制冷档位
 
 `VAL_` 需要指定报文 ID 和信号名——和注释一样，不同报文里可能存在同名信号，必须靠报文 ID 来区分。
+
+---
+
+## 总结
+
+DBC 文件的事情，说复杂也复杂——十几个 Tag、上百条信号、Motorola 和 Intel 的字节序差异、多路复用的位置冲突、属性的三层嵌套……任何一个细节漏掉，整车通信就可能出岔子。
+
+说简单也简单——它解决的就一件事：**让 CAN 总线上的原始字节有名字、有单位、有意义。** 报文 ID 对应报文名，bit 区域对应信号名，原始值经过 factor 和 offset 换算成物理值，状态量通过数值表映射成人类可读的描述。就这么一套规则，撑起了从代码生成到硬件在环测试到车辆诊断的整条工具链。
+
+正确理解 DBC 文件，不只是会看懂 `BO_` 和 `SG_` 两行语法。是理解为什么 `VECTOR__INDEPENDENT_SIG_MSG` 的 DLC 是 0，理解 `HEX` 和 `INT` 在文件里存的是同一个东西，理解 `BA_DEF_DEF_` 写 `"Cyclic"` 而 `BA_` 写 `1` 背后是同一套枚举规则。这些细节，才是你从"会用工具生成 DBC"到"能直接读写和排错 DBC 文件"之间的那道坎。
+
+---
+
+## 关于 [`smart-dbc`](https://github.com/shilic/smart-dbc)
+
+如果你需要在代码里解析、生成或编辑 DBC 文件，或者想在车载终端（Android 车机、TBOX）上做 CAN 报文的编解码，可以关注我的开源项目 [**`smart-dbc`**](https://github.com/shilic/smart-dbc)。
+
+它是一个 `Kotlin/JVM` 车载通信中间件，核心能力：
+
+- **DBC 文件读写**：按 Tag 级别的解析和写回，不是正则匹配，不会丢注释和中文
+- **注解驱动的 CAN 编解码**：数据类字段标注 `@Signal` 后自动完成原始值与物理值的双向换算，告别手写移位运算
+- **解决 CANoe / TSMaster 之间的乱码**：自动处理 GBK 与 UTF-8 编码差异
+- **纯 JVM、无平台依赖**：可嵌入 Android 车机、桌面工具链、CI 流水线
+
+```kotlin
+// 一行代码加载，一行代码获取信号
+val dbc = Dbc.read("example.dbc")
+val speedSignals = dbc.messages
+    .flatMap { it.signals }
+    .filter { it.name.contains("speed", ignoreCase = true) }
+```
+
+[GitHub: github.com/shilic/smart-dbc](https://github.com/shilic/smart-dbc)　|　欢迎 Star ⭐
