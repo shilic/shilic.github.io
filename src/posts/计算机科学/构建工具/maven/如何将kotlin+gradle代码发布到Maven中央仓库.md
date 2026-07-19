@@ -1,3 +1,27 @@
+---
+title: 如何将Kotlin+Gradle代码发布到Maven中央仓库
+cover: /assets/maven-central-publish-cover.png
+icon: file
+author: 诚
+date: 2026-07-19
+category:
+  - Gradle
+  - Maven
+  - 构建工具
+tag:
+  - Kotlin
+  - Gradle
+  - Maven
+  - MavenCentral
+  - GPG
+  - 发布
+  - 开源
+sticky: false
+star: true
+footer:
+copyright: CC BY-SA 4.0
+---
+
 # 如何将`kotlin`+`gradle`代码发布到`Maven`中央仓库
 
 ## 前言
