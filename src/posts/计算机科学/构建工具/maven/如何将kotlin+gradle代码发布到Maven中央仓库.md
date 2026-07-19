@@ -6,21 +6,23 @@
 >
 > 随着软件项目的庞大，模块化开发成为必然，高内聚低耦合是评价一个系统的重要标准，一个模块只做一件事。我们会把一些通用的代码分离出来，到其他项目中进行单独的维护，别人再通过依赖的方式使用。于是，各类包管理工具和构建工具就诞生了，这里就有我们的`maven`和`gradle`。
 
+好吧，一样的废话，又在文章开头说一遍。
+
 我之前写了如何把`java + maven`的项目和`kotlin + gradle`的项目发布到`Github Packages`和自建的`Gitea`。可以参考我之前的博客：
 
-- [https://shilic.github.io/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/maven/%E5%91%8A%E5%88%AB%E6%89%8B%E5%8A%A8%E5%AF%BC%E5%8C%85%E4%B8%8E%E6%B7%B7%E4%B9%B1%E5%B7%A5%E7%A8%8B%EF%BC%9A%E7%94%A8Maven%E6%9E%84%E5%BB%BA%E7%8E%B0%E4%BB%A3Java%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%89%BA%E6%9C%AF.html](https://shilic.github.io/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/maven/%E5%91%8A%E5%88%AB%E6%89%8B%E5%8A%A8%E5%AF%BC%E5%8C%85%E4%B8%8E%E6%B7%B7%E4%B9%B1%E5%B7%A5%E7%A8%8B%EF%BC%9A%E7%94%A8Maven%E6%9E%84%E5%BB%BA%E7%8E%B0%E4%BB%A3Java%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%89%BA%E6%9C%AF.html)
-- [https://shilic.github.io/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/gradle/%E4%BD%BF%E7%94%A8Gradle%E5%8F%91%E5%B8%83%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%88%B0%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93.html](https://shilic.github.io/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/gradle/%E4%BD%BF%E7%94%A8Gradle%E5%8F%91%E5%B8%83%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%88%B0%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93.html)
-- [https://shilic.github.io/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/Gitea/%E7%94%A8Gitea%E6%90%AD%E5%BB%BA%E7%A7%81%E6%9C%89Git%E4%BB%A3%E7%A0%81%E6%89%98%E7%AE%A1%E5%B9%B3%E5%8F%B0.html](https://shilic.github.io/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/Gitea/%E7%94%A8Gitea%E6%90%AD%E5%BB%BA%E7%A7%81%E6%9C%89Git%E4%BB%A3%E7%A0%81%E6%89%98%E7%AE%A1%E5%B9%B3%E5%8F%B0.html)
+- [https://shilic.github.io/posts/计算机科学/版本控制/Gitea/用Gitea搭建私有Git代码托管平台.html](https://shilic.github.io/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/Gitea/%E7%94%A8Gitea%E6%90%AD%E5%BB%BA%E7%A7%81%E6%9C%89Git%E4%BB%A3%E7%A0%81%E6%89%98%E7%AE%A1%E5%B9%B3%E5%8F%B0.html)
+- [https://shilic.github.io/posts/计算机科学/构建工具/gradle/使用Gradle发布软件包到远程仓库.html](https://shilic.github.io/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/gradle/%E4%BD%BF%E7%94%A8Gradle%E5%8F%91%E5%B8%83%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%88%B0%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93.html)
+- [https://shilic.github.io/posts/计算机科学/构建工具/maven/告别手动导包与混乱工程：用Maven构建现代Java项目的艺术.html](https://shilic.github.io/posts/计算机科学/构建工具/maven/告别手动导包与混乱工程：用Maven构建现代Java项目的艺术.html)
 
-`Github Packages`的配置还是太简单了。别人要想使用的时候，他自己还得再配置一遍`github`，非常不方便。这次我们要把软件包发布到`Maven`中央仓库，使用的时候，只需要一行代码，比`Github Packages`方便太多了，所以就有了本博客。
+`Github Packages`的配置还是太复杂了，别人要想使用的时候，他自己还得再配置一遍`github`，非常不方便。这次我们要把软件包发布到`Maven`中央仓库，使用的时候，别人只需要一行代码，比`Github Packages`方便太多了，所以就有了本博客。
 
-我在网上找遍了教程，基本上把能踩的坑，全部踩了一遍，你照着我的教程来，基本就不会再踩坑了。
+我在网上找遍了教程，基本上把能踩的坑，全部踩了一遍，你只要照着我的教程来，基本就不会再踩坑了。
 
 网上也有其他的教程：
 
-SDN用户[掉头发的王富贵](https://masiyi.blog.csdn.net)写的教程：[https://blog.csdn.net/csdnerM/article/details/136784455#jar_343](https://blog.csdn.net/csdnerM/article/details/136784455#jar_343)
+CSDN用户[掉头发的王富贵](https://masiyi.blog.csdn.net)写的教程：[https://blog.csdn.net/csdnerM/article/details/136784455#jar_343](https://blog.csdn.net/csdnerM/article/details/136784455#jar_343)
 
-但是基本没什么参考价值，主要原因是我没CSDN会员，看不到后边内容；其次，我们是`kotlin + gradle`项目，这篇教程是`java + maven`，参考价值不大。
+但是基本没什么参考价值，主要原因是我没CSDN会员，看不到后边内容（大实话）；其次，我们是`kotlin + gradle`项目，这篇教程是`java + maven`，语法差异太大了，参考价值不大。
 
 话不多说，直接开始往下看：
 
@@ -923,17 +925,54 @@ kotlin {
 
 
 
-## 五、几个容易卡住的点
+## 五、易错点汇总
 
-| 坑                         | 说明                                                         |
-| -------------------------- | ------------------------------------------------------------ |
-| **SNAPSHOT 不能发 Portal** | 版本号别带 `-SNAPSHOT` 后缀                                  |
-| **POM 缺字段被拒**         | `name/description/url/license/developer/scm` 一个不能少，vanniktech 的 `checkPomFileForMavenPublication` 可以先本地自检 |
-| **GPG 公钥没传 keyserver** | Portal 验签名会失败，`checkSigningConfiguration` 任务能提前查 |
-|                            |                                                              |
-|                            |                                                              |
+以下是前面章节里分散提到的所有坑，集中整理在这里，供发布前逐条核对。
 
+### 插件与版本
 
+| 易错点 | 说明 |
+|---|---|
+| **不能用原生 `maven-publish` 发 `Maven Central`** | 不管你把 URL 配成 `s01.oss.sonatype.org` 还是 `central.sonatype.com`，原生插件都发不上去。必须用 `com.vanniktech.maven.publish`，这是 `JetBrains` 官方推荐的做法 |
+| **版本三件套要对齐** | `com.vanniktech.maven.publish` 0.36.0 要求：`JVM` ≥ 17（项目结构里改 `SDK`，不是改语言级别）、`Kotlin` ≥ 2.2.0、`Gradle` ≥ 8.12。缺一个就报错 |
+| **不要额外定义叫 `maven` 的 `publication`** | 插件内部已注册名为 `maven` 的发布内容，你再定义一个同名的一定冲突 |
+| **不要额外定义源码包和文档包任务** | 插件已经自动打包 `-sources.jar` 和 `-javadoc.jar`，再手动定义 `sourcesJar` / `javadocJar` 任务会导致重复 |
+
+### `GPG` 签名
+
+| 易错点 | 说明 |
+|---|---|
+| **公钥必须上传到 `keyserver`** | `Portal` 验签名时去 `keyserver` 上查你的公钥，没传就验不过。用 `gpg --keyserver keyserver.ubuntu.com --send-keys <你的密钥ID>` 上传；上传后可能有延迟，等几分钟再试 |
+| **`keyserver URL` 前缀必须是 `hkps://`** | 如果用客户端上传，先在设置里把 `keyserver` 地址清空，改成 `hkps://keyserver.ubuntu.com`，不是 `hkp://`（明文），否则连接失败 |
+| **私钥导出后妥善保管** | `gpg --armor --export-secret-keys` 导出的文件包含 `-----BEGIN PGP PRIVATE KEY BLOCK-----`，这个文件**绝对不能**提交到 Git 仓库或分享给任何人 |
+| **`passphrase` 忘了等于私钥作废** | 生成密钥时设的密码短语（`passphrase`）是私钥的最后一道锁。忘了就只能重新生成密钥对、重新上传公钥、重新发布 |
+
+### 环境变量与 `gradle.properties`
+
+| 易错点 | 说明 |
+|---|---|
+| **`Token` 只显示一次** | `Portal` 生成的 `mavenCentralUsername` / `mavenCentralPassword` 和 `GitHub` 的 `Personal Access Token` 一样，生成后只展示一次。关闭页面前必须存好 |
+| **`signingInMemoryKey` 的换行格式** | `gradle.properties` 不支持多行字符串，私钥的每一行末尾加 `\n\`，上一行用 `\` 续到下一行。格式不对 → 签名失败 |
+| **四个配置一个不能少** | `mavenCentralUsername`、`mavenCentralPassword`、`signingInMemoryKeyPassword`、`signingInMemoryKey`——少任何一个，插件都签不了名 |
+| **不要把密钥写进项目里的 `gradle.properties`** | 项目的 `gradle.properties` 会被 Git 跟踪。密钥只能放在 `~/.gradle/gradle.properties`（全局）或系统环境变量里 |
+
+### `POM` 与元数据
+
+| 易错点 | 说明 |
+|---|---|
+| **版本号禁止 `-SNAPSHOT`** | `Maven Central` 不收快照版本。版本号只能是 `1.0.0` 这种正式格式 |
+| **`POM` 六个字段缺一不可** | `name`、`description`、`url`、`license`、`developer`、`scm`——`Portal` 会逐字段校验，任何一个缺失都拒收。`checkPomFileForMavenPublication` 任务可在本地提前自查 |
+| **`groupId` 必须是你的命名空间** | 用 `GitHub` 登录则 `io.github.<你的用户名>` 自动验证通过。如果填了别的域名（如 `com.example`），`Portal` 会要求你证明你拥有该域名 |
+
+### 发布后
+
+| 易错点 | 说明 |
+|---|---|
+| **一旦发布，永久无法删除** | `Portal` 确认发布后，"丢弃"和"发布"按钮同时锁定，无法撤回。所以发布前务必确认代码经过了充分的测试 |
+| **发布有延迟** | 点击 `Publish` 后状态变为 `PUBLISHING`，几分钟后才能在搜索框中搜到。不是卡住了，是正常流程 |
+| **中央仓库 ≠ 即时可用** | 即使 `Portal` 显示发布成功，下游用户通过 `mavenCentral()` 拉到你的包可能还需要几小时（`CDN` 同步）。急着用的话手动刷新一下依赖缓存 |
+
+------
 
 
 
