@@ -974,7 +974,17 @@ kotlin {
 
 ------
 
+## 六、关于 `smart-network-byte`
 
+本文的完整示例来自我的开源项目 [**`smart-network-byte`**](https://github.com/shilic/smart-network-byte)——一个更聪明的网络字节转换器（Kotlin/JVM 库）。如果你在做车载通信、IoT 协议、或者任何需要处理大端小端字节序的场景，可以关注一下。
+
+已发布到 Maven Central，一行依赖即可使用：
+
+```kotlin
+implementation("io.github.shilic:smart-network-byte:1.0.0")
+```
+
+[GitHub: github.com/shilic/smart-network-byte](https://github.com/shilic/smart-network-byte)　|　欢迎 Star ⭐
 
 ## 参考链接
 
