@@ -3,7 +3,7 @@ title: Kotlin的设计哲学之：弃用标记
 cover: /assets/kotlin-deprecated-cover.png
 icon: file
 author: 诚
-date: 2026-07-01
+date: 2025-07-01
 category:
   - Kotlin
   - 设计哲学
@@ -29,9 +29,17 @@ copyright: CC BY-SA 4.0
 
 我接手过一个项目。整个工程只有一个类文件，一万多行，全局变量散落各处，命名随意到像是在键盘上乱敲的，`if-else` 嵌套深不见底。一行注释没有，但被注释掉的代码有整整八百行：
 
+800行被注释的代码:
+
 ![800行被注释的代码](./assets/image-20260701152103079.png)
 
+
+
+众多意义不明的全局变量们：
+
 ![众多意义不明的全局变量们](./assets/image-20260701160115532.png)
+
+单文件一万行的项目：
 
 ![单文件一万行的项目](./assets/image-20260701151004604.png)
 
@@ -55,6 +63,8 @@ copyright: CC BY-SA 4.0
 
 用 `Visual Studio` 写 `C#`和`c++`，代码里注释掉几百行，IDE 不但不警告，还会在左下角贴个绿色标记——"未找到相关问题"：
 
+VS提示未找到问题：
+
 ![VS提示未找到问题](./assets/image-20260701160856207.png)
 
 `VS Code` 也一样，默认毫无反应：
@@ -73,7 +83,7 @@ copyright: CC BY-SA 4.0
 
 这就是 `JetBrains` 这家公司的特质。这里需要交代一个背景：`Kotlin` 这门语言本身就是 `JetBrains` 设计的。他们同时也是 `IntelliJ IDEA` 的创造者。所以你在 `Kotlin` 里看到的语言特性，和在 `IDEA` 里看到的代码警告，全部出自同一批工程师之手。理解了这一点——他们既设计语言又设计工具——你才能理解后面每一个设计决策背后的逻辑：语言和工具的配合，他们做到了天衣无缝。语言强制你写清楚，IDE 帮你看到、帮你改。后面你会反复看到这种组合拳。
 
-![image-20260701192251350](./assets/image-20260701192251350.png)
+![JetBrains](./assets/image-20260701192251350.png)
 
 那回到问题本身：一段代码不想留、又不能直接删，应该怎么标记？一段还没写完的功能，应该怎么占位？
 
@@ -140,7 +150,7 @@ public annotation class Deprecated(
 fun oldFunction() { }
 ```
 
-![ScreenShot_2026-07-01_184144_825](./assets/ScreenShot_2026-07-01_184144_825.png)
+![编译不过](./assets/ScreenShot_2026-07-01_184144_825.png)
 
 对比太鲜明了：
 
@@ -277,9 +287,9 @@ public inline fun TODO(reason: String): Nothing =
 
 可以按关键词、文件范围、作者标签筛选。同事离职交接时，打开这个窗口，所有遗留问题一目了然——不需要翻遍文件去回忆"好像哪里没写完"。
 
-![image-20260701192926288](./assets/image-20260701192926288.png)
+![ IDEA TODO 面板](./assets/image-20260701192926288.png)
 
-![image-20260701193044345](./assets/image-20260701193044345.png)
+![ IDEA TODO 面板](./assets/image-20260701193044345.png)
 
 **4.5 组合使用**
 

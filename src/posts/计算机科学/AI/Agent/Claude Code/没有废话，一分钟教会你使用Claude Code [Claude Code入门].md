@@ -32,7 +32,7 @@ copyright: CC BY-SA 4.0
 
 
 
-![image-20260507231817085](./assets/image-20260507231817085.png)
+![安装nodejs](./assets/image-20260507231817085.png)
 
 
 
@@ -75,13 +75,13 @@ C:\Users\SLC>
 
 这时先不要着急启动`Claude Code`，因为我们还没有配置API。我们访问 DeepSeek 开放平台：[https://platform.deepseek.com/](https://platform.deepseek.com/)。
 
-![image-20260507233027855](./assets/image-20260507233027855.png)
+![Deepseek API](./assets/image-20260507233027855.png)
 
 
 
 登陆之后，我们先重置10块。然后手动创建一个API Key。如下图所示：
 
-![image-20260507235325408](./assets/image-20260507235325408.png)
+![创建一个API Key](./assets/image-20260507235325408.png)
 
 
 
@@ -154,40 +154,38 @@ C:\Users\SLC>
 
 找一个目录作为Claude Code的工作目录，在文件管理器地址栏敲下`cmd`然后回车，系统会在当前目录打开命令提示符
 
-![image-20260508002833447](./assets/image-20260508002833447.png)
+![启动Claude Code](./assets/image-20260508002833447.png)
 
 敲下`claude`启动，出现以下画面，就是配置好了，可以愉快地开始使用了。
 
 
 
-![image-20260508002956392](./assets/image-20260508002956392.png)
+![启动Claude Code](./assets/image-20260508002956392.png)
 
 ## 六、使用可视化界面来提升使用体验
 
 光是命令行使用，退出后再进入，再看历史记录很麻烦，各种命令也非常难记。这时我们需要一个可视化界面来提升我们的使用体验。
 
-这里我使用的是`Vs Code`的Claude Code插件，在`Vs Code`中搜索并安装该插件，如下图所示。
+这里我使用的是`Vs Code`的`Claude Code`插件，在`Vs Code`中搜索并安装该插件，如下图所示。
 
-![image-20260508003322053](./assets/image-20260508003322053.png)
+![Claude Code插件](./assets/image-20260508003322053.png)
 
 安装插件之后，你就可以使用可视化的界面来使用Claude Code了。刚才我们已经配置好了Claude Code，所以我们这里不需要其他的额外配置。如下图所示，我们直接点击左侧插件图标，再点击新会话按钮。
 
-![image-20260508003701915](./assets/image-20260508003701915.png)
+![使用可视化界面](./assets/image-20260508003701915.png)
 
-![image-20260508003826217](./assets/image-20260508003826217.png)
+![使用可视化界面](./assets/image-20260508003826217.png)
 
 
 
 这个时候，写你的提示词即可，你可以让他给你做任何事情，帮你改代码，写PPT，或者直接上传文件给他让他分析excel表里的数据。
 
-![image-20260508004007854](./assets/image-20260508004007854.png)
+![使用可视化界面](./assets/image-20260508004007854.png)
 
 
 
 ------
 
-有更多Claude Code的进阶用法，例如如何添加并使用skill，我将在下一章节中讲解。
-
-
+有更多`Claude Code`的进阶用法，例如如何添加并使用skill，我将在下一章节中讲解。
 
 我是诚，感谢你的阅读，如果你觉得本文对你有帮助，请不妨动动你的手指点个关注和推荐。

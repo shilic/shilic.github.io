@@ -1,9 +1,9 @@
 ---
-title: 将`WinForm`应用打包为独立`EXE`的完整指南
+title: 将WinForm应用打包为独立EXE的完整指南
 cover: /assets/winform-package-cover.png
 icon: file
 author: 诚
-date: 2026-06-27
+date: 2025-05-27
 category:
   - CSharp
   - WinForm
@@ -125,7 +125,7 @@ copyright: CC BY-SA 4.0
 4. 在 VS Installer 中勾选刚下载的组件 → 点击 **修改** → 等待安装完成
 5. 重新打开 VS
 
-![ScreenShot_2026-06-27_155111_734](./assets/ScreenShot_2026-06-27_155111_734.png)
+![安装扩展](./assets/ScreenShot_2026-06-27_155111_734.png)
 
 如图所示, 安装完成后, 可以在扩展管理器中看到插件已安装。
 
@@ -135,13 +135,13 @@ copyright: CC BY-SA 4.0
 
 2.搜索框输入 `setup` → 选择 **Setup Project** 模板
 
-![ScreenShot_2026-06-27_162231_377](./assets/ScreenShot_2026-06-27_162231_377.png)
+![创建 Setup 项目](./assets/ScreenShot_2026-06-27_162231_377.png)
 
 命名为 `YourApp.Setup` → 下一步 → 创建
 
 此时解决方案中多了一个 Setup 项目。选中它，属性窗口下方会显示项目的属性面板。
 
-![2026-06-27_162632_328](./assets/2026-06-27_162632_328.png)
+![创建 Setup 项目](./assets/2026-06-27_162632_328.png)
 
 ### **2.3 文件系统编辑器：决定"装什么、装到哪"**
 
@@ -160,11 +160,11 @@ copyright: CC BY-SA 4.0
 - 右键 **Application Folder** → **Add** → **项目输出**
 - 在弹出的对话框中：项目选你的 `WinForm` 主项目 → 选择 **主输出** → 确定。如果你的解决方案有多个项目，请选择你的主要自动项目。
 
-![ScreenShot_2026-06-27_172300_107](./assets/ScreenShot_2026-06-27_172300_107.png)
+![添加主程序文件](./assets/ScreenShot_2026-06-27_172300_107.png)
 
 - 此时, VS 会自动分析依赖，将主 `exe` 及其引用的 `dll` 一并纳入
 
-![ScreenShot_2026-06-27_172342_689](./assets/ScreenShot_2026-06-27_172342_689.png)
+![VS 会自动分析依赖](./assets/ScreenShot_2026-06-27_172342_689.png)
 
 此时 `Application Folder` 下会出现"主输出 `from YourProject (活动)`"，以及自动检测到的依赖项（如 `Microsoft.CSharp` 等系统程序集）。
 
@@ -193,7 +193,7 @@ copyright: CC BY-SA 4.0
 
 首先，我们将这些额外的项目依赖复制到我们的项目的源代码目录下， 和`xxxxxxxx.csproj`文件平级，也就是和你的 `Program.cs`文件平级。
 
-![ScreenShot_2026-06-27_205437_897](./assets/ScreenShot_2026-06-27_205437_897.png)
+![添加额外内容文件](./assets/ScreenShot_2026-06-27_205437_897.png)
 
 
 
@@ -216,7 +216,7 @@ copyright: CC BY-SA 4.0
 
 同样，如果你不习惯使用文件的方式编辑生成方式，你也可以直接在解决方案资源管理器中，直接对着文件右键属性，将生成操作设置成"如果较新则复制"。
 
-![ScreenShot_2026-06-27_191945_046](./assets/ScreenShot_2026-06-27_191945_046.png)
+![编辑文件属性](./assets/ScreenShot_2026-06-27_191945_046.png)
 
 然后这个时候，你就可以继续上边的操作了，右键 **Application Folder** → **Add** → **文件**，选择对应文件添加进来即可，这个时候，你在文件视图中就可以看到，这些`dll`被打包进来了。
 
@@ -257,7 +257,7 @@ copyright: CC BY-SA 4.0
 1. 展开 `HKEY_CURRENT_USER` → 展开 `Software` → 右键 `[Manufacturer]`(可能需要手动创建) → 新建 → 字符串值
 2. 命名为 `InstallLocation`，值设为 `[TARGETDIR]`（安装程序会自动替换为实际安装路径）
 
-![ScreenShot_2026-06-27_195440_320](./assets/ScreenShot_2026-06-27_195440_320.png)
+![注册表编辑器：写入安装信息](./assets/ScreenShot_2026-06-27_195440_320.png)
 
 如图所示，将注册表项`InstallLocation`的值设置为 `[TARGETDIR]`之后，每次触发安装时，安装程序都会自动给这个注册表项写入安装目录进去。
 
@@ -269,7 +269,7 @@ copyright: CC BY-SA 4.0
 
 我们右键 Setup 项目 → **View** -> 启动条件 ，打开启动条件视图，如下图所示。
 
-![ScreenShot_2026-06-27_200341_229](./assets/ScreenShot_2026-06-27_200341_229.png)
+![打开启动条件视图](./assets/ScreenShot_2026-06-27_200341_229.png)
 
 - 首先，右键 `Search Target Machine`(搜索目标机器) -> 添加注册表搜索 -> 命名为 `SEARCH_INSTALLPATH`(名字可以随便取)；
 - 然后，设置搜索的注册表键为 我们上一步设置的注册表键，也就是设置 `RegKey`，我这里是这设置的是 `Software\QingLing\庆铃通用上位机`(你按照你实际的来写)，安装程序就会到这个注册表文件下去搜索注册表。
@@ -325,7 +325,7 @@ copyright: CC BY-SA 4.0
 > 
 > 特别提醒！！`RemovePreviousVersions` 为 `True` 时，**必须每次发布递增 `Version`，且 `ProductCode` 和 `UpgradeCode` 保持自动生成即可**。Version 不变则不会覆盖安装。
 
-![ScreenShot_2026-06-27_170231_038](./assets/ScreenShot_2026-06-27_170231_038.png)
+![显示在控制面板中](./assets/ScreenShot_2026-06-27_170231_038.png)
 
 如图所示，你在Setup 项目属性中设置的这些值，最后都会显示在控制面板中。如果设置了图标，还会显示图标，没有设置，就只会显示一个默认图标。
 

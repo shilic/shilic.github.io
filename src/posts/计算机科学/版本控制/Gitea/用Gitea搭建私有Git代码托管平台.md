@@ -3,7 +3,7 @@ title: 用`Gitea`搭建私有`Git`代码托管平台
 cover: /assets/gitea-cover.png
 icon: file
 author: 诚
-date: 2026-06-28
+date: 2025-06-28
 category:
   - Git
   - Gitea
@@ -339,7 +339,7 @@ git clone http://你的IP:你的端口/你的用户名/仓库名.git
 | 内网小团队（<10人） | `Gitea `+ `SQLite`/`MySQL`，装在共用服务器上 |
 | 公司级使用 | `Gitea `+ `MySQL`/`PostgreSQL `+ 内网穿透 |
 
-代码这种事，自己掌握才安心。`Gitea` 把搭建 Git 服务的门槛降到了最低——一个 `exe`，双击即服务。
+`Gitea` 把搭建 Git 服务的门槛降到了最低——一个 `exe`，双击即服务。
 
 
 

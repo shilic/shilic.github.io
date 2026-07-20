@@ -3,7 +3,7 @@ title: 使用Gradle发布软件包到远程仓库
 cover: /assets/gradle-publish-cover.png
 icon: file
 author: 诚
-date: 2026-07-11
+date: 2026-04-11
 category:
   - Gradle
   - 构建工具
@@ -248,7 +248,7 @@ credentials {
 
 或者用 `IDEA` 右侧 `Gradle` 面板，双击 `publish` 任务，一样的效果：
 
-![image-20260709101410097](./assets/image-20260709101410097.png)
+![`Gradle` 面板](./assets/image-20260709101410097.png)
 
 ### 3.7 使用方的依赖配置
 

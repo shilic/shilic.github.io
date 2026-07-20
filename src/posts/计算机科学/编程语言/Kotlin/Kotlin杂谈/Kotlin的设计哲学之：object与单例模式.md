@@ -3,7 +3,7 @@ title: Kotlin的设计哲学之：object与单例模式
 cover: /assets/kotlin-object-cover.png
 icon: file
 author: 诚
-date: 2026-07-02
+date: 2025-08-02
 category:
   - Kotlin
   - 设计哲学

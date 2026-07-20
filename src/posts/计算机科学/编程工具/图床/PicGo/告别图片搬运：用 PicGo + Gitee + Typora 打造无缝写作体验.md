@@ -3,7 +3,7 @@ title: 告别图片搬运：用 PicGo + Gitee + Typora 打造无缝写作体验
 cover: /assets/20260419134644574.png
 icon: file
 author: 诚
-date: 2026-04-19
+date: 2023-04-19
 category:
   - PicGo
   - Typora
@@ -30,7 +30,7 @@ copyright: CC BY-SA 4.0
 
 
 
-![20260419134644574](./assets/20260419134644574.png)
+![裂图示例](./assets/20260419134644574.png)
 
 **Markdown 的图片本质是链接引用**。当你使用本地图片路径时，这个文档就绑死在了你的电脑上。发给别人？不行。换个设备打开？不行。传到博客平台？更不行。
 
@@ -70,7 +70,7 @@ copyright: CC BY-SA 4.0
 
 访问 [gitee.com](https://gitee.com/)，用手机号或邮箱注册。如果已有 GitHub 账号，可直接导入。
 
-![image-20260419134918986](./assets/image-20260419134918986.png)
+![gitee.com](./assets/image-20260419134918986.png)
 
 #### **2. 新建仓库**
 
@@ -81,9 +81,9 @@ copyright: CC BY-SA 4.0
 - **重要设置**： 开源选择“公开”（私有仓库外网无法访问） 初始化仓库：勾选“使用 Readme 文件初始化” 分支模型：选择“单分支模型”
 - 点击“创建”
 
-![image-20260419135059013](./assets/image-20260419135059013.png)
+![新建仓库](./assets/image-20260419135059013.png)
 
-![image-20260419135123540](./assets/image-20260419135123540.png)
+![新建仓库](./assets/image-20260419135123540.png)
 
 
 
@@ -99,7 +99,7 @@ copyright: CC BY-SA 4.0
 
 
 
-![image-20260419135345637](./assets/image-20260419135345637.png)
+![获取访问令牌](./assets/image-20260419135345637.png)
 
 
 
@@ -121,7 +121,7 @@ copyright: CC BY-SA 4.0
 
 
 
-![image-20260419135552992](./assets/image-20260419135552992.png)
+![安装 Gitee 插件](./assets/image-20260419135552992.png)
 
 
 
@@ -139,7 +139,7 @@ copyright: CC BY-SA 4.0
 
 
 
-![image-20260419135756067](./assets/image-20260419135756067.png)
+![配置图床参数](./assets/image-20260419135756067.png)
 
 
 
@@ -156,11 +156,11 @@ copyright: CC BY-SA 4.0
 
 
 
-![image-20260419140026836](./assets/image-20260419140026836.png)
+![测试上传](./assets/image-20260419140026836.png)
 
 
 
-![image-20260419140059388](./assets/image-20260419140059388.png)
+![测试上传](./assets/image-20260419140059388.png)
 
 
 
@@ -172,7 +172,7 @@ copyright: CC BY-SA 4.0
 
 
 
-![image-20260419140014935](./assets/image-20260419140014935.png)
+![确保 Typora 已安装](./assets/image-20260419140014935.png)
 
 
 
@@ -186,7 +186,7 @@ copyright: CC BY-SA 4.0
 
 
 
-![image-20260419140351489](./assets/image-20260419140351489.png)
+![配置图片上传](./assets/image-20260419140351489.png)
 
 
 
@@ -206,7 +206,7 @@ copyright: CC BY-SA 4.0
 
 图片都会**自动上传到 Gitee**，链接自动替换为图床链接。你只需要专注写作，其他的一切自动完成。也可以对着图片右键，将图片上传。
 
-![image-20260419140823557](./assets/image-20260419140823557.png)
+![粘贴到 Typora](./assets/image-20260419140823557.png)
 
 
 

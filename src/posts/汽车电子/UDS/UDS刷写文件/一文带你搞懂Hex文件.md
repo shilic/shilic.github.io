@@ -3,7 +3,7 @@ title: 一文带你搞懂Hex文件（Intel HEX）
 cover: /assets/hex-cover.png
 icon: file
 author: 诚
-date: 2026-07-10
+date: 2025-10-10
 category:
   - 汽车电子
   - UDS
@@ -55,7 +55,7 @@ Hex 文件是 Intel 公司定义的一种按地址排列的数据格式，数据
 
 在 `VSCode` 中安装 `Hex Editor` 或 `Intel HEX format` 插件，可以高亮显示各字段，方便快速查看每一个部分。如下图所示
 
-![image-20260708194810877](./assets/image-20260708194810877.png)
+![Intel HEX format](./assets/image-20260708194810877.png)
 
 ## 三、Hex 文件格式结构
 
