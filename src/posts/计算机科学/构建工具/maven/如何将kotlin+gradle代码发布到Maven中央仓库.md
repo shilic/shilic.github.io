@@ -46,7 +46,7 @@ copyright: CC BY-SA 4.0
 
 CSDN用户[掉头发的王富贵](https://masiyi.blog.csdn.net)写的教程：[https://blog.csdn.net/csdnerM/article/details/136784455#jar_343](https://blog.csdn.net/csdnerM/article/details/136784455#jar_343)
 
-但是基本没什么参考价值，主要原因是我没CSDN会员，看不到后边内容（大实话）；其次，我们是`kotlin + gradle`项目，这篇教程是`java + maven`，语法差异太大了，参考价值不大。
+但是参考价值不大，主要原因是我没CSDN会员，看不到后边内容（大实话）；其次，我们是`kotlin + gradle`项目，这篇教程是`java + maven`。
 
 话不多说，直接开始往下看：
 
@@ -1000,9 +1000,9 @@ kotlin {
 
 ## 六、关于 `smart-network-byte`
 
-本文的完整示例来自我的开源项目 [**`smart-network-byte`**](https://github.com/shilic/smart-network-byte)——一个更聪明的网络字节转换器（Kotlin/JVM 库）。如果你在做车载通信、IoT 协议、或者任何需要处理大端小端字节序的场景，可以关注一下。
+本文的完整示例来自我的开源项目 [**`smart-network-byte`**](https://github.com/shilic/smart-network-byte)——一个更聪明的网络字节转换器（`Kotlin`/`JVM` 库）。如果你在做车载通信、IoT 协议、或者任何需要处理大端小端字节序的场景，可以关注一下。
 
-已发布到 Maven Central，一行依赖即可使用：
+已发布到 `Maven Central`，一行依赖即可使用：
 
 ```kotlin
 implementation("io.github.shilic:smart-network-byte:1.0.0")
@@ -1014,4 +1014,4 @@ implementation("io.github.shilic:smart-network-byte:1.0.0")
 
 - `jetbrains`写的教程: [https://www.jetbrains.com.cn/en-us/help/kotlin-multiplatform-dev/multiplatform-publish-libraries-to-maven.html](https://www.jetbrains.com.cn/en-us/help/kotlin-multiplatform-dev/multiplatform-publish-libraries-to-maven.html)(主要参考链接, 照着这个操作仍然有无数个坑)
 - `Maven中央仓库`官方写的教程: [https://central.sonatype.org/register/central-portal/](https://central.sonatype.org/register/central-portal/)(次要参考链接)
-- CSDN用户[掉头发的王富贵](https://masiyi.blog.csdn.net)写的教程：[https://blog.csdn.net/csdnerM/article/details/136784455#jar_343](https://blog.csdn.net/csdnerM/article/details/136784455#jar_343)(基本没什么参考价值，主要原因是我没会员，看不到后边内容；其次，我们是`kotlin + gradle`，这篇教程是`java + maven`，参考价值不大)
+- CSDN用户[掉头发的王富贵](https://masiyi.blog.csdn.net)写的教程：[https://blog.csdn.net/csdnerM/article/details/136784455#jar_343](https://blog.csdn.net/csdnerM/article/details/136784455#jar_343)(参考价值不大，主要原因是我没会员，看不到后边内容；其次，我们是`kotlin + gradle`，这篇教程是`java + maven`)
