@@ -87,9 +87,9 @@ copyright: Apache-2.0
 
 **核心传递依赖**（由 Gradle 自动拉取）：
 
-- `io.github.shilic:smart-grid:1.0.1` — Excel 表格数据读取
-- `io.github.shilic:numeric-converter:1.0.2` — 网络字节数据转换
-- `org.apache.poi:poi:5.3.0` / `poi-ooxml:5.4.0` — Excel 文件处理
+- `io.github.shilic:smart-grid:1.0.3` — Excel 表格数据读取
+- `io.github.shilic:smart-network-byte:1.0.0` — 网络字节数据转换
+- `org.apache.poi:poi:5.5.1` / `poi-ooxml:5.5.1` — Excel 文件处理
 - `com.github.albfernandez:juniversalchardet:2.4.0` — 文件编码自动检测
 - `org.jetbrains.kotlin:kotlin-reflect:1.9.0` — 反射支持（注解绑定）
 - `com.google.code.gson:gson:2.10.1` — JSON 序列化
@@ -98,46 +98,19 @@ copyright: Apache-2.0
 
 ## 安装与部署
 
-### 添加仓库
-
-`smart-dbc` 发布在 **GitHub Packages**中，需先在 `build.gradle.kts` 中添加仓库：
-
-```kotlin
-import java.util.Properties
-
-// 从 GRADLE_USER_HOME 读取凭证（复用同一份），也就是从 ~/.gradle/gradle.properties 读取配置
-val globalProps = Properties().apply {
-    gradle.gradleUserHomeDir.resolve("gradle.properties").takeIf { it.exists() }?.reader()?.use { load(it) }
-}
-
-repositories {
-    mavenCentral()
-    maven {
-        // name : 固定为 GitHubPackages
-        name = "GitHubPackages"
-        // url : 仓库地址
-        url = uri("https://maven.pkg.github.com/shilic/*")
-        // 访问令牌
-        credentials {
-            username = globalProps.getProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR") ?: ""
-            password = globalProps.getProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN") ?: ""
-        }
-    }
-}
-```
-
-> GitHub Packages 要求提供个人访问令牌（classic token，勾选 `read:packages`）。请将令牌配置到环境变量 `GITHUB_TOKEN` 或 `~/.gradle/gradle.properties`文件 中，**切勿提交到仓库**。
-
 ### 添加依赖
 
+`smart-dbc` 已经发布在`maven central`中，直接在 `build.gradle.kts` 中依赖即可：
+
 ```kotlin
+// `build.gradle.kts` 
 dependencies {
     // 本框架 smart-dbc  
-    implementation("io.github.shilic:smart-dbc:1.0.10")
-    // 本框架的传递依赖 smart-grid 
-    implementation("io.github.shilic:smart-grid:1.0.1")
-    // 本框架的传递依赖 numeric-converter 
-    implementation("io.github.shilic:numeric-converter:1.0.2")
+    implementation("io.github.shilic:smart-dbc:1.0.11")
+    // smart-grid 用于从表格识别数据进来。
+    implementation("io.github.shilic:smart-grid:1.0.3")
+    // smart-network-byte 用于规范网络字节数据。
+    implementation("io.github.shilic:smart-network-byte:1.0.0")
 }
 ```
 
@@ -665,6 +638,10 @@ class MainActivity : ComponentActivity() {
 
 ## 版本更新
 
+### V1.0.11 (2026.7.20)
+
+- 优化：将软件包发布从 `Github Packages` 改为了`maven central`，现在可以更方便的添加依赖了
+
 ### V1.0.10 (2026.7.3)
 
 - 优化：将部分语法改成`kotlin`风格, 使用默认参数, 并将函数参数放最后一个位置。
@@ -690,10 +667,6 @@ class MainActivity : ComponentActivity() {
 ---
 
 ## 常见问题（FAQ）
-
-**Q: 为什么拉取依赖时报 401/403？**
-
-A: GitHub Packages 需要认证。请确保已在环境变量或 `~/.gradle/gradle.properties` 中配置了有效的 GitHub 个人访问令牌（classic token，需勾选 `read:packages` 权限）。
 
 **Q: DBC 文件中文注释乱码？**
 
