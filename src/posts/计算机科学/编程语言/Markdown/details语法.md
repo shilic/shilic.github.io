@@ -21,7 +21,7 @@ copyright: CC BY-SA 4.0
 ``` html
 <details open >
   <summary >点击查看答案</summary>
-这里是隐藏的内容 
+这里是隐藏的内容
 </details>
 ```
 
