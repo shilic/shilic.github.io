@@ -21,6 +21,10 @@ copyright: CC BY-SA 4.0
 
 # 使用`Gradle`发布软件包到远程仓库
 
+> [!IMPORTANT]
+>
+> 随着软件项目的庞大，模块化开发成为必然，高内聚低耦合成为评价一个系统的重要标准。一个模块只做一件事，我们会把一些通用的代码分离出来，到其他项目中进行单独的维护，别人再通过依赖的方式使用。于是，各类包管理工具和构建工具就诞生了，这里就有我们的`maven`和`gradle`。
+
 上一篇文章讲了 `Maven` 如何发布 `JAR` 包：[用`Maven`构建现代`Java`项目的艺术](https://shilic.github.io/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/maven/%E5%91%8A%E5%88%AB%E6%89%8B%E5%8A%A8%E5%AF%BC%E5%8C%85%E4%B8%8E%E6%B7%B7%E4%B9%B1%E5%B7%A5%E7%A8%8B%EF%BC%9A%E7%94%A8Maven%E6%9E%84%E5%BB%BA%E7%8E%B0%E4%BB%A3Java%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%89%BA%E6%9C%AF.html)
 
 本文继续聊 `Gradle` 的发布机制，以我的开源项目 [`smart-dbc`](https://github.com/shilic/smart-dbc) 为例。 
