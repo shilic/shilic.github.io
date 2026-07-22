@@ -163,9 +163,9 @@ fun processString(input: String): String {
 
 **被工信部枪毙的单踏板模式**：传统车有两个踏板——油门加速、刹车减速。这是物理世界几十年的肌肉记忆。单踏板模式把"松油门=刹车"做成默认行为，在紧急情况下驾驶员的本能是"猛踩刹车"，但肌肉记忆可能让他们误踩油门。**设计违背了全人类几十年的驾驶直觉。** 工信部直接叫停——这不是技术不行，是惊奇感差值太大。
 
-**被枪毙的隐藏式门把手**：正常门把手是凸起的，你一拉就开。隐藏式门把手在发生碰撞后可能无法弹出，救援人员打不开车门。**把"紧急情况下必须能用"这个最基本的安全需求，牺牲给了"好看"。** 工信部同样叫停。
+**被枪毙的隐藏式门把手**：正常门把手是凸起的，你一拉就开，全人类从三岁开始就知道怎么用。隐藏式门把手呢？每个品牌的弹出方式都不一样——有的按一下弹出来，有的手伸进去感应弹出来，有的要按特定位置、特定力度。站在一辆不熟悉的车门前，你连"怎么把把手弄出来"都不知道。**一个本该零思考的动作，变成了需要研究和试错的操作。** 
 
-**雨刮 + 转向灯 → 雨量传感器 + 转向自动打灯**：下雨了，你不需要先看中控屏找"雨刮开关"，车自己刮。转弯时，方向盘转到一定角度灯自动亮，不需要你额外操作。**零思考——你只管开车，其他事车替你做了。**
+**雨量传感器 + 自动雨刮**：传统车下雨时要经历"找拨杆 → 判断雨量 → 选档位 → 雨变大再调 → 雨变小再调"——你一直在手动维护雨刮状态。雨量传感器把这个循环全砍了：感应雨量 → 自动调速，从毛毛细雨到倾盆大雨，你只管看路。**消除的不是操作难度，而是操作本身。**
 
 #### 🔌 USB-C vs Lightning vs Micro-USB
 
@@ -173,17 +173,12 @@ fun processString(input: String): String {
 
 **正面**：USB-C 正反都能插，而且是跨品牌、跨设备的统一标准。**插的动作本身零思考——你不需要先看方向、不需要辨认"这头朝上还是朝下"。** 物理层的最小惊奇。
 
-#### ☕ 星巴克的"杯型命名"
-
-**反面**：用户点单时会在心里做一层转换："我要中杯……不对，中杯是 Grande 还是 Tall？"——**命名体系和用户心理模型错位**。所以才有了网上铺天盖地的"星巴克杯型梗"。
-
-**正面（其他品牌的做法）**：直接叫"小杯 / 中杯 / 大杯"。不需要翻译，你脑子里想的就是你嘴上说的。
-
 #### 🎨 图标设计：看得懂 vs 猜不透
 
 - **VS Code**：图标风格统一，含义清晰——文件夹是文件夹，搜索是搜索，Git 分支是 Git 分支。看一眼就知道点哪里。
 - **JetBrains IDEA**：图标同样清晰，且支持**附带文本标签**——图标 + 文字双重确认，消除歧义。
-- **反面教材 —— TSMaster**：部分图标设计模凌两可，用户看到后不知道点下去会发生什么，只能一个一个试。下面是截图对比：（此处附图）
+- **反面教材 —— TSMaster**：部分图标设计模凌两可，用户看到后不知道点下去会发生什么，只能一个一个试。下面是截图对比：
+- [ ] （此处附图）
 
 > 当图标设计本身无法传达含义时，文本标签就是设计失败的补丁——和那扇玻璃门上的"推"字一样。
 
@@ -219,6 +214,66 @@ fun sendMessage(content: String, to: String)
 ```
 
 同样：`copyFile(source, target)` 不是 `copyFile(target, source)`；`move(from, to)` 不是 `move(to, from)`。这些是几十年编程史沉淀下来的肌肉记忆，不要挑战。
+
+**一个真实的 C 语言反面案例 ——两大厂家 27服务的 DLL模版**：
+
+```c
+// ❌ 周立功版 API：所有参数全标 i——但 iKeyArray 是输出缓冲区，iKeyArraySize 会被函数修改
+// ❌  返回 int ，错误不清晰
+extern "C" int ZLGKey(
+    const unsigned char* iSeedArray,        
+    unsigned short iSeedArraySize,          
+    unsigned int iSecurityLevel,            
+    const char* iVariant,                    
+    unsigned char* iKeyArray,              // 标了 i，但实际上是输出缓冲区
+    unsigned short* iKeyArraySize          // 标了 i，但函数会修改它的值（输入+输出）
+);
+```
+
+我们再来看`Vector`的函数签名:
+
+```c
+/* Vector 安全算法 GenerateKeyEx 的返回值 */
+enum VKeyGenResultEx {
+	/* 完成 */
+	KGRE_Ok = 0,
+	/* 密钥长度太小 */
+	KGRE_BufferToSmall = 1,
+	/* 安全等级无效 */
+	KGRE_SecurityLevelInvalid = 2,
+	/* 变体参数无效 */
+	KGRE_VariantInvalid = 3,
+	/* 未指定错误 */
+	KGRE_UnspecifiedError = 4
+};
+
+/*
+*  ✅ Vector 版 API：命名清晰——io=输入输出，o=纯输出; 
+*  传入安全种子和安全等级，在这里计算你的密钥，最后再返回密钥和密钥的大小。
+*  ✅  如果出错就直接返回枚举值中的错误。相比于周立功返回一个int值，错误更清晰了。
+*/
+
+KEYGENALGO_API VKeyGenResultEx GenerateKeyEx(
+	/* ipSeedArray ：i 输入参数，安全种子的数组 */
+	const unsigned char*  ipSeedArray,
+	/* iSeedArraySize：i 输入参数，安全种子的大小(数值类型) */
+	unsigned int  iSeedArraySize,
+	/* iSecurityLevel：i 输入参数，安全等级，例如1或者2或3  */
+	const unsigned int iSecurityLevel,   
+	/* ipVariant：i 输入参数，变体参数，任何你自定义的参数，字符串类型，可为空，一般都是空 */
+	const char* ipVariant,
+	/* keyArray ： io 输入输出, 返回的密钥数组 */
+	unsigned char* iopKeyArray,
+	/* iMaxKeyArraySize ：i 输入参数，密钥的最大长度(没搞懂这个参数什么意思，这个参数是相比于周立功的函数多出来的参数) */
+	unsigned int iMaxKeyArraySize,
+	/* oActualKeyArraySize  ：o 纯范围 返回密钥的长度 */
+	unsigned int& oActualKeyArraySize
+);
+```
+
+新版把旧版 `ioKeyArray` 的 `io` 前缀改成了 `i`，把 `oSize` 引用参数改成了 `iKeyArraySize` 指针——前缀全标 `i`，但 `iKeyArray` 实际上是**输出缓冲区**，`iKeyArraySize` 会被函数**原地修改**。调用方看到 `i` 前缀以为只是传入，结果传进去的变量值被改了——**参数命名和实际行为矛盾，这就是惊奇感的来源。**
+
+> 💡 **命名前缀不仅是文档，是 API 契约。使用者根据前缀判断参数行为，前缀说谎 = 契约违约。**
 
 #### 3. 返回值一致且可预测
 
