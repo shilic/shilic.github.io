@@ -215,62 +215,6 @@ fun sendMessage(content: String, to: String)
 
 同样：`copyFile(source, target)` 不是 `copyFile(target, source)`；`move(from, to)` 不是 `move(to, from)`。这些是几十年编程史沉淀下来的肌肉记忆，不要挑战。
 
-**一个真实的 C 语言反面案例 —— 两大厂家的 27 服务 DLL 模板**：
-
-汽车电子行业里，UDS 诊断协议的 0x27 服务（SecurityAccess）要求 ECU 供应商提供一个 DLL，供整车厂在产线和售后工具中调用以解锁 ECU。国内两大供应商——周立功（ZLG）和 Vector——各自给出了模板。同一个功能，签名天差地别。
-
-先看周立功的：
-
-```c
-// ❌ 周立功版：返回 int，错误不清晰；所有参数全标 i，但有的实际是输出
-extern "C" int ZLGKey(
-    const unsigned char* iSeedArray,        
-    unsigned short iSeedArraySize,          
-    unsigned int iSecurityLevel,            
-    const char* iVariant,                    
-    unsigned char* iKeyArray,              // 标了 i，但实际上是输出缓冲区
-    unsigned short* iKeyArraySize          // 标了 i，但函数会修改它的值（输入+输出）
-);
-```
-
-三个问题：
-
-- **返回 `int`，错误不可读**。调用方拿到 `-1` 或者 `0`，不知道是安全等级不对还是缓冲区太小——和第四章讲的一样，一个数字说不清任何事。
-- **前缀全标 `i`，但实际行为相反**。`iKeyArray` 是输出缓冲区，`iKeyArraySize` 会被函数原地修改。调用方看到 `i` 以为只读，结果传进去的变量值被改了，下次循环用的还是被改过的值——bug 就是这么来的。
-- **没有缓冲区容量参数**。调用方没办法告诉函数"我分配的缓冲区有多大"，函数也没办法判断会不会越界写。全靠调用方"猜一个够大的数"。
-
-再看 Vector 的同一功能：
-
-```c
-// ✅ Vector 版：枚举返回值，前缀 i/io/o 三分，每个参数有明确注释
-enum VKeyGenResultEx {
-    KGRE_Ok = 0,                  // 完成
-    KGRE_BufferToSmall = 1,       // 密钥长度太小
-    KGRE_SecurityLevelInvalid = 2,// 安全等级无效
-    KGRE_VariantInvalid = 3,      // 变体参数无效
-    KGRE_UnspecifiedError = 4     // 未指定错误
-};
-
-KEYGENALGO_API VKeyGenResultEx GenerateKeyEx(
-    const unsigned char*  ipSeedArray,           // i  → 纯输入，const 修饰
-    unsigned int          iSeedArraySize,        // i  → 纯输入，数值类型
-    const unsigned int    iSecurityLevel,        // i  → 纯输入
-    const char*           ipVariant,             // i  → 纯输入，可为空
-    unsigned char*        iopKeyArray,           // io → 输入输出，调用方申请空间，函数填充
-    unsigned int          iMaxKeyArraySize,      // i  → 输入，缓冲区的最大容量
-    unsigned int&         oActualKeyArraySize    // o  → 纯输出，引用参数一眼能看出会被修改
-);
-```
-
-同样的功能，Vector 做了几件对的事：
-
-- **返回值用枚举**——`KGRE_BufferToSmall` 比 `-1` 多了一整层语义：调用方不需要查文档就知道"哦，我给的缓冲区太小了"。
-- **前缀三分**——`i` = 只读输入，`io` = 会被修改，`o` = 纯输出引用。使用者不需要读函数体，看声明就知道哪个参数会被改。
-- **`const` 修饰纯输入**——编译器替你拦住误写。`ipSeedArray` 标了 `const`，函数里改它编译不过。
-- **多了 `iMaxKeyArraySize`**——调用方明确告知缓冲区容量，函数内部可以做越界检查，而不是祈祷调用方"猜得够大"。
-
-> 💡 **同样的 C 语言，同样的功能，好的签名和烂的签名之间就差这几件事：枚举而非 int、前缀说真话、const 管住手、缓冲区带容量。这些不是炫技，是让调用方不踩坑。**
-
 #### 3. 返回值一致且可预测
 
 **规范**：同一个模块中，相似场景的返回值类型必须一致。查询"找不到"时统一返回空值，不混用 `null` 和空集合。
@@ -288,43 +232,63 @@ fun findUsersByCity(city: String): List<User> // 找不到就抛 NoSuchElementEx
 
 调用方要写三套不同的判空逻辑。这就是心智负担——不是在用你的 API，是在**防御你的 API**。
 
-#### 4. 副作用最小化
+#### 4. 副作用可感知：命名不说谎
 
-**规范**：查询方法不修改状态。有副作用的方法必须用动词明确标注。
+**规范**：函数签名必须诚实——参数是否会被修改、返回值是否可能为空、有没有自动重试，全部要在签名、前缀或名称中明示。
 
-```kotlin
-// ✅ getXxx 只读，updateXxx 有副作用——从名字就能判断
-fun getTemperature(): Double                       // 纯查询
-fun updateInterval(newInterval: Long)              // 有副作用，名字已说明
+副作用最小化和避免隐式魔法本质上是同一件事：**调用方不应该在读函数体之后才发现某些参数被改了、某些行为悄悄发生了。** 签名就是 API 的契约，契约不说谎。
 
-// ❌ 查询方法偷偷干了别的事
-fun getTemperature(): Double {
-    lastAccessTime = System.currentTimeMillis()    // 偷偷修改了内部状态
-    httpClient.connect()                           // 偷偷发了个网络请求
-    return currentTemp
-}
+拿一个真实案例来讲——汽车电子行业里，UDS 诊断协议的 0x27 服务（SecurityAccess）要求 ECU 供应商提供一个 DLL，整车厂调用它来解锁 ECU。国内两大供应商——周立功（ZLG）和 Vector——各自给出了模板。同一个功能，签名天差地别。
+
+```c
+// ❌ 周立功版：返回 int（不可读），前缀全标 i（说谎），没有缓冲区容量（隐式越界风险）
+extern "C" int ZLGKey(
+    const unsigned char* iSeedArray,        
+    unsigned short iSeedArraySize,          
+    unsigned int iSecurityLevel,            
+    const char* iVariant,                    
+    unsigned char* iKeyArray,              // 标了 i，但实际上是输出缓冲区
+    unsigned short* iKeyArraySize          // 标了 i，但函数会修改它的值（输入+输出）
+);
 ```
 
-你在 `getTemperature()` 里更新了 `lastAccessTime`——这个字段下次查询时的值变了。调用方完全不知道，测试也很难 mock。**副作用一旦不可见，调试就变成了猜谜。**
+三个问题，全是命名不说谎导致的：
 
-#### 5. 避免隐式魔法行为
+- **返回 `int`，错误不可读**。`-1` 还是 `0`？安全等级不对还是缓冲区太小？一个数字说不清任何事——和第四章"错误即信息"呼应。
+- **前缀全标 `i`，但实际行为相反**。`iKeyArray` 是输出缓冲区，`iKeyArraySize` 会被原地修改。调用方看到 `i` 前缀以为只读，结果传进去的变量值被改了——下次循环用的还是被改过的值。
+- **没有缓冲区容量参数**。调用方没办法告诉函数"我分配了多大空间"，函数也没办法做越界检查。这是隐式魔法最危险的一类——**静默写穿你的栈帧。**
 
-**规范**：任何"自动帮你做的事"都需要在文档或方法名中明确声明。隐式重试、自动序列化、静默降级——这些看起来贴心的行为，在出错时会变成排查黑洞。
+再看 Vector 的同一功能：
 
-```kotlin
-// ✅ 显式：参数名已经说明会重试
-fun fetchWithRetry(url: String, maxRetries: Int = 3): Response
+```c
+// ✅ Vector 版：枚举返回值 + i/io/o 三分前缀 + const 修饰 + 缓冲区容量
+enum VKeyGenResultEx {
+    KGRE_Ok = 0,                  // 完成
+    KGRE_BufferToSmall = 1,       // 密钥长度太小 → 调用方一眼知道怎么改
+    KGRE_SecurityLevelInvalid = 2,
+    KGRE_VariantInvalid = 3,
+    KGRE_UnspecifiedError = 4
+};
 
-// ❌ 隐式：名字是 "fetch"，实际上内部重试了 5 次、延迟了 30 秒
-fun fetch(url: String): Response {
-    for (i in 1..5) {
-        try { return httpClient.get(url) }
-        catch (e: IOException) { Thread.sleep(6000) }
-    }
-}
+KEYGENALGO_API VKeyGenResultEx GenerateKeyEx(
+    const unsigned char*  ipSeedArray,           // i  → 纯输入，const 修饰
+    unsigned int          iSeedArraySize,        // i  → 纯输入
+    const unsigned int    iSecurityLevel,        // i  → 纯输入
+    const char*           ipVariant,             // i  → 纯输入
+    unsigned char*        iopKeyArray,           // io → 输入输出，调用方申请，函数填充
+    unsigned int          iMaxKeyArraySize,      // i  → 输入：明确告知缓冲区容量
+    unsigned int&         oActualKeyArraySize    // o  → 纯输出：引用参数，必定被修改
+);
 ```
 
-使用者在 `fetch()` 超时 30 秒后找到你，你告诉他"是自动重试了 5 次"——他的反应不会是"谢谢你的贴心"，而是"你为什么不提前告诉我？"
+Vector 做的对的事，每一条都在兑现"签名不说谎"：
+
+- **`i` / `io` / `o` 前缀三分**——看一眼声明就知道哪个参数只读、哪个会被改、哪个是纯输出。不需要读函数体。
+- **`const` 修饰纯输入**——编译器替你拦住误写。`ipSeedArray` 标了 `const`，函数里改它直接编译不过。
+- **枚举而非 int**——`KGRE_BufferToSmall` 比 `-1` 多了一整层语义。调用方不需要查文档就知道"哦，我给的缓冲区太小了"。
+- **`iMaxKeyArraySize`**——给调用方一个合法的输入口来告知容量，给函数一个合法的检查口来防止越界。**魔法变成了契约。**
+
+> 💡 **同样的 C 语言，同样的功能，好的签名和烂的签名之间就差这几件事：枚举而非 int、前缀说真话、const 管住手、缓冲区带容量。副作用不可怕，可怕的是你不知道它有副作用。**
 
 ### 最小惊奇在 SDK 设计中的精炼
 
@@ -332,20 +296,20 @@ fun fetch(url: String): Response {
 
 
 
-## 三、 🪶 最小依赖原则：零冗余，不绑架
+## 三、🥊 最小依赖原则：零冗余，不绑架
 
 > [!NOTE]
 >
-> **一句话定义**：SDK 只能依赖绝对必要的库。每多一个依赖，就是使用者多一个潜在的冲突点。
+> **一句话定义**：`SDK` 运行时只依赖绝对必要的底层库，且优先选择标准库或业界广泛使用的轻量库；所有可选功能做成 optional dependency，由调用方自行决定是否引入。
 
 ### 为什么依赖要最小化
 
 你引入一个第三方库，表面上只是加了一行 `implementation`。实际上你替所有使用者做了以下决定：
 
-- **版本冲突**：使用者的项目里已经有 `okhttp 4.9`，你的 SDK 硬编码依赖 `okhttp 4.12`——编译不过。
-- **包体积膨胀**：一个轻量的工具 SDK，因为引入了 Guava 全家桶，jar 从 50KB 变成 3MB。
-- **安全漏洞传播**：你依赖的库爆了 CVE，所有依赖你的项目全部要紧急升级。
-- **许可证污染**：你引入了一个 GPL 协议的库，使用者的商业项目被迫开源。
+- **版本冲突**：使用者的项目里已经有 `okhttp 4.9`，你的 SDK 硬编码依赖 `okhttp 4.12`——构建工具会自动把 4.9 静默升级成 4.12。这会存在潜在冲突。
+- **包体积膨胀**：一个几百 `KB` 的 `SDK` 因为传递依赖变成几 `MB`，对于移动端或边缘设备来说是灾难。
+- **安全漏洞传播**：每多一个依赖就多一个潜在的攻击面。如果某个传递依赖爆出高危漏洞，你的 SDK 也会被牵连。
+- **许可证污染**：你引入了一个 `GPL` 协议的库，使用者的商业项目被迫开源。
 
 **每引入一个依赖，你都是在替使用者做决定——而他们没有否决权。**
 
@@ -353,26 +317,10 @@ fun fetch(url: String): Response {
 
 **硬性标准**：
 
-- 运行时依赖只能包含：JSON 解析、HTTP 客户端、加密库——这些你不可能自己写的底层设施
-- 优先选择标准库。能用 `java.net.http` 就不用 OkHttp，能用 `kotlinx.serialization` 就不引入 Gson
+- 运行时依赖只能包含底层设施：JSON 解析、HTTP 客户端、加密库、Excel解析库——这些你不可能自己写的底层设施
+- 优先选择标准库。能用 `java.net.http` 就不用 `OkHttp`，能用 `kotlinx.serialization` 就不引入 `Gson`
 - 每次新增依赖前问自己："我能不能用 20 行代码代替这个库？"如果能，自己写
 - 定期审查依赖树，看哪些依赖实际上只用了其中一两个方法
-
-**可选依赖（Optional Dependency）**：
-
-```kotlin
-// ✅ 将特定序列化格式做成可选依赖
-// build.gradle.kts
-dependencies {
-    // 核心库：零外部依赖
-    implementation(kotlin("stdlib"))
-    
-    // 可选：使用者需要 Gson 支持时才引入
-    compileOnly("com.google.code.gson:gson:2.10.0")
-}
-```
-
-使用者在 `pom.xml` 或 `build.gradle` 里按需选择是否引入 Gson。他不会因为你的设计被迫拉一个不用的库。
 
 ### 反面例子
 
@@ -385,7 +333,7 @@ dependencies {
 }
 ```
 
-这不是 SDK，这是一个"依赖全家桶"。使用者的项目可能用的是 Vert.x 或 Ktor，你的 SDK 强行拉了一个 Spring Boot 进来——**他在引入你的 SDK 那一刻，构建系统就炸了。**
+这不是 `SDK`，这是一个"依赖全家桶"。使用者的项目可能用的是 `Vert.x` 或 `Ktor`，你的 SDK 强行拉了一个 Spring Boot 进来——**他在引入你的 SDK 那一刻，构建系统就炸了。**
 
 ```kotlin
 // ✅ 同一个 SDK，遵循最小依赖
@@ -472,6 +420,24 @@ fun sendSms(phone: String, text: String): Int {
 ```
 
 调用方拿到了 `-1`，然后呢？重试？还是提示用户”手机号格式错误”？还是联系管理员充值？**一个 `-1` 告诉不了任何人任何事。**
+
+这就是为什么第二章里 Vector 的 `GenerateKeyEx` 返回的是 `VKeyGenResultEx` 枚举而不是 `int`：
+
+```c
+// ❌ 周立功：返回 int，-1 和 0 说不清任何事
+extern “C” int ZLGKey(...);
+
+// ✅ Vector：返回枚举，每个值都是一条可操作的指令
+enum VKeyGenResultEx {
+    KGRE_Ok = 0,                  // 调用方：继续
+    KGRE_BufferToSmall = 1,       // 调用方：调大缓冲区再试
+    KGRE_SecurityLevelInvalid = 2,// 调用方：检查安全等级参数
+    KGRE_VariantInvalid = 3,      // 调用方：检查变体参数
+    KGRE_UnspecifiedError = 4     // 调用方：联系管理员
+};
+```
+
+`KGRE_BufferToSmall` 不只是”出错了”，它在告诉调用方**接下来该做什么**——把缓冲区调大再调一次。而 `-1` 什么也没说。
 
 > 💡 **错误处理的本质不是”告诉用户出错了”，而是”告诉用户接下来该怎么办”。**
 
