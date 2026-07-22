@@ -137,8 +137,6 @@ fun processString(input: String): String {
 
 这句话源于唐纳德·诺曼的《设计心理学》：**好的设计让东西自己会说话，坏的设计逼用户读说明书。**
 
-好设计的标志其实是：**用户用完觉得"这本来就该这样"，烂设计让用户觉得"我怎么连这都不会用"**——锅是设计师的，不是用户的。
-
 ### 惊奇感公式
 
 > 💡 **惊奇感的来源 = 实际行为 − 用户预期**
@@ -175,9 +173,9 @@ fun processString(input: String): String {
 
 #### 🎨 图标设计：看得懂 vs 猜不透
 
-- **VS Code**：图标风格统一，含义清晰——文件夹是文件夹，搜索是搜索，Git 分支是 Git 分支。看一眼就知道点哪里。
-- **JetBrains IDEA**：图标同样清晰，且支持**附带文本标签**——图标 + 文字双重确认，消除歧义。
-- **反面教材 —— TSMaster**：部分图标设计模凌两可，用户看到后不知道点下去会发生什么，只能一个一个试。下面是截图对比：
+- **`VS Code`**：图标风格统一，含义清晰——文件夹是文件夹，搜索是搜索，Git 分支是 Git 分支。看一眼就知道点哪里。
+- **`JetBrains IDEA`**：图标同样清晰，且支持**附带文本标签**——图标 + 文字双重确认，消除歧义。
+- **反面教材 —— `TSMaster`**：部分图标设计模凌两可，用户看到后不知道点下去会发生什么，只能一个一个试。下面是截图对比：
 - [ ] （此处附图）
 
 > 当图标设计本身无法传达含义时，文本标签就是设计失败的补丁——和那扇玻璃门上的"推"字一样。
@@ -199,21 +197,24 @@ fun processString(input: String): String {
 | `update` / `set` | 修改已有资源 | `updateProfile(user)` |
 | `is` / `has` / `can` | 返回布尔值 | `isConnected()`、`hasPermission()` |
 
-**反例**：`getUser` 在内部偷偷创建了一个新用户并写入数据库；`processData` 既不返回数据也不修改数据，而是发了封邮件——没人能从名字猜出它干了什么。
+**反例**：
+
+- `getUser`应该是只读，不会产生副作用；却在内部偷偷创建了一个新用户并写入数据库；
+- `processData` 应该只处理数据，既不返回数据也不修改数据；但是却发了封邮件——没人能从名字猜出它干了什么。
 
 #### 2. 参数顺序符合常识
 
 **规范**：参数排列应遵循"先主要后次要、先输入后输出、先目标后内容"的自然语序。
 
-```kotlin
-// ✅ 符合自然语序："给某人发某条消息"
-fun sendMessage(to: String, content: String)
+```java
+// ✅ Java 标准库：source 在前，destination 在后——几十年没变过
+System.arraycopy(src, srcPos, dest, destPos, length);
 
-// ❌ 反直觉："把消息内容发给某个人"——参数和自然语言顺序相反
-fun sendMessage(content: String, to: String)
+// ❌ 反直觉：把 dest 放在 src 前面——每次调用都要停顿想一下
+System.arraycopy(dest, destPos, src, srcPos, length);
 ```
 
-同样：`copyFile(source, target)` 不是 `copyFile(target, source)`；`move(from, to)` 不是 `move(to, from)`。这些是几十年编程史沉淀下来的肌肉记忆，不要挑战。
+从源数组到目标数组，非常符合使用直觉。
 
 #### 3. 返回值一致且可预测
 
@@ -234,61 +235,52 @@ fun findUsersByCity(city: String): List<User> // 找不到就抛 NoSuchElementEx
 
 #### 4. 副作用可感知：命名不说谎
 
-**规范**：函数签名必须诚实——参数是否会被修改、返回值是否可能为空、有没有自动重试，全部要在签名、前缀或名称中明示。
+**规范**：函数签名必须诚实——参数是否会被修改、返回值是否可能为空、有没有副作用，全部要在签名、前缀或名称中明示。**调用方不应该在读函数体之后才发现某些参数被改了、某些行为悄悄发生了。** 签名就是 `API `的契约，契约不说谎。
 
-副作用最小化和避免隐式魔法本质上是同一件事：**调用方不应该在读函数体之后才发现某些参数被改了、某些行为悄悄发生了。** 签名就是 API 的契约，契约不说谎。
-
-拿一个真实案例来讲——汽车电子行业里，UDS 诊断协议的 0x27 服务（SecurityAccess）要求 ECU 供应商提供一个 DLL，整车厂调用它来解锁 ECU。国内两大供应商——周立功（ZLG）和 Vector——各自给出了模板。同一个功能，签名天差地别。
+拿一个真实案例来讲——汽车电子行业里，UDS 诊断协议的 0x27 服务（`SecurityAccess`）要求 `ECU` 供应商提供一个 `DLL`，整车厂调用它来解锁 ECU。国内两大供应商——周立功（ZLG）和 Vector——各自给出了模板。同一个功能，签名天差地别。
 
 ```c
-// ❌ 周立功版：返回 int（不可读），前缀全标 i（说谎），没有缓冲区容量（隐式越界风险）
+// ❌ 周立功版：返回 int（魔法返回值, 不清楚返回值含义），前缀全标 i（说谎），没有缓冲区容量（隐式越界风险）
 extern "C" int ZLGKey(
     const unsigned char* iSeedArray,        
     unsigned short iSeedArraySize,          
     unsigned int iSecurityLevel,            
     const char* iVariant,                    
-    unsigned char* iKeyArray,              // 标了 i，但实际上是输出缓冲区
-    unsigned short* iKeyArraySize          // 标了 i，但函数会修改它的值（输入+输出）
+    unsigned char* iKeyArray,              // 标了 i，但实际上是输出缓冲区 (有副作用，但没有说明)
+    unsigned short* iKeyArraySize          // 标了 i，但函数会修改它的值 (有副作用，但没有说明)
 );
 ```
 
-三个问题，全是命名不说谎导致的：
-
-- **返回 `int`，错误不可读**。`-1` 还是 `0`？安全等级不对还是缓冲区太小？一个数字说不清任何事——和第四章"错误即信息"呼应。
-- **前缀全标 `i`，但实际行为相反**。`iKeyArray` 是输出缓冲区，`iKeyArraySize` 会被原地修改。调用方看到 `i` 前缀以为只读，结果传进去的变量值被改了——下次循环用的还是被改过的值。
-- **没有缓冲区容量参数**。调用方没办法告诉函数"我分配了多大空间"，函数也没办法做越界检查。这是隐式魔法最危险的一类——**静默写穿你的栈帧。**
-
-再看 Vector 的同一功能：
+而 Vector 的同一功能，签名里把一切都说明白了：
 
 ```c
-// ✅ Vector 版：枚举返回值 + i/io/o 三分前缀 + const 修饰 + 缓冲区容量
+// ✅ Vector 版：枚举返回值(避免了魔法返回值) + i/io/o 三分前缀 + const 修饰 + 缓冲区容量
+/* Vector 安全算法 GenerateKeyEx 的返回值 */
 enum VKeyGenResultEx {
-    KGRE_Ok = 0,                  // 完成
-    KGRE_BufferToSmall = 1,       // 密钥长度太小 → 调用方一眼知道怎么改
-    KGRE_SecurityLevelInvalid = 2,
-    KGRE_VariantInvalid = 3,
-    KGRE_UnspecifiedError = 4
+	/* 完成 */
+	KGRE_Ok = 0,
+	/* 缓冲区太小 */
+	KGRE_BufferToSmall = 1,
+	/* 安全等级无效 */
+	KGRE_SecurityLevelInvalid = 2,
+	/* 变体参数无效 */
+	KGRE_VariantInvalid = 3,
+	/* 未指定错误 */
+	KGRE_UnspecifiedError = 4
 };
 
 KEYGENALGO_API VKeyGenResultEx GenerateKeyEx(
-    const unsigned char*  ipSeedArray,           // i  → 纯输入，const 修饰
-    unsigned int          iSeedArraySize,        // i  → 纯输入
-    const unsigned int    iSecurityLevel,        // i  → 纯输入
-    const char*           ipVariant,             // i  → 纯输入
-    unsigned char*        iopKeyArray,           // io → 输入输出，调用方申请，函数填充
-    unsigned int          iMaxKeyArraySize,      // i  → 输入：明确告知缓冲区容量
-    unsigned int&         oActualKeyArraySize    // o  → 纯输出：引用参数，必定被修改
+    const unsigned char*  ipSeedArray,           // i  → 纯输入
+    unsigned int          iSeedArraySize,        // i
+    const unsigned int    iSecurityLevel,        // i
+    const char*           ipVariant,             // i
+    unsigned char*        iopKeyArray,           // io → 既是输入，也是输出；会被填充
+    unsigned int          iMaxKeyArraySize,      // i  → 缓冲区容量，纯输入
+    unsigned int&         oActualKeyArraySize    // o  → 纯输出
 );
 ```
 
-Vector 做的对的事，每一条都在兑现"签名不说谎"：
-
-- **`i` / `io` / `o` 前缀三分**——看一眼声明就知道哪个参数只读、哪个会被改、哪个是纯输出。不需要读函数体。
-- **`const` 修饰纯输入**——编译器替你拦住误写。`ipSeedArray` 标了 `const`，函数里改它直接编译不过。
-- **枚举而非 int**——`KGRE_BufferToSmall` 比 `-1` 多了一整层语义。调用方不需要查文档就知道"哦，我给的缓冲区太小了"。
-- **`iMaxKeyArraySize`**——给调用方一个合法的输入口来告知容量，给函数一个合法的检查口来防止越界。**魔法变成了契约。**
-
-> 💡 **同样的 C 语言，同样的功能，好的签名和烂的签名之间就差这几件事：枚举而非 int、前缀说真话、const 管住手、缓冲区带容量。副作用不可怕，可怕的是你不知道它有副作用。**
+**同样的功能，同一个行业。好的签名跟你诚实交代每一个参数的角色，烂的签名让你猜。** 和第四章呼应——`KGRE_BufferToSmall` 不只是"出错了"，它在告诉调用方**接下来该做什么**（缓冲区太小），而周立功的 `-1` 什么都没说。
 
 ### 最小惊奇在 SDK 设计中的精炼
 
@@ -317,7 +309,7 @@ Vector 做的对的事，每一条都在兑现"签名不说谎"：
 
 **硬性标准**：
 
-- 运行时依赖只能包含底层设施：JSON 解析、HTTP 客户端、加密库、Excel解析库——这些你不可能自己写的底层设施
+- 运行时依赖只能包含底层设施：`JSON` 解析、`HTTP` 客户端、加密库、`Excel`解析库——这些你不可能自己写的底层设施
 - 优先选择标准库。能用 `java.net.http` 就不用 `OkHttp`，能用 `kotlinx.serialization` 就不引入 `Gson`
 - 每次新增依赖前问自己："我能不能用 20 行代码代替这个库？"如果能，自己写
 - 定期审查依赖树，看哪些依赖实际上只用了其中一两个方法
@@ -325,24 +317,23 @@ Vector 做的对的事，每一条都在兑现"签名不说谎"：
 ### 反面例子
 
 ```kotlin
-// ❌ 一个简单的 REST SDK 的依赖
+// ❌ 一个小工具 SDK，依赖却比业务项目还重
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web:3.0.0")  // 整个 Spring Boot
-    implementation("com.google.guava:guava:32.0.0-jre")  // 只用了 Preconditions.checkNotNull
-    implementation("org.apache.commons:commons-lang3:3.12.0")  // 只用了 StringUtils.isBlank
+    implementation("com.google.guava:guava:32.0.0-jre")      // 只用了 Preconditions.checkNotNull
+    implementation("org.apache.commons:commons-lang3:3.12.0") // 只用了 StringUtils.isBlank
+    implementation("com.google.code.gson:gson:2.10.0")       // 只做了一处 JSON 序列化
 }
 ```
 
-这不是 `SDK`，这是一个"依赖全家桶"。使用者的项目可能用的是 `Vert.x` 或 `Ktor`，你的 SDK 强行拉了一个 Spring Boot 进来——**他在引入你的 SDK 那一刻，构建系统就炸了。**
+三个库加起来几 MB，SDK 自己的代码才几百行。这不是"为了省事"，这是"把使用者的项目当垃圾桶"。
 
 ```kotlin
 // ✅ 同一个 SDK，遵循最小依赖
 dependencies {
     implementation(kotlin("stdlib"))                     // 标准库，无争议
-    implementation("com.squareup.okhttp3:okhttp:4.12.0") // HTTP，必需的底层设施
     // Guava? 自己写 checkNotNull —— 3行代码
     // commons-lang3? 自己写 isBlank —— 1行代码
-    // Spring Boot? 完全不依赖框架，用标准 HTTP 接口
+    // Gson? 用 kotlinx.serialization 
 }
 ```
 
@@ -352,7 +343,11 @@ dependencies {
 
 > [!NOTE]
 >
-> **一句话定义**：SDK 的每一个错误都应该让调用方能**程序化地判断”下一步该做什么”**——重试、换参数、还是联系管理员。
+> **核心思想**：所有可预见的错误都要有结构化的表达，帮助调用方快速定位和处理。
+>
+> - 定义基础异常类和分类子异常（如 `AuthException`、`NetworkException`、`ValidationException`）
+> - 错误码采用三段式：`[服务前缀]-[错误级别]-[序号]`，附带人类可读消息和排查指引
+> - 严禁直接抛出裸 `RuntimeException` 或返回无意义的数字码
 
 ### 为什么错误处理需要体系化
 
@@ -405,26 +400,13 @@ try {
 }
 ```
 
-**错误码三段式**：格式 `[服务前缀]-[错误级别]-[序号]`。`SDB-ERR-1001` → 使用者在日志里看到它，不需要翻 SDK 源码就知道是 smart-dbc 的文件解析错误。
-
 ### 反面例子
 
-```kotlin
-// ❌ 全部返回 -1 或抛出 RuntimeException
-fun sendSms(phone: String, text: String): Int {
-    if (phone.isEmpty()) return -1       // 参数错误 → -1
-    if (networkDown()) return -1         // 网络错误 → 还是 -1
-    if (quotaExceeded()) return -1       // 配额超限 → 仍然是 -1
-    return 0
-}
-```
-
-调用方拿到了 `-1`，然后呢？重试？还是提示用户”手机号格式错误”？还是联系管理员充值？**一个 `-1` 告诉不了任何人任何事。**
-
-这就是为什么第二章里 Vector 的 `GenerateKeyEx` 返回的是 `VKeyGenResultEx` 枚举而不是 `int`：
+这就是为什么第二章里 `Vector` 的 `GenerateKeyEx` 返回的是 `VKeyGenResultEx` 枚举而不是 `int`：
 
 ```c
 // ❌ 周立功：返回 int，-1 和 0 说不清任何事
+// 调用方拿到了 `-1`，然后呢？重试？还是怎么？一个 -1 告诉不了任何人任何事。
 extern “C” int ZLGKey(...);
 
 // ✅ Vector：返回枚举，每个值都是一条可操作的指令
@@ -451,59 +433,43 @@ enum VKeyGenResultEx {
 
 你在初始化时设了 `timeout = 30`，结果某个后台线程把超时改成了 `5`——所有请求开始大面积超时。你在日志里找了两个小时，最后发现是一个配置文件热加载器动了全局静态变量。
 
-**可变配置 = 可调试性灾难。** 多线程环境下，一个被意外修改的配置值会让 bug 变成幽灵——时而出现、时而消失、无法稳定复现。
+**可变配置 = 可调试性灾难。** 多线程环境下，一个被意外修改的配置值会让 `bug` 变成幽灵——时而出现、时而消失、无法稳定复现。
 
 ### 怎么做
 
-**Builder 模式 + 构造后冻结**：
+Kotlin 的 `data class` + 默认参数，一行搞定 Java 需要几十行 Builder 才能做的事：
 
 ```kotlin
-// ✅ 配置对象：构造完成后不可变
-class SdkConfig private constructor(
-    val baseUrl: String,
-    val connectTimeout: Long,
-    val readTimeout: Long,
-    val maxRetries: Int
-) {
-    class Builder {
-        private var baseUrl: String = ""
-        private var connectTimeout: Long = 30_000
-        private var readTimeout: Long = 30_000
-        private var maxRetries: Int = 3
+// ✅ data class + 默认参数：构造后所有字段都是 val，天然不可变
+data class SdkConfig(
+    val baseUrl: String,                        // 必填，没有默认值
+    val connectTimeout: Long = 30_000,          // 可选，有默认值
+    val readTimeout: Long = 30_000,             // 可选
+    val maxRetries: Int = 3                     // 可选
+)
 
-        fun baseUrl(url: String) = apply { this.baseUrl = url }
-        fun connectTimeout(ms: Long) = apply { this.connectTimeout = ms }
-        fun readTimeout(ms: Long) = apply { this.readTimeout = ms }
-        fun maxRetries(n: Int) = apply { this.maxRetries = n }
-
-        fun build(): SdkConfig {
-            require(baseUrl.isNotBlank()) { "baseUrl 不能为空" }
-            require(connectTimeout > 0) { "connectTimeout 必须大于 0" }
-            return SdkConfig(baseUrl, connectTimeout, readTimeout, maxRetries)
-        }
-    }
-}
-
-val config = SdkConfig.Builder()
-    .baseUrl("https://api.example.com")
-    .connectTimeout(10_000)
-    .build()
+// 使用者只传关心的那几项，其余走默认值
+val config = SdkConfig(
+    baseUrl = "https://api.example.com",
+    connectTimeout = 10_000
+)
 // config.connectTimeout = 5000  // ❌ 编译错误：val 不能重新赋值
 ```
 
-**提供合理默认值**：覆盖 80% 场景（连接超时 30 秒、重试 3 次），使用者只改自己关心的那几项。不需要看完整个配置文档才能写第一行代码。
+无默认值的参数（`baseUrl`）= 必填，有默认值的 = 可选。**覆盖 80% 场景的默认值让你一行不改就能跑，剩下 20% 你按需覆写。** 
 
 ### 反面例子
 
 ```kotlin
-// ❌ 全局静态变量，谁都能改
+// ❌ data class 用了 var——构造后随时可以被改
+data class SdkConfig(
+    var baseUrl: String = "",
+    var connectTimeout: Long = 30_000
+)
+
+// ❌ 全局静态变量
 object GlobalConfig {
     var timeout: Long = 30_000
-}
-
-// ❌ 允许构造后修改
-class SdkClient(config: SdkConfig) {
-    var config = config  // var！随时可以被改掉
 }
 ```
 
@@ -513,7 +479,7 @@ class SdkClient(config: SdkConfig) {
 
 > [!NOTE]
 >
-> **一句话定义**：SDK 通过日志门面输出，让使用者用自己的日志框架接管。不要在 SDK 里写死 `println` 或绑定特定日志实现。
+> **一句话定义**：`SDK` 通过日志门面输出，让使用者用自己的日志框架接管。不要在 `SDK` 里写死 `println` 或绑定特定日志实现。
 
 ### 为什么日志不能写死
 
@@ -524,7 +490,7 @@ class SdkClient(config: SdkConfig) {
 ### 怎么做
 
 ```kotlin
-// ✅ 使用 SLF4J 门面
+// 在你的 SDK 中（面向 SLF4J 编程） ✅ 使用 SLF4J 门面
 import org.slf4j.LoggerFactory
 
 class SdkClient(private val config: SdkConfig) {
@@ -557,7 +523,7 @@ import ch.qos.logback.classic.Logger  // 直接依赖实现，而非门面
 
 > 💡 **SDK 是客人，客人不应该擅自决定客厅的装修风格。**
 
-##  测试与质量保障
+##  七、测试与质量保障
 
 > [!NOTE]
 >
@@ -648,7 +614,7 @@ README 的开头必须有一段”复制 → 粘贴 → 运行”就能看到效
 ```kotlin
 // ✅ 30 秒能跑起来的最简示例
 // 1. 添加依赖
-implementation(“io.github.shilic:smart-dbc:1.0.0”)
+implementation(“io.github.shilic:smart-dbc:1.0.11”)
 
 // 2. 三行代码看到结果
 val dbc = Dbc.read(File(“example.dbc”))
@@ -656,16 +622,14 @@ val speedSignals = dbc.messages.flatMap { it.signals }.filter { it.name.contains
 println(“找到 ${speedSignals.size} 个速度相关信号”)
 ```
 
-不是”写一个示例让用户看完觉得牛逼”，而是”**用户复制完 30 秒内看到正确结果，然后觉得这个东西可以接着用。**”
+### `FAQ` 和排错指南
 
-### FAQ 和排错指南
-
-README 里至少回答：依赖冲突了怎么办？超时时间怎么调？怎么在 Android 上使用？错误码在哪查？**每一个你回答过的 GitHub Issue，都应该成为 FAQ 里的一条。**
+`README` 里至少回答：依赖冲突了怎么办？超时时间怎么调？怎么在 `Android` 上使用？错误码在哪查？**每一个你回答过的 `GitHub Issue`，都应该成为 FAQ 里的一条。**
 
 ### 反面例子
 
-- 只有一个空 README，写”请参考源码”
-- README 上的示例是 1.0 的 API，实际已经 2.0——复制的第一行就编译不过
+- 只有一个空 `README`，写”请参考源码”
+- `README` 上的示例是 1.0 的 API，实际已经 2.0——复制的第一行就编译不过
 - `examples/` 目录里的代码从来没编译过
 
 > 💡 **好的文档不教用户怎么”用”你的 SDK——而是帮他解决”用你的 SDK 时遇到的问题”。**
