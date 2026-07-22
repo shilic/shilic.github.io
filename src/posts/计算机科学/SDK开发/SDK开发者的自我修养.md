@@ -215,11 +215,14 @@ fun sendMessage(content: String, to: String)
 
 同样：`copyFile(source, target)` 不是 `copyFile(target, source)`；`move(from, to)` 不是 `move(to, from)`。这些是几十年编程史沉淀下来的肌肉记忆，不要挑战。
 
-**一个真实的 C 语言反面案例 ——两大厂家 27服务的 DLL模版**：
+**一个真实的 C 语言反面案例 —— 两大厂家的 27 服务 DLL 模板**：
+
+汽车电子行业里，UDS 诊断协议的 0x27 服务（SecurityAccess）要求 ECU 供应商提供一个 DLL，供整车厂在产线和售后工具中调用以解锁 ECU。国内两大供应商——周立功（ZLG）和 Vector——各自给出了模板。同一个功能，签名天差地别。
+
+先看周立功的：
 
 ```c
-// ❌ 周立功版 API：所有参数全标 i——但 iKeyArray 是输出缓冲区，iKeyArraySize 会被函数修改
-// ❌  返回 int ，错误不清晰
+// ❌ 周立功版：返回 int，错误不清晰；所有参数全标 i，但有的实际是输出
 extern "C" int ZLGKey(
     const unsigned char* iSeedArray,        
     unsigned short iSeedArraySize,          
@@ -230,50 +233,43 @@ extern "C" int ZLGKey(
 );
 ```
 
-我们再来看`Vector`的函数签名:
+三个问题：
+
+- **返回 `int`，错误不可读**。调用方拿到 `-1` 或者 `0`，不知道是安全等级不对还是缓冲区太小——和第四章讲的一样，一个数字说不清任何事。
+- **前缀全标 `i`，但实际行为相反**。`iKeyArray` 是输出缓冲区，`iKeyArraySize` 会被函数原地修改。调用方看到 `i` 以为只读，结果传进去的变量值被改了，下次循环用的还是被改过的值——bug 就是这么来的。
+- **没有缓冲区容量参数**。调用方没办法告诉函数"我分配的缓冲区有多大"，函数也没办法判断会不会越界写。全靠调用方"猜一个够大的数"。
+
+再看 Vector 的同一功能：
 
 ```c
-/* Vector 安全算法 GenerateKeyEx 的返回值 */
+// ✅ Vector 版：枚举返回值，前缀 i/io/o 三分，每个参数有明确注释
 enum VKeyGenResultEx {
-	/* 完成 */
-	KGRE_Ok = 0,
-	/* 密钥长度太小 */
-	KGRE_BufferToSmall = 1,
-	/* 安全等级无效 */
-	KGRE_SecurityLevelInvalid = 2,
-	/* 变体参数无效 */
-	KGRE_VariantInvalid = 3,
-	/* 未指定错误 */
-	KGRE_UnspecifiedError = 4
+    KGRE_Ok = 0,                  // 完成
+    KGRE_BufferToSmall = 1,       // 密钥长度太小
+    KGRE_SecurityLevelInvalid = 2,// 安全等级无效
+    KGRE_VariantInvalid = 3,      // 变体参数无效
+    KGRE_UnspecifiedError = 4     // 未指定错误
 };
 
-/*
-*  ✅ Vector 版 API：命名清晰——io=输入输出，o=纯输出; 
-*  传入安全种子和安全等级，在这里计算你的密钥，最后再返回密钥和密钥的大小。
-*  ✅  如果出错就直接返回枚举值中的错误。相比于周立功返回一个int值，错误更清晰了。
-*/
-
 KEYGENALGO_API VKeyGenResultEx GenerateKeyEx(
-	/* ipSeedArray ：i 输入参数，安全种子的数组 */
-	const unsigned char*  ipSeedArray,
-	/* iSeedArraySize：i 输入参数，安全种子的大小(数值类型) */
-	unsigned int  iSeedArraySize,
-	/* iSecurityLevel：i 输入参数，安全等级，例如1或者2或3  */
-	const unsigned int iSecurityLevel,   
-	/* ipVariant：i 输入参数，变体参数，任何你自定义的参数，字符串类型，可为空，一般都是空 */
-	const char* ipVariant,
-	/* keyArray ： io 输入输出, 返回的密钥数组 */
-	unsigned char* iopKeyArray,
-	/* iMaxKeyArraySize ：i 输入参数，密钥的最大长度(没搞懂这个参数什么意思，这个参数是相比于周立功的函数多出来的参数) */
-	unsigned int iMaxKeyArraySize,
-	/* oActualKeyArraySize  ：o 纯范围 返回密钥的长度 */
-	unsigned int& oActualKeyArraySize
+    const unsigned char*  ipSeedArray,           // i  → 纯输入，const 修饰
+    unsigned int          iSeedArraySize,        // i  → 纯输入，数值类型
+    const unsigned int    iSecurityLevel,        // i  → 纯输入
+    const char*           ipVariant,             // i  → 纯输入，可为空
+    unsigned char*        iopKeyArray,           // io → 输入输出，调用方申请空间，函数填充
+    unsigned int          iMaxKeyArraySize,      // i  → 输入，缓冲区的最大容量
+    unsigned int&         oActualKeyArraySize    // o  → 纯输出，引用参数一眼能看出会被修改
 );
 ```
 
-新版把旧版 `ioKeyArray` 的 `io` 前缀改成了 `i`，把 `oSize` 引用参数改成了 `iKeyArraySize` 指针——前缀全标 `i`，但 `iKeyArray` 实际上是**输出缓冲区**，`iKeyArraySize` 会被函数**原地修改**。调用方看到 `i` 前缀以为只是传入，结果传进去的变量值被改了——**参数命名和实际行为矛盾，这就是惊奇感的来源。**
+同样的功能，Vector 做了几件对的事：
 
-> 💡 **命名前缀不仅是文档，是 API 契约。使用者根据前缀判断参数行为，前缀说谎 = 契约违约。**
+- **返回值用枚举**——`KGRE_BufferToSmall` 比 `-1` 多了一整层语义：调用方不需要查文档就知道"哦，我给的缓冲区太小了"。
+- **前缀三分**——`i` = 只读输入，`io` = 会被修改，`o` = 纯输出引用。使用者不需要读函数体，看声明就知道哪个参数会被改。
+- **`const` 修饰纯输入**——编译器替你拦住误写。`ipSeedArray` 标了 `const`，函数里改它编译不过。
+- **多了 `iMaxKeyArraySize`**——调用方明确告知缓冲区容量，函数内部可以做越界检查，而不是祈祷调用方"猜得够大"。
+
+> 💡 **同样的 C 语言，同样的功能，好的签名和烂的签名之间就差这几件事：枚举而非 int、前缀说真话、const 管住手、缓冲区带容量。这些不是炫技，是让调用方不踩坑。**
 
 #### 3. 返回值一致且可预测
 
