@@ -423,59 +423,7 @@ enum VKeyGenResultEx {
 
 > 💡 **错误处理的本质不是”告诉用户出错了”，而是”告诉用户接下来该怎么办”。**
 
-## 五、 ⚙️ 配置集中且线程安全
-
-> [!NOTE]
->
-> **一句话定义**：所有可配置项通过一个不可变的配置对象传入，构造完成后冻结。不要让使用者猜"这个 SDK 运行时到底用了什么配置"。
-
-### 为什么配置要集中且不可变
-
-你在初始化时设了 `timeout = 30`，结果某个后台线程把超时改成了 `5`——所有请求开始大面积超时。你在日志里找了两个小时，最后发现是一个配置文件热加载器动了全局静态变量。
-
-**可变配置 = 可调试性灾难。** 多线程环境下，一个被意外修改的配置值会让 `bug` 变成幽灵——时而出现、时而消失、无法稳定复现。
-
-### 怎么做
-
-Kotlin 的 `data class` + 默认参数，一行搞定 Java 需要几十行 Builder 才能做的事：
-
-```kotlin
-// ✅ data class + 默认参数：构造后所有字段都是 val，天然不可变
-data class SdkConfig(
-    val baseUrl: String,                        // 必填，没有默认值
-    val connectTimeout: Long = 30_000,          // 可选，有默认值
-    val readTimeout: Long = 30_000,             // 可选
-    val maxRetries: Int = 3                     // 可选
-)
-
-// 使用者只传关心的那几项，其余走默认值
-val config = SdkConfig(
-    baseUrl = "https://api.example.com",
-    connectTimeout = 10_000
-)
-// config.connectTimeout = 5000  // ❌ 编译错误：val 不能重新赋值
-```
-
-无默认值的参数（`baseUrl`）= 必填，有默认值的 = 可选。**覆盖 80% 场景的默认值让你一行不改就能跑，剩下 20% 你按需覆写。** 
-
-### 反面例子
-
-```kotlin
-// ❌ data class 用了 var——构造后随时可以被改
-data class SdkConfig(
-    var baseUrl: String = "",
-    var connectTimeout: Long = 30_000
-)
-
-// ❌ 全局静态变量
-object GlobalConfig {
-    var timeout: Long = 30_000
-}
-```
-
-> 💡 **配置的本质是"承诺"——你承诺使用者在 SDK 生命周期内配置不变。承诺一旦可被外部打破，信任就没了。**
-
-## 六、 📋 日志可插拔：绝不强制绑定日志框架
+## 五、 📋 日志可插拔：绝不强制绑定日志框架
 
 > [!NOTE]
 >
@@ -483,7 +431,7 @@ object GlobalConfig {
 
 ### 为什么日志不能写死
 
-使用者的项目用的是 SLF4J + Logback，你的 SDK 直接 `System.out.println`。结果：SDK 日志出现在控制台而非日志文件，运维看不到；无法按级别过滤；格式和项目统一格式不一致，ELK 解析不了。
+使用者的项目用的是 `SLF4J` + `Logback`，你的 `SDK` 直接 `System.out.println`。结果：`SDK` 日志出现在控制台而非日志文件，运维看不到；无法按级别过滤；格式和项目统一格式不一致，`ELK` 解析不了。
 
 **你写了 `println`，等于替他决定了"这个信息不重要，丢控制台就行"。**
 
@@ -523,7 +471,7 @@ import ch.qos.logback.classic.Logger  // 直接依赖实现，而非门面
 
 > 💡 **SDK 是客人，客人不应该擅自决定客厅的装修风格。**
 
-##  七、测试与质量保障
+## 六、 🧪 测试与质量保障
 
 > [!NOTE]
 >
@@ -589,7 +537,7 @@ fun `使用内置 MockServer 测试完整请求链路`() {
 
 > 💡 **你能想到的边界条件不去测试，使用者在生产环境就会替你测。**
 
-## 八、 📖 良好的文档和示例
+## 七、 📖 良好的文档和示例
 
 > [!NOTE]
 >
@@ -634,7 +582,7 @@ println(“找到 ${speedSignals.size} 个速度相关信号”)
 
 > 💡 **好的文档不教用户怎么”用”你的 SDK——而是帮他解决”用你的 SDK 时遇到的问题”。**
 
-## 九、 🔄 持续交付与发布流程
+## 八、 🔄 持续交付与发布流程
 
 > [!NOTE]
 >
