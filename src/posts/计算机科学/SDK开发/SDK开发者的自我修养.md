@@ -109,7 +109,7 @@ fun processString(input: String): String {
 
 先来看一个，`2023`年的同星`TSMaster API`，是如何接收一组报文的，真实源代码如下，此时的函数签名还是`tsfifo_receive_can_message_list`
 
-![image-20260723220229111](./assets/image-20260723220229111.png)
+![TSMaster API 2023 年版本](./assets/image-20260723220229111.png)
 
 我们再来看一下，2025年的同星`TSMaster API`是如何接收一组报文的。
 
@@ -117,15 +117,15 @@ fun processString(input: String): String {
 >
 > 截图为证，同星的工程师们，你们别抵赖哈！！
 
-![image-20260723220658452](./assets/image-20260723220658452.png)
+![TSMaster API 2025年版本](./assets/image-20260723220658452.png)
 
-![image-20260723220840075](./assets/image-20260723220840075.png)
+![TSMaster API 2025年版本](./assets/image-20260723220840075.png)
 
 原来的`tsfifo_receive_can_message_list`函数直接被删除了，替换成了`tsfifo_receive_can_msgs_list`，并且函数的参数的类型也乱改了。
 
 可能同星`TSMaster API`的工程师觉得，我既然是读取 **一组** 报文，那名称命名为 `msgs`应该很合理吧。你是觉得很合理了，那你有考虑过用户的感受吗，2023年还是`message`，到了2025年直接变成`msgs`，原来的上位机程序直接无法运行了。
 
-这就是其前边一直说的：`接口就是契约`，这件事非常重要，我承诺一旦我的SDK发布，我的函数签名将不会有任何改动。好在不是把SDK发布到`nuget`，要不然将会被骂惨。关于如何将软件包发布到公共仓库，可以看我之前的博客。
+这就是我前边一直说的：`接口就是契约`，这件事非常重要，我承诺一旦我的SDK发布，我的函数签名将不会有任何改动。好在不是把SDK发布到`nuget`，要不然将会被骂惨。关于如何将软件包发布到公共仓库，可以看我之前的博客。
 
 #### 正确的做法
 
@@ -156,6 +156,8 @@ public static int tsfifo_receive_can_msgs_list(ref TLIBCAN[] ACANBuffers, ref in
         Marshal.FreeHGlobal(intPtr);
     }
 }
+// 以下是正确做法
+
 /// <summary> 从缓冲队列中读取一组报文 </summary> 
 /// <since>2023.6.14.901</since>
 [Obsolete("该接口已废弃，请使用 tsfifo_receive_can_msgs_list 替代")]
@@ -216,17 +218,17 @@ public static int tsfifo_receive_can_message_list(ref TLIBCAN[] ACANMsgBuffer, i
 
 - **`VS Code`**：图标风格统一，含义清晰——文件夹是文件夹，搜索是搜索，Git 分支是 Git 分支。看一眼就知道点哪里。
 
-![image-20260723215033423](./assets/image-20260723215033423.png)
+![VS Code](./assets/image-20260723215033423.png)
 
 - **`JetBrains IDEA`**：图标同样清晰，且支持**附带文本标签**——图标 + 文字双重确认，消除歧义。
 
-![image-20260723214943154](./assets/image-20260723214943154.png)
+![JetBrains IDEA](./assets/image-20260723214943154.png)
 
-![image-20260723215003460](./assets/image-20260723215003460.png)
+![JetBrains IDEA](./assets/image-20260723215003460.png)
 
 - **反面教材 —— `TSMaster`**：部分图标设计模凌两可，用户看到后不知道点下去会发生什么，只能一个一个试。下面是截图对比：
 
-  ![TSMaster的图标](./assets/image-20260723214521943.png)
+  ![TSMaster模凌两可的图标，还没有文字](./assets/image-20260723214521943.png)
 
   
 
@@ -236,7 +238,7 @@ public static int tsfifo_receive_can_message_list(ref TLIBCAN[] ACANMsgBuffer, i
 
 上面都是物理世界的例子。回到 `SDK` 设计，最小惊奇原则落地为几条硬规范：
 
-#### 1. 命名遵循行业惯例
+#### 1. 函数命名即契约：副作用可见，无隐式魔法
 
 **规范**：
 
@@ -291,14 +293,12 @@ fun findUsersByCity(city: String): List<User> // 找不到就抛 NoSuchElementEx
 
 调用方要写三套不同的判空逻辑。这就是心智负担——不是在用你的 API，是在**防御你的 API**。
 
-#### 4. 副作用可感知：命名不说谎
+#### 反面例子: 周立功27服务安全算法的函数签名
 
-**规范**：函数签名必须诚实——参数是否会被修改、返回值是否可能为空、有没有副作用，全部要在签名、前缀或名称中明示。**调用方不应该在读函数体之后才发现某些参数被改了、某些行为悄悄发生了。** 签名就是 `API `的契约，契约不说谎。
-
-拿一个真实案例来讲——汽车电子行业里，UDS 诊断协议的 0x27 服务（`SecurityAccess`）要求 `ECU` 供应商提供一个 `DLL`，整车厂调用它来解锁 ECU。国内两大供应商——周立功（ZLG）和 Vector——各自给出了模板。同一个功能，签名天差地别。
+汽车电子行业里，UDS 诊断协议的 0x27 服务（`SecurityAccess`）要求 `ECU` 供应商提供一个 `DLL`，整车厂调用它来解锁 ECU。国内两大供应商——周立功（ZLG）和 Vector——各自给出了模板。同一个功能，签名天差地别。
 
 ```c
-// ❌ 周立功版：返回 int（魔法返回值, 不清楚返回值含义），前缀全标 i（说谎），没有缓冲区容量（隐式越界风险）
+// 周立功版：❌ 返回 int（魔法返回值, 不清楚返回值含义），❌ 前缀全标 i（说谎），❌ 没有缓冲区容量（隐式越界风险）
 extern "C" int ZLGKey(
     const unsigned char* iSeedArray,        
     unsigned short iSeedArraySize,          
@@ -312,7 +312,7 @@ extern "C" int ZLGKey(
 而 Vector 的同一功能，签名里把一切都说明白了：
 
 ```c
-// ✅ Vector 版：枚举返回值(避免了魔法返回值) + i/io/o 三分前缀 + const 修饰 + 缓冲区容量
+// Vector 版： ✅ 枚举返回值(避免了魔法返回值) + ✅ i/io/o 三分前缀 + const 修饰 + ✅  缓冲区容量
 /* Vector 安全算法 GenerateKeyEx 的返回值 */
 enum VKeyGenResultEx {
 	/* 完成 */
@@ -340,9 +340,11 @@ KEYGENALGO_API VKeyGenResultEx GenerateKeyEx(
 
 **同样的功能，同一个行业。好的签名跟你诚实交代每一个参数的角色，烂的签名让你猜。** 和第四章呼应——`KGRE_BufferToSmall` 不只是"出错了"，它在告诉调用方**接下来该做什么**（缓冲区太小），而周立功的 `-1` 什么都没说。
 
-### 最小惊奇在 SDK 设计中的精炼
+### 最小惊奇在 SDK 设计中
 
 > 💡 使用者拿起你的 SDK，三分钟能跑通第一个 Demo，十分钟能写出第一个可用功能——不是因为他聪明，是因为你的设计没给他设置障碍。
+
+------
 
 
 
@@ -399,17 +401,33 @@ dependencies {
 
 ### 反面例子2：同星`TSMaster API`
 
-哈哈哈，我又来给同星`TSMaster API`鞭尸了，感觉像是为了这一叠醋，包了这一盘饺子是吧(写这篇博客)。是的，这篇博客的一大目的通过同星`TSMaster API`的反面例子来讲SDK的设计规范。
+哈哈，我又来给同星`TSMaster API`鞭尸了，感觉像是为了这一叠醋，包了这一盘饺子是吧(写这篇博客)。是的，这篇博客的一大目的通过同星`TSMaster API`的反面例子来讲SDK的设计规范。
 
-下图是我上位机的真实报错，为什么发生这个问题呢，因为我最新的UDS诊断上位机一部分功能是基于同星`TSMaster API`2025版开发的，而用户的电脑上安装的是2023年甚至更早版本的同星`TSMaster API`，
+下图是我上位机的真实报错，为什么发生这个问题呢，因为我最新的UDS诊断上位机打开同星系列CAN卡的功能是基于同星`TSMaster API`2025版开发的，而用户的电脑上安装的是2023年甚至更早版本的同星`TSMaster API`。
 
-![image-20260723222145269](./assets/image-20260723222145269.png)
+这就导致了一个问题：上位机上内置了`TSMaster API`的DLL还不够。用户拿到上位机之后，不能够即插即用；还需要额外安装一个对应版本的`TSMaster`，必须要安装，并且版本还要对应。
 
-![image-20260723221922024](./assets/image-20260723221922024.png)
+- 如果用户没有额外安装`TSMaster`，则报错： `IDX_ERR_TSMASTER_IS_NOT_INSTALLED = 94`，提示用户没有安装。
+- 如果用户电脑`TSMaster API`的版本不正确，可能会加载失败，报错 ：`IDX_ERR_LIB_LOAD_FAILED = 95`。
+- 如果`TSMaster API`找到了，但是函数名称不正确，就是我上边第一章说的问题，就会报：`IDX_ERR_LIB_FUNCTION_NOT_FOUND = 96`，提示库函数未找到。
 
 
 
+![用户电脑没有安装TSMaster，或版本不正确就会报这个错误](./assets/image-20260723222145269.png)
 
+截止到2025年12月15日，同星的官方手册《TSMaster_SDK_DotNet_cn_V0.9.pdf》中，依然有这个错误码
+
+![手册中的错误码](./assets/image-20260723221922024.png)
+
+我就很纳闷了，明明上位机在二次开发的时候，就已经内置了`TSMaster API`，为什么还要用户额外安装一次应用程序？一个是让原本的程序体积变大了，二则是操作流程变复杂了，三是大大降低了兼容性。你说你API版本稳定了，用户安装任意版本的`TSMaster`就好了，关键是你现在版本是2025的(截至目前)，API一天一个样。
+
+> [!TIP]
+>
+> 捆绑依赖，我认为这不是一个好的SDK应该有的行为。
+
+看看竞品周立功的二次开发，直接给你提供两版API：旧版你继续用，我不管你；新版你也可以用，我不管你。完美兼容。并且他不强制你下载`ZXDoc`这一类软件。二次开发的产品，即插即用，依赖非常的干净。
+
+![周立功的二次开发](./assets/image-20260724150418299.png)
 
 ## 四、 ❌ 错误即信息：统一异常/错误码体系
 
@@ -472,7 +490,7 @@ try {
 }
 ```
 
-### 反面例子: 周立功27服务安全算法的DLL模版
+### 反面例子: 周立功27服务安全算法的函数签名
 
 这就是为什么第二章里 `Vector` 的 `GenerateKeyEx` 返回的是 `VKeyGenResultEx` 枚举而不是 `int`：
 
@@ -507,7 +525,7 @@ enum VKeyGenResultEx {
 
 **你写了 `println`，等于替他决定了"这个信息不重要，丢控制台就行"。**
 
-### 怎么做
+### 正确做法1: 使用日志门面框架
 
 ```kotlin
 // 在你的 SDK 中（面向 SLF4J 编程） ✅ 使用 SLF4J 门面
@@ -526,10 +544,51 @@ class SdkClient(private val config: SdkConfig) {
 
 使用者自己决定日志去哪、什么级别、什么格式。SDK 的日志和他项目的日志融为一体。同时提供关闭日志的选项（如 `logLevel = OFF`）。
 
-### 反面例子
+### 正确做法2: SDK 自定义日志接口 + 手动注入
+
+如果你觉得引入日志框架还是太重了，或者你的代码语言没有这类日志框架，或者你需要更轻量化的可插拔日志，或者你想追求极端的零外部依赖。请看这里的方案，你可以直接手写一个这样的接口即可。
+
+**SDK 侧代码：**
 
 ```kotlin
-// ❌ 直接 println——控制台污染，无法统一管理
+interface SdkLogger {
+    fun debug(msg: String)
+    fun info(msg: String)
+    fun error(msg: String)
+    /* 其他日志函数 */
+}
+
+class SdkClient(
+    private val config: SdkConfig,
+    private val logger: SdkLogger = ConsoleLogger() // 提供默认实现
+) {
+    fun doSomething() {
+        // SDK内部使用
+        logger.info("Operation started with param ${config.name}")
+    }
+}
+```
+
+**使用方需要做的事：**
+
+```kotlin
+// 实现 SdkLogger 接口（比如基于 Logback 或 System.out）
+class MyLogger : SdkLogger {
+    private val log = LoggerFactory.getLogger("my-app")
+    override fun debug(msg: String) { log.debug(msg) }
+    override fun info(msg: String) { log.info(msg) }
+    override fun error(msg: String) { log.error(msg) }
+    /* 其他日志函数 */
+}
+
+// 创建 SDK 客户端时传入
+val client = SdkClient(config = myConfig, logger = MyLogger())
+```
+
+### 反面例子: 直接使用 `println`
+
+```kotlin
+// ❌ 直接 println ——控制台污染，无法统一管理
 fun fetchData(): Data {
     println("开始请求...")            // 格式无法统一
     val result = httpClient.get()
@@ -547,13 +606,15 @@ import ch.qos.logback.classic.Logger  // 直接依赖实现，而非门面
 
 > [!NOTE]
 >
-> **一句话定义**：没有测试的 SDK 不是给使用者用的，是用来折磨使用者的。最低标准：单元测试覆盖率 ≥ 80%，CI 自动化。
+> **一句话定义**：没有测试的 `SDK `不是给使用者用的，是用来折磨使用者的。最低标准：单元测试覆盖率 `≥ 80%`，`CI` 自动化。
 
-### 为什么测试在 SDK 开发中是铁律
+### 为什么测试在 `SDK` 开发中是铁律
 
-SDK 和普通业务代码不一样——你的一个 bug，会出现在所有使用者的项目中。业务代码的 bug 只影响一个功能，SDK 的 bug 影响一整个生态。
+`SDK` 和普通业务代码不一样——你的一个 `bug`，会出现在所有使用者的项目中。业务代码的 `bug` 只影响一个功能，`SDK` 的 `bug` 影响一整个生态。
 
 ### 三层测试体系
+
+#### 单元测试：覆盖率 ≥ 80%，重点覆盖边界条件
 
 ```kotlin
 // 1. 单元测试：覆盖率 ≥ 80%，重点覆盖边界条件
@@ -571,6 +632,8 @@ fun `因子为 0 时应抛出明确异常`() {
     assertTrue(ex.message!!.contains(“factor”))
 }
 ```
+
+#### 集成测试：SDK 内置 Mock Server
 
 ```kotlin
 // 2. 集成测试：SDK 内置 Mock Server
@@ -592,6 +655,8 @@ fun `使用内置 MockServer 测试完整请求链路`() {
 }
 ```
 
+####  CI 自动化：每次提交触发
+
 ```yaml
 # 3. CI 自动化：每次提交触发
 # .github/workflows/test.yml
@@ -603,9 +668,9 @@ fun `使用内置 MockServer 测试完整请求链路`() {
 
 ### 反面例子
 
-- 给别人用的网络 SDK，没有任何 Mock 工具，要求使用者自己 mock 整个 HTTP 层
-- 测了正常路径，没有测”传 null 会怎样””网络断了会怎样””并发调用会怎样”
-- 依赖”本地能跑”来判断质量，没有 CI
+- 给别人用的网络 `SDK`，没有任何 `Mock` 工具，要求使用者自己 `mock` 整个 `HTTP` 层
+- 测了正常路径，没有测异常情况: ”传 `null` 会怎样”、”网络断了会怎样”、”并发调用会怎样”
+- 依赖”本地能跑”来判断质量，没有 `CI`
 
 > 💡 **你能想到的边界条件不去测试，使用者在生产环境就会替你测。**
 
@@ -613,7 +678,7 @@ fun `使用内置 MockServer 测试完整请求链路`() {
 
 > [!NOTE]
 >
-> **一句话定义**：使用者的第一行代码是在 README 里复制的，不是自己写的。文档就是 SDK 的产品界面。
+> **一句话定义**：使用者的第一行代码是在 `README` 里复制的，不是自己写的。文档就是 `SDK `的产品界面。
 
 ### 文档的最低构成
 
@@ -637,22 +702,27 @@ README 的开头必须有一段”复制 → 粘贴 → 运行”就能看到效
 implementation(“io.github.shilic:smart-dbc:1.0.11”)
 
 // 2. 三行代码看到结果
-val dbc = Dbc.read(File(“example.dbc”))
-val speedSignals = dbc.messages.flatMap { it.signals }.filter { it.name.contains(“speed”) }
-println(“找到 ${speedSignals.size} 个速度相关信号”)
+// 1. 读取 DBC 文件；DBC对象中使用树形结构保存了DBC文件中的所有信息。
+val dbc: DataBaseCan = File("example.dbc")::inputStream.toDbc()
+
+// 2. 解码 CAN 报文只需一行; 自动将CAN报文解析为物理值，并保存到DBC对应的信号中。
+dbc.decodeCanFrame(canFrame)
+
+// 3. 按消息 ID 查看解析结果，内置索引器快速查找报文
+dbc[0x18ABAB01]?.also { println(it.valueInfo) }
 ```
 
 ### `FAQ` 和排错指南
 
-`README` 里至少回答：依赖冲突了怎么办？超时时间怎么调？怎么在 `Android` 上使用？错误码在哪查？**每一个你回答过的 `GitHub Issue`，都应该成为 FAQ 里的一条。**
+`README` 里至少回答：依赖冲突了怎么办？超时时间怎么调？怎么在 `Android` 上使用？错误码在哪查？**每一个你回答过的 `GitHub Issue`，都应该成为 `FAQ` 里的一条。**
 
 ### 反面例子
 
 - 只有一个空 `README`，写”请参考源码”
-- `README` 上的示例是 1.0 的 API，实际已经 2.0——复制的第一行就编译不过
+- `README` 上的示例是 `1.0` 的 `API`，实际已经 `2.0`——复制的第一行就编译不过
 - `examples/` 目录里的代码从来没编译过
 
-> 💡 **好的文档不教用户怎么”用”你的 SDK——而是帮他解决”用你的 SDK 时遇到的问题”。**
+> 💡 **好的文档不教用户怎么”用”你的 `SDK`——而是帮他解决”用你的 `SDK` 时遇到的问题”。**
 
 ## 八、 🔄 持续交付与发布流程
 
@@ -671,9 +741,9 @@ println(“找到 ${speedSignals.size} 个速度相关信号”)
 | **兼容性测试** | 用上一个版本的调用方代码跑一遍当前 SDK——跑不通说明有不兼容改动 |
 | **示例代码编译** | `examples/` 下的所有代码必须能编译并运行通过 |
 
-### 版本号和 CHANGELOG
+### 版本号和 `CHANGELOG`
 
-版本号在 CI 流水线中根据 commit 类型自动生成：`fix:` → 补丁+1，`feat:` → 次版本+1，`BREAKING CHANGE:` → 主版本+1。CHANGELOG 从 commit message 自动生成，**不允许”发布完了再补”。**
+版本号在 `CI` 流水线中根据 `commit` 类型自动生成：`fix:` → 补丁+1，`feat:` → 次版本+1，`BREAKING CHANGE:` → 主版本+1。CHANGELOG 从 commit message 自动生成，**不允许”发布完了再补”。**
 
 ### 反面例子
 
