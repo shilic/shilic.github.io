@@ -248,7 +248,7 @@ public static int tsfifo_receive_can_message_list(ref TLIBCAN[] ACANMsgBuffer, i
 | `get` | 返回只读对象，不修改状态 | `getUser(id)` |
 | `getOrCreate`               | 读取不到则创建一条记录(副作用可预测)                   | `getOrCreateUser(id)` |
 | `fetch` | 单纯获取，不会重试 | ` fetch(url: String)` |
-| `WithRetry` | 执行失败会重试(副作用可预测) |  |
+| `WithRetry` | 执行失败会重试(副作用可预测) | `fetchWithRetry(url: String, maxRetries: Int = 3)` |
 | `find` | 查询，可能返回空 | `findUsers(filter)` |
 | `create` / `build` | 新建资源 | `createClient(config)` |
 | `delete` / `remove`/`close` | 删除资源(**应当是幂等的，反复执行关闭操作不应当报错**) | `deleteFile(path)` |
