@@ -371,7 +371,7 @@ KEYGENALGO_API VKeyGenResultEx GenerateKeyEx(
 
 
 
-## 三、🥊 最小依赖原则：零冗余，不绑架
+## 三、 🥊 最小依赖原则：零冗余，不绑架
 
 > [!NOTE]
 >
