@@ -95,7 +95,7 @@ export default hopeTheme({
       blog: {
 		// 头像默认是  logo
 		// avatar:"https://raw.githubusercontent.com/shilic/MarkDownImageRepository/main/img/logo1.png",
-        description: "车载大屏APP开发、上位机开发、开源项目贡献者",
+        description: "上位机开发、车载大屏APP开发、开源项目贡献者",
         intro: "/intro.html",
       },
 
