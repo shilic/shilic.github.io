@@ -38,8 +38,12 @@ export default hopeTheme({
     // 相关链接 & 社交媒体
     medias: {
       GitHub: "https://github.com/shilic",
+	  //Gitee: "",
 	  Email: "985478238@qq.com",
-      
+      CSDN:{
+		icon: "https://www.csdn.net/favicon.ico",
+		link: "https://blog.csdn.net/qq_42095554?type=blog"
+	  },
       Zhihu: "https://www.zhihu.com/people/cheng-bao-38-46/posts",
       douban: "https://www.douban.com/people/133155707/",
 	  BiliBili: "https://space.bilibili.com/13808984",
