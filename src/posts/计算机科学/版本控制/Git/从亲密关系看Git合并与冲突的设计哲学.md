@@ -91,3 +91,9 @@
 下次跟爱人吵架前，不妨想想：我们现在是在 `git merge`，还是在 `git rebase`？我是想强行覆盖对方的人生，还是想温柔地 `cherry-pick` 一些共识？
 
 答案可能不在命令行里，而在你愿意翻开对方的那段“提交记录”时的眼神里。
+
+
+
+## 参考链接
+
+在 `VS Code` 中解决合并冲突: [https://vscode.js.cn/docs/sourcecontrol/merge-conflicts](https://vscode.js.cn/docs/sourcecontrol/merge-conflicts) 
