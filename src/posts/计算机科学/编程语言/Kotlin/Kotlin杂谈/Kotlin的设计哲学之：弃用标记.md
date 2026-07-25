@@ -1,6 +1,6 @@
 ---
 title: Kotlin的设计哲学之：弃用标记
-cover: /assets/kotlin-deprecated-cover.png
+cover: /assets/kotlin-cover.png
 icon: file
 author: 诚
 date: 2025-07-01

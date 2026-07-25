@@ -1,5 +1,5 @@
 ---
-title: SDK开发者的自我修养
+title: SDK的设计哲学
 cover: /assets/sdk-self-cultivation-cover.png
 icon: file
 author: 诚
@@ -22,7 +22,7 @@ footer:
 copyright: CC BY-SA 4.0
 ---
 
-# SDK开发者的自我修养
+# SDK的设计哲学
 
 > [!IMPORTANT]
 >
