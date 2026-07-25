@@ -15,10 +15,12 @@ bgImage: https://cdn.jsdelivr.net/gh/shilic/picx-images-hosting@master/backgroun
 
 # 在这里定义项目
 projects:
-  - icon: folder-open
-    name: smart-dbc(更聪明的DBC)
+  - name: smart-dbc(更聪明的DBC)
     desc: smart-dbc 是一个CAN协议车载通信中间件（Kotlin/JVM 库），提供完整的 DBC 文件转换、解析、生成、编辑 能力，并在此基础上封装了一套 CAN 通信框架；支持通过注解将数据模型字段与 DBC 信号自动绑定，实现 CAN 报文的快速编解码 (从总线值到物理值, 以及从物理值到总线值)。适用于汽车电子、车载网络等需要处理 CAN 总线协议的业务场景。使用Kotlin编写，同时兼容 java和kotlin。
     link: https://github.com/shilic/smart-dbc
+    icon: folder-open
+    
+    
 
   # - icon: folder-open
   #   name: 原琴脚本
