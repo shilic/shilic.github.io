@@ -1,3 +1,27 @@
+---
+title: 从亲密关系看`Git`合并与冲突的设计哲学
+cover: /assets/git-merge-relationship-cover.png
+icon: file
+author: 诚
+date: 2026-07-25
+category:
+  - Git
+  - 版本控制
+  - 设计哲学
+tag:
+  - Git
+  - merge
+  - 冲突
+  - 合并
+  - 设计哲学
+  - 亲密关系
+  - Linus
+sticky: false
+star: false
+footer:
+copyright: CC BY-SA 4.0
+---
+
 # 从亲密关系看Git合并与冲突的设计哲学
 
 如果你谈过恋爱，你一定经历过这样的时刻：两个人各自生活了很久，终于决定走到一起——结果发现处处合不来。你看着对方的习惯和脾气，心里想的却是：**我可能从没深入了解过眼前的人...**
