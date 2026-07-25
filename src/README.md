@@ -16,7 +16,7 @@ bgImage: https://cdn.jsdelivr.net/gh/shilic/picx-images-hosting@master/backgroun
 # 在这里定义项目
 projects:
   - name: smart-dbc(更聪明的DBC)
-    desc: smart-dbc 是一个CAN协议车载通信中间件
+    desc: 一个CAN协议车载通信中间件，具备DBC编辑及CAN编解码功能
     link: https://github.com/shilic/smart-dbc
     icon: folder-open
     
