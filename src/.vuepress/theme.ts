@@ -31,14 +31,19 @@ export default hopeTheme({
 
 	// 头像默认是  logo
 	// avatar:"https://raw.githubusercontent.com/shilic/MarkDownImageRepository/main/img/logo1.png",
+
  	//description: "心诚则灵",
+
+
     // 相关链接 & 社交媒体
     medias: {
       GitHub: "https://github.com/shilic",
-      BiliBili: "https://space.bilibili.com/13808984",
-      Steam: "https://steamcommunity.com/id/a-cheng/",
-      //Zhihu: "https://example.com",
+	  Email: "985478238@qq.com",
+      
+      Zhihu: "https://www.zhihu.com/people/cheng-bao-38-46/posts",
       douban: "https://www.douban.com/people/133155707/",
+	  BiliBili: "https://space.bilibili.com/13808984",
+      Steam: "https://steamcommunity.com/id/a-cheng/",
       bettergi: {
         icon: "https://img.alicdn.com/imgextra/i2/2042484851/O1CN01LQfLIG1lhoEZwz1Gt_!!2042484851.png",
         link: "https://bettergi.com/",
@@ -47,9 +52,9 @@ export default hopeTheme({
     },
   },
 
-  // 右边的个人信息栏目，也就是一些个人简洁
+  // 右边的个人信息栏目，也就是一些个人简介
   locales: {
-	// 英文的
+	/** 英文本地化 */
     "/en/": {
       // navbar
       navbar: enNavbar,
@@ -71,9 +76,7 @@ export default hopeTheme({
       },
     },
 
-    /**
-     * 中文本地化
-     */
+    /**  中文本地化 */
     "/": {
       // 导航栏
       navbar: zhNavbar,
@@ -187,6 +190,7 @@ export default hopeTheme({
     // },
   },
 
+  /** 插件系统 */
   plugins: {
 	// 启用博客功能，可以设置 Frontmatter  侧边栏和分页等
     blog: true,
