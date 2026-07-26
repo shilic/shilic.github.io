@@ -39,6 +39,26 @@
 	--h6-color: rgb(40, 101, 192);
 }
 
+/* ================= 页面宽度 ================= */
+/* 覆盖 Obsidian 默认的 --file-line-width（默认约 700px） */
+body {
+  --file-line-width: 1150px;
+}
+
+/* 预览模式 */
+.markdown-preview-view {
+  max-width: var(--file-line-width);
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* 编辑模式 */
+.cm-s-obsidian .cm-editor .cm-content {
+  max-width: var(--file-line-width);
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
 /* ================= 标题系统 ================= */
 
 /*-- display H1-h6 in gutter--*/
@@ -214,6 +234,12 @@ body:not(.alt-heading-off) .HyperMD-header-6:before {
 .cm-s-obsidian {
   background-color: var(--bg-primary) !important;
 }
+/* ================= 图片预览 ================= */
+/* 覆盖 Obuntu 主题的 scale(2)，太夸张了 */
+.markdown-preview-view img:hover {
+  transform: scale(1.05);
+}
+
 /* ================= 代码标题栏 ================= */
 pre code[class*="language-"]::before {
   content: attr(class);
