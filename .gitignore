@@ -44,3 +44,5 @@ logs/
 # ===== Obsidian 个人状态 =====
 .obsidian/plugins/remember-cursor-position/cursor-positions.json
 .obsidian/workspace.json
+.obsidian/workspaces.json
+.obsidian/appearance.json
