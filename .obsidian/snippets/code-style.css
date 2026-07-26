@@ -42,7 +42,7 @@
 /* ================= 页面宽度 ================= */
 /* 覆盖 Obsidian 默认的 --file-line-width（默认约 700px） */
 body {
-  --file-line-width: 1150px;
+  --file-line-width: 1100px;
 }
 
 /* 预览模式 */
