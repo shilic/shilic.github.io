@@ -21,6 +21,8 @@ copyright: CC BY-SA 4.0
 ---
 # SDK 边界控制：从 `Kotlin` 四层访问修饰符说起
 
+<!-- more -->
+
 ## 一、SDK 开发的本质是控制边界
 
 > [!IMPORTANT]

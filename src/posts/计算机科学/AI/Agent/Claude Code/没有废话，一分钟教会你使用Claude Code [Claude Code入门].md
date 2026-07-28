@@ -24,6 +24,8 @@ copyright: CC BY-SA 4.0
 
 没有废话，一分钟教会你使用Claude Code [Claude Code入门]
 
+<!-- more -->
+
 ## 一、安装`nodejs`
 
 如果你的电脑已经安装了`nodejs`，请跳过这一步。

@@ -25,6 +25,8 @@ copyright: CC BY-SA 4.0
 
 在现代软件开发中，`Git `已经成为最流行的[版本控制系统](https://developer.cloud.tencent.com/techpedia/1907?from_column=20065&from=20065)之一。虽然 `GitHub`、`Gitee`、`GitLab `等公共服务提供了方便的托管平台，但有时候由于安全性、隐私或其他定制化需求，我们需要搭建一个自己的 `Git `服务器。团队共享代码、协同开发，数据完全在自己手里。
 
+<!-- more -->
+
 ## 一、认识 [`Gitea`](https://about.gitea.cn/)
 
 > `Gitea `是一个轻量级的 `DevOps `平台软件。从开发计划到产品成型的整个软件生命周期，他都能够高效而轻松的帮助团队和开发者。包括 `Git  `托管、代码审查、团队协作、软件包注册和 `CI/CD`。它与 `GitHub`、`Bitbucket` 和 `GitLab `等比较类似。 `Gitea `最初是从 [`Gogs`](http://gogs.io) 分支而来，几乎所有代码都已更改。
