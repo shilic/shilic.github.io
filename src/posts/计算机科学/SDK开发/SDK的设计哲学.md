@@ -233,9 +233,9 @@ public static int tsfifo_receive_can_message_list(ref TLIBCAN[] ACANMsgBuffer, i
 
 #### 🔌 USB-C vs Lightning vs Micro-USB
 
-**反面**：Micro-USB 有方向性，插反了怼不进去。Lightning 解决了正反盲插，但你得是 Apple 生态。两种线不能通用。
+**反面**：Micro-USB 有方向性，插反了怼不进去。USB-B 好一点了，接口变成了对称的，但是经典的问题依然存在：你正着插，插不进去，你怀疑自己插反了；于是你再反过来插，还是插不进去，你蒙了；于是你又再反过来，结果这一次插进去了，原来第一次的USB方向没有插反，但是为什么第一次又插不进去呢。
 
-**正面**：USB-C 正反都能插，而且是跨品牌、跨设备的统一标准。**插的动作本身零思考——你不需要先看方向、不需要辨认"这头朝上还是朝下"。** 物理层的最小惊奇。
+**正面**：USB-C 正反都能插，而且是跨品牌、跨设备的统一标准。**插的动作本身零思考——你不需要先看方向、不需要辨认"这头朝上还是朝下"。** 这就是物理层的最小惊奇，从设计层面消除歧义，消除用户的思考负担。
 
 #### ☕ 星巴克的杯型问题
 
@@ -250,6 +250,13 @@ public static int tsfifo_receive_can_message_list(ref TLIBCAN[] ACANMsgBuffer, i
 你急了，你不能理解，为什么最小的不叫小杯要叫中杯。
 
 服务员给你解释，他们最小的就是中杯(约355 ml)。
+
+下边的视频就是罗永浩老师最经典的星巴克杯型问题：
+
+
+<BiliBili bvid="BV1yz411B7Hm" />
+
+[https://www.bilibili.com/video/BV1yz411B7Hm](https://www.bilibili.com/video/BV1yz411B7Hm)
 
 这就是期望落空——`💡 惊奇感的来源 = 实际行为 − 用户预期`，顾客的预期没有达到。
 
@@ -268,6 +275,10 @@ public static int tsfifo_receive_can_message_list(ref TLIBCAN[] ACANMsgBuffer, i
 > 注：容量数据来自星巴克官方客服和美国/法国星巴克营养手册。
 
 为什么？因为星巴克的杯型不叫"小中大"，叫 `Tall`、`Grande`、`Venti`——全人类对杯子大小的直觉被一套意大利语词汇强行替换了，你点单时被迫在脑子里做翻译。**这不是品牌调性，这是命名体系和用户心理模型错位。** 所以才有了网上铺天盖地的"星巴克杯型梗"——锅不是顾客的，是命名体系的。
+
+> [!NOTE]
+>
+> 罗永浩原话说的是，这就是把用户当成蠢猪的企业。
 
 #### "观瀑亭"和"听雨轩"
 
