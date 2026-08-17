@@ -201,7 +201,7 @@ public static int tsfifo_receive_can_message_list(ref TLIBCAN[] ACANMsgBuffer, i
 
 这句话源于唐纳德·诺曼的《设计心理学》：**好的设计让东西自己会说话，坏的设计逼用户读说明书。**
 
-### 惊奇感公式
+### 💡惊奇感公式
 
 > 💡 **惊奇感的来源 = 实际行为 − 用户预期**
 
@@ -211,7 +211,7 @@ public static int tsfifo_receive_can_message_list(ref TLIBCAN[] ACANMsgBuffer, i
 
 优秀的设计师做的不是"创造惊喜"，而是**把这个差值压缩到趋近于零**——让用户的所有预测都命中，所有动作都有预期内的结果。这就是"好的设计是透明的"：你感受不到它，因为你从来不需要去思考它。
 
-### 现实世界中的最小惊奇
+### 🎄现实世界中的最小惊奇
 
 最小惊奇原则，不单单是软件开发独有的设计原则，而是现实世界的工程应用都应该遵循的原则。
 
@@ -253,7 +253,6 @@ public static int tsfifo_receive_can_message_list(ref TLIBCAN[] ACANMsgBuffer, i
 
 下边的视频就是罗永浩老师最经典的星巴克杯型问题：
 
-
 <BiliBili bvid="BV1yz411B7Hm" />
 
 [https://www.bilibili.com/video/BV1yz411B7Hm](https://www.bilibili.com/video/BV1yz411B7Hm)
@@ -278,9 +277,9 @@ public static int tsfifo_receive_can_message_list(ref TLIBCAN[] ACANMsgBuffer, i
 
 > [!NOTE]
 >
-> 罗永浩原话说的是，这就是把用户当成蠢猪的企业。
+> 罗永浩原话是：这就是把消费者当成傻X的企业。
 
-#### "观瀑亭"和"听雨轩"
+#### 🏬"观瀑亭"和"听雨轩"
 
 你去景区旅游，你憋了一肚子尿，你来到卫生间门口，看见"观瀑亭"和"听雨轩"，以及"涤尘堂"、"御净轩"等。你想破脑筋也不知道哪个是男厕所，哪个是女厕所，这就是期望落空。
 
@@ -314,7 +313,7 @@ public static int tsfifo_receive_can_message_list(ref TLIBCAN[] ACANMsgBuffer, i
 
 > 如果图标表意不清晰，建议都加上文字说明。
 
-### 软件 API 中的最小惊奇
+### 💻软件 API 中的最小惊奇
 
 上面都是物理世界的例子。回到 `SDK` 设计，最小惊奇原则落地为几条硬规范：
 
@@ -373,7 +372,7 @@ fun findUsersByCity(city: String): List<User> // 找不到就抛 NoSuchElementEx
 
 调用方要写三套不同的判空逻辑。这就是心智负担——不是在用你的 `API`，是在**防御你的 API**。
 
-#### 反面例子: 周立功27服务安全算法的函数签名
+#### 🙅‍♂️反面例子: 周立功27服务安全算法的函数签名
 
 汽车电子行业里，`UDS` 诊断协议的 `0x27` 服务（`SecurityAccess`）要求 `ECU` 供应商提供一个 `DLL`，整车厂调用它来解锁 `ECU`。国内两大供应商——周立功（`ZLG`）和 `Vector`——各自给出了模板。同一个功能，签名天差地别。
 
@@ -420,11 +419,76 @@ KEYGENALGO_API VKeyGenResultEx GenerateKeyEx(
 
 **同样的功能，同一个行业。好的签名跟你诚实交代每一个参数的角色，烂的签名让你猜。** 和第四章呼应——`KGRE_BufferToSmall` 不只是"出错了"，它在告诉调用方**接下来该做什么**（缓冲区太小），而周立功的 `-1` 什么都没说。
 
-### 最小惊奇在 SDK 设计中
+#### 👍正面例子：`kotlin`的正则表达式类
 
-> 💡 使用者拿起你的 SDK，三分钟能跑通第一个 Demo，十分钟能写出第一个可用功能——不是因为他聪明，是因为你的设计没给他设置障碍。
+##### `Java`的正则表达式`API`
 
-------
+`Java` 的正则 `API` 是典型的“让你猜”设计：明明一个类就能解决的问题，`Java`非要设计成`Pattern` 和 `Matcher` 两个类。一个`Matcher`类使用一次匹配方法之后不能立刻再次使用，因为匹配一次之后，内部游标已经移动到了末尾，再次匹配直接出问题，非常容易踩坑踩坑。
+
+```java
+// Java —— 状态管理是隐形的陷阱
+Pattern p = Pattern.compile("\\d+");
+Matcher m = p.matcher("123abc");
+
+System.out.println(m.matches()); // true（整个字符串匹配？其实只是从开头匹配到了数字）
+m.find();                         // 此时游标在末尾
+System.out.println(m.find());     // false！你以为还能找到，但其实游标已经到头了
+
+// 想再用？必须先 reset()
+m.reset();
+System.out.println(m.find());     // true（终于对了，但谁记得要 reset？）
+```
+
+调用方必须记住“用完要 reset”，否则第二次重复调用就失效——心智负担藏在 API 的状态管理里。更别提反斜杠转义 `\\d` 写起来像在折磨手指。
+
+##### `Kotlin` 的正则表达式`API`
+
+`Kotlin` 的 `Regex` 类一刀切掉了这个包袱。`kotlin`没有写新的逻辑，而是原样保留了`Java`的`Pattern` 和 `Matcher` ，并在此基础上重新封装成了一个`Regex` 类。
+
+`Regex` 类本身只持有两个不可变字段：原始的 `pattern` 字符串和 `options` 选项集，真正编译后的 `Pattern` 对象是延迟初始化的:
+
+```Kotlin
+public actual class Regex(
+    public val pattern: String,
+    public val options: Set<RegexOption>
+) : Serializable {
+    
+    // 内部持有的 Java Pattern，作为“原生模式”
+    private val nativePattern: Pattern = 
+        Pattern.compile(pattern, options.toPlatformFlags())
+    
+    // 对外提供 matches / find / findAll / replace / split 等方法
+    public actual infix fun matches(input: CharSequence): Boolean =
+        nativePattern.matcher(input).matches()
+}
+```
+
+如何使用：
+
+```kotlin
+// Kotlin —— 每次调用独立，状态透明
+val regex = Regex("""\d+""")  // 原始字符串，告别双重转义
+
+val result1 = regex.containsMatchIn("abc456") // true
+val result2 = regex.find("abc456")            // MatchResult("456")
+val result3 = regex.findAll("a1b2c3").toList() // [MatchResult("1"), MatchResult("2"), MatchResult("3")]
+
+// 以上三次调用互不影响，不需要 reset，不需要担心游标
+```
+
+`matches`、`containsMatchIn`、`findAll` 每次调用都是独立从头扫描，不存在“游标污染”。再加上原始字符串 `"""\d"""` 免去双重转义，捕获组通过解构直接取值：
+
+```kotlin
+val dateRegex = Regex("""(\d{4})-(\d{2})-(\d{2})""")
+val (year, month, day) = dateRegex.find("2025-03-12")!!.destructured
+println("$year年$month月$day日") // 2025年03月12日
+```
+
+**你不需要知道底层有个 Matcher 在动，甚至不需要知道 Pattern 的存在。** `API` 把自己做透明了，用户只需要写“我要匹配什么”，剩下的交给语言。这就是最小惊奇——从设计层面把使用者的心智负担抹掉了。
+
+#### 👍正面例子：`Smart-dbc`自动处理文件编码格式
+
+
 
 
 
