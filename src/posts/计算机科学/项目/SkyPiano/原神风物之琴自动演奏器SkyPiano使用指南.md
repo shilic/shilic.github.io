@@ -40,7 +40,7 @@ MIDI格式是音乐界的标准格式，文件中描述了如何演奏一段音�
 
 例如这首最经典的 One Last Kiss  [https://www.bilibili.com/video/BV1WU4y1X7LS](https://www.bilibili.com/video/BV1WU4y1X7LS)，到视频简介中将谱子拿过来即可。
 
-格式如下：
+格式如下，同样放到项目的 `appData/MyScore`文件夹，重启后，软件即可加载新的乐谱。
 
 ```json
 {
