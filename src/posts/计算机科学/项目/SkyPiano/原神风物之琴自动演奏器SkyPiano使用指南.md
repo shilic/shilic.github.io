@@ -4,7 +4,11 @@
 
 本项目一开始是来自于作者在`2024`年参加的一个开源项目：[BetterGI · 更好的原神](https://github.com/babalae/better-genshin-impact)；简单来讲，`BetterGI`是一个基于计算机视觉技术，意图让原神变的更好的项目；可以自动过剧情、自动拾取、自动钓鱼、自动打牌、自动伐木、自动挖矿、运行自定义脚本(基于webview2)等。
 
-而本项目的最初版本，就是在`BetterGI`自定义脚本功能的基础之上编写而来，使用`javascript`编写了第一版程序，第一版项目地址: [https://github.com/shilic/YuanQin](https://github.com/shilic/YuanQin)。实现了最简单的播放功能，示例如下：
+而本项目的最第一版，就是在`BetterGI`之上，使用`javascript`编写，实现了最简单神风物之琴自动演奏器功能。
+
+第一版项目地址: [https://github.com/shilic/YuanQin](https://github.com/shilic/YuanQin)。
+
+示例如下：
 
 <BiliBili bvid="BV1ZokqYmEQE" />
 
@@ -12,7 +16,7 @@
 
 最初版本存在很多问题，最主要的问题是，无法暂停，并且只支持一种格式的乐谱，无法手动选择乐谱。
 
-于是，就有了重构的想法，本项目就诞生了。
+于是，就有了重构的想法，本项目就诞生了，使用`WPF`重写了一遍的原神风物之琴自动演奏器`SkyPiano`。
 
 ## 乐谱准备
 
