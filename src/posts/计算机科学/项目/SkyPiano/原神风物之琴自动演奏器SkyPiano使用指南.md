@@ -36,7 +36,7 @@ MIDI格式是音乐界的标准格式，文件中描述了如何演奏一段音�
 
 ### 2.原琴博主
 
-这是我最推荐的方式，直接到`bilibili`的各大原琴博主下边去找谱子即可。
+这是我最推荐的方式，直接到`bilibili`的各大原琴博主下边去找谱子即可。因为他们重新编排了乐谱，使之适配了原神的21键。
 
 例如这首最经典的 One Last Kiss  [https://www.bilibili.com/video/BV1WU4y1X7LS](https://www.bilibili.com/video/BV1WU4y1X7LS)，到视频简介中将谱子拿过来即可。
 
