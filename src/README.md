@@ -20,10 +20,11 @@ projects:
     link: https://github.com/shilic/smart-dbc
     icon: folder-open
     
-#   - name: 原琴脚本
-#     desc: 用于自动弹奏原神里的风物之琴
-#     link: https://github.com/shilic/YuanQin
-#     icon: folder-open
+projects:
+  - name: 风物之琴自动演奏器
+    desc: 一个WPF编写的原神风物之琴自动演奏器，可自动演奏乐谱
+    link: https://github.com/shilic/SkyPiano
+    icon: newspaper
 
 # icon 可选值  folder-open link book newspaper user-group 或图片链接
 

@@ -2,9 +2,11 @@
 
 ## 前言
 
+`SkyPiano`是一个原神风物之琴自动演奏器。
+
 本项目一开始是来自于作者在`2024`年参加的一个开源项目：[BetterGI · 更好的原神](https://github.com/babalae/better-genshin-impact)；简单来讲，`BetterGI`是一个基于计算机视觉技术，意图让原神变的更好的项目；可以自动过剧情、自动拾取、自动钓鱼、自动打牌、自动伐木、自动挖矿、运行自定义脚本(基于webview2)等。
 
-而本项目的最第一版，就是在`BetterGI`之上，使用`javascript`编写，实现了最简单神风物之琴自动演奏器功能。
+而本项目的最第一版，就是在`BetterGI`之上，使用`javascript`编写，实现了最简单的原神风物之琴自动演奏器功能。
 
 第一版项目地址: [https://github.com/shilic/YuanQin](https://github.com/shilic/YuanQin)。
 
