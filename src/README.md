@@ -20,7 +20,6 @@ projects:
     link: https://github.com/shilic/smart-dbc
     icon: folder-open
     
-projects:
   - name: 风物之琴自动演奏器
     desc: 一个WPF编写的原神风物之琴自动演奏器，可自动演奏乐谱
     link: https://github.com/shilic/SkyPiano
