@@ -52,7 +52,7 @@ copyright: CC BY-SA 4.0
 
 盖伊·加德纳使用戒指重塑身体：
 
-<img src="./assets/image-20260914090216373.png" alt="盖伊·加德纳使用戒指重塑身体" style="zoom:130%;" />
+![盖伊·加德纳使用戒指重塑身体](./assets/image-20260914090216373.png)
 
 
 
