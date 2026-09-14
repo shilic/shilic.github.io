@@ -1,8 +1,18 @@
 ---
 icon: circle-info
-cover: /assets/images/cover3.jpg
+cover: /assets/icon/ENFP-.jpg
 ---
 
-# 介绍页
+# 诚
 
-将你的个人介绍和档案放置在此处。
+```kotlin
+val 诚 = object {
+    val nickname = "诚"
+    val gender = "男"
+    val location = "中国, 重庆"
+    val education = "重庆邮电大学 - 学士学位"
+    val mbti = "INFJ-A"
+    val interests = arrayOf("编程", "看电影", "健身", "打游戏", "写作")
+    val languages = arrayOf("Java", "Kotlin", "C#")
+}
+```
