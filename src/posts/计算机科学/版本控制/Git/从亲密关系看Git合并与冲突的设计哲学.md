@@ -17,7 +17,7 @@ tag:
   - 亲密关系
   - Linus
 sticky: false
-star: false
+star: true
 footer:
 copyright: CC BY-SA 4.0
 ---
