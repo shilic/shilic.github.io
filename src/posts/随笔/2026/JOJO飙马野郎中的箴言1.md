@@ -1,9 +1,30 @@
+---
+title: JOJO飙马野郎中的箴言1
+icon: file
+author: 诚
+date: 2026-09-14
+category:
+  - 随笔
+tag:
+  - JOJO
+  - 飙马野郎
+  - 乔尼
+  - 杰洛
+  - 迪亚哥
+  - 随笔
+sticky: false
+star: false
+footer:
+copyright: CC BY-SA 4.0
+---
+
 # JOJO飙马野郎中的箴言1
 
 > [!NOTE]
 >
 > 乔尼：杰洛，你赢不了迪亚哥。
->
+
+<!-- more -->
 
 > [!TIP]
 >
