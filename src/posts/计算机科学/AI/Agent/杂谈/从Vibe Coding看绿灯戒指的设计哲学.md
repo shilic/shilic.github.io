@@ -16,7 +16,7 @@ tag:
   - 意志
   - 想象力
 sticky: false
-star: false
+star: true
 footer:
 copyright: CC BY-SA 4.0
 ---
