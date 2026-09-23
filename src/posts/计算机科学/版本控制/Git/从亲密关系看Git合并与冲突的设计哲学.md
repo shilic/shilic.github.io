@@ -1,5 +1,5 @@
 ---
-title: 从亲密关系看`Git`合并与冲突的设计哲学
+title: 从亲密关系看Git合并与冲突的设计哲学
 cover: /assets/git-merge-relationship-cover.png
 icon: file
 author: 诚
